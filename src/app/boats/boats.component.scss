@@ -1,14 +1,13 @@
 .person-card {
-  height: 100px;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
 }
 
-.person--add {
-  flex-grow: 0;
-  height: 100px;
+.person-add {
+  margin-top: 2rem;
+  height: calc(100% - 2rem);
   width: 100px;
   font-size: 3rem;
-  display: flex;
   align-items: center;
   justify-content: center;
+  display: flex;
 }
