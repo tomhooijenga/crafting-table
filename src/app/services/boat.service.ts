@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import {boats, Boat} from './boats';
-import {Person} from './person';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoatService {
 
-  // constructor() { }
+  boats: Boat[] = boats;
+
+  getByUse(type: string): Boat[] {
+    return this.boats.filter((boat) => boat.use === type);
+  }
 
   // def f(v, i, S):
   //   if i >= len(v): return 1 if S == 0 else 0

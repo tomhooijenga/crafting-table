@@ -1,36 +1,72 @@
 <div class="container">
-  <div class="row">
-    <div *ngFor='let person of personService.people' class="col-auto">
-      <div class="card person-card">
-        <div class="card-body">
-          <input type="text" class="form-control" [(ngModel)]="person.name" (focusout)="personService.save(person)" />
-          <div class="row">
-            <div class="form-group col">
-              <label for="scull-{{person.id}}">Scull</label>
-              <select id="scull-{{person.id}}" [(ngModel)]="person.scull" class="form-control">
-                <option *ngFor='let level of [0, 1, 2, 3, 4]'>{{level}}</option>
-              </select>
+  <section>
+    <h1>Crew</h1>
+    <div class="row">
+      <div *ngFor='let person of personService.people' class="col-auto">
+        <div class="card mt-4" (focusout)="personService.save(person)">
+          <div class="card-body">
+            <input type="text" class="form-control" [(ngModel)]="person.name"  />
+            <div class="row">
+              <div class="form-group col">
+                <label for="scull-{{person.id}}">Scull</label>
+                <select id="scull-{{person.id}}" [(ngModel)]="person.scull" class="form-control">
+                  <option *ngFor='let level of [0, 1, 2, 3, 4]'>{{level}}</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="sweep-{{person.id}}">Sweep</label>
+                <select id="sweep-{{person.id}}" [(ngModel)]="person.sweep" class="form-control">
+                  <option value="0" selected>0</option>
+                  <option *ngFor='let level of [0, 1, 2, 3, 4]'>{{level}}</option>
+                </select>
+              </div>
             </div>
-            <div class="col">
-              <label for="sweep-{{person.id}}">Scull</label>
-              <select id="sweep-{{person.id}}" [(ngModel)]="person.sweep" class="form-control">
-                <option value="0" selected>0</option>
-                <option *ngFor='let level of [0, 1, 2, 3, 4]'>{{level}}</option>
-              </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-auto">
+        <div class="btn btn-outline-primary person-add" (click)="personService.create()">
+          +
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-4">
+    <h1>Boats</h1>
+
+    <form class="form-inline" (input)="getBoats()">
+      <div class="form-group mr-2">
+        <input type="text" class="form-control" name="name" placeholder="Naam..." [(ngModel)]="filters.name">
+      </div>
+
+      <div *ngFor="let use of uses" class="form-group form-check mr-2">
+        <input type="checkbox" class="form-check-input" id="{{use}}" value="{{use}}" name="{{use}}" [(ngModel)]="filters.use[use]">
+        <label class="form-check-label" for="{{use}}">{{use}}</label>
+      </div>
+    </form>
+
+    <div class="row">
+      <div *ngFor="let boat of boats" class="col-3">
+        <div class="card mt-4">
+          <div class="card-header">
+            {{boat.name}}
+            <span class="float-right">
+              {{boat.users}}{{boat.type === 'scull' ? 'x' : ''}}{{boat.steer ? '+' : '-'}}
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex flex-row">
+              <span class="flex-grow-1 badge badge-info">ST {{boat.permissions.steer}}</span>
+              <span class="flex-grow-1 mx-4 badge badge-dark">S {{boat.permissions.scull}}</span>
+              <span class="flex-grow-1 badge badge-secondary">B {{boat.permissions.sweep}}</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="col-auto">
-      <div class="btn btn-light person-add" (click)="personService.create()">
-        +
-      </div>
-    </div>
-  </div>
-
-
+  </section>
 </div>
 
 

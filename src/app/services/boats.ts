@@ -1,7 +1,7 @@
 export type Boat = {
   name: string,
   code: string,
-  use: string,
+  use: 'any' | 'competition' | 'youth' | 'none',
   users: number,
   type: 'scull' | 'sweep',
   steer: boolean,
@@ -16,7 +16,7 @@ export const boats: Boat[] = [
   {
     name: 'Aalscholver',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -25,7 +25,7 @@ export const boats: Boat[] = [
   {
     name: 'Alk',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -34,7 +34,7 @@ export const boats: Boat[] = [
   {
     name: 'Barbeel',
     code: '1x',
-    use: null,
+    use: 'none',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -43,7 +43,7 @@ export const boats: Boat[] = [
   {
     name: 'Barracuda',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -52,7 +52,7 @@ export const boats: Boat[] = [
   {
     name: 'Bokje',
     code: 'C1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -61,7 +61,7 @@ export const boats: Boat[] = [
   {
     name: 'Brasem',
     code: '1x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -70,7 +70,7 @@ export const boats: Boat[] = [
   {
     name: 'Buizerd',
     code: '4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -79,7 +79,7 @@ export const boats: Boat[] = [
   {
     name: 'C-Arend',
     code: 'C4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -88,7 +88,7 @@ export const boats: Boat[] = [
   {
     name: 'Carassius Ciuratus',
     code: '1x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -97,7 +97,7 @@ export const boats: Boat[] = [
   {
     name: 'Casarca',
     code: '1x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -106,7 +106,7 @@ export const boats: Boat[] = [
   {
     name: 'de 100 halen',
     code: '4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -115,7 +115,7 @@ export const boats: Boat[] = [
   {
     name: 'Dodaars',
     code: 'C2+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 1, steer: 1},
     users: 2,
     type: 'sweep',
@@ -124,7 +124,7 @@ export const boats: Boat[] = [
   {
     name: 'Eveline',
     code: 'W2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
     users: 2,
     type: 'scull',
@@ -133,7 +133,7 @@ export const boats: Boat[] = [
   {
     name: 'Frodo',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -142,7 +142,7 @@ export const boats: Boat[] = [
   {
     name: 'Fugo',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -151,7 +151,7 @@ export const boats: Boat[] = [
   {
     name: 'Gans',
     code: 'C4+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 1, steer: 2},
     users: 4,
     type: 'sweep',
@@ -160,7 +160,7 @@ export const boats: Boat[] = [
   {
     name: 'Geep',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -169,7 +169,7 @@ export const boats: Boat[] = [
   {
     name: 'Giebel',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -178,7 +178,7 @@ export const boats: Boat[] = [
   {
     name: 'Griend',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -187,7 +187,7 @@ export const boats: Boat[] = [
   {
     name: 'Gudsekop',
     code: 'C4x+',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 1, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -196,7 +196,7 @@ export const boats: Boat[] = [
   {
     name: 'Harder',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -205,7 +205,7 @@ export const boats: Boat[] = [
   {
     name: 'Havik',
     code: '2-',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 3, steer: 3},
     users: 2,
     type: 'sweep',
@@ -214,7 +214,7 @@ export const boats: Boat[] = [
   {
     name: 'Ibis',
     code: '8+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 2, steer: 3},
     users: 8,
     type: 'sweep',
@@ -223,7 +223,7 @@ export const boats: Boat[] = [
   {
     name: 'Ijsvogel',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -232,7 +232,7 @@ export const boats: Boat[] = [
   {
     name: 'Jager',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -241,7 +241,7 @@ export const boats: Boat[] = [
   {
     name: 'Kiekendief',
     code: '4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -250,7 +250,7 @@ export const boats: Boat[] = [
   {
     name: 'Kievit',
     code: 'C2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -259,7 +259,7 @@ export const boats: Boat[] = [
   {
     name: 'Klauwier',
     code: '2x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -268,7 +268,7 @@ export const boats: Boat[] = [
   {
     name: 'Koi',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -277,7 +277,7 @@ export const boats: Boat[] = [
   {
     name: 'Kraanvogel',
     code: 'C4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -286,7 +286,7 @@ export const boats: Boat[] = [
   {
     name: 'Kwak',
     code: 'W2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
     users: 2,
     type: 'scull',
@@ -295,7 +295,7 @@ export const boats: Boat[] = [
   {
     name: 'Kwikstaart',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -304,7 +304,7 @@ export const boats: Boat[] = [
   {
     name: 'Lepelaar',
     code: 'C4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -313,7 +313,7 @@ export const boats: Boat[] = [
   {
     name: 'Meermin',
     code: '1x',
-    use: null,
+    use: 'none',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -322,7 +322,7 @@ export const boats: Boat[] = [
   {
     name: 'Meerval',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -331,7 +331,7 @@ export const boats: Boat[] = [
   {
     name: 'Narwal',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -340,7 +340,7 @@ export const boats: Boat[] = [
   {
     name: 'Oehoe',
     code: '4x+',
-    use: null,
+    use: 'none',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -349,7 +349,7 @@ export const boats: Boat[] = [
   {
     name: 'Orka',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -358,7 +358,7 @@ export const boats: Boat[] = [
   {
     name: 'Parelduiker',
     code: 'C4x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -367,7 +367,7 @@ export const boats: Boat[] = [
   {
     name: 'Pellikaan',
     code: 'C1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -376,7 +376,7 @@ export const boats: Boat[] = [
   {
     name: 'Pelser',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -385,7 +385,7 @@ export const boats: Boat[] = [
   {
     name: 'Poon',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -394,7 +394,7 @@ export const boats: Boat[] = [
   {
     name: 'Putter',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -403,7 +403,7 @@ export const boats: Boat[] = [
   {
     name: 'Ral',
     code: 'C1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -412,7 +412,7 @@ export const boats: Boat[] = [
   {
     name: 'Roerdomp',
     code: 'W2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
     users: 2,
     type: 'scull',
@@ -421,7 +421,7 @@ export const boats: Boat[] = [
   {
     name: 'Ruiter',
     code: '2x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -430,7 +430,7 @@ export const boats: Boat[] = [
   {
     name: 'Rus-roeiboot',
     code: '4-',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 3, steer: 0},
     users: 4,
     type: 'sweep',
@@ -439,7 +439,7 @@ export const boats: Boat[] = [
   {
     name: 'Serpeling',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -448,7 +448,7 @@ export const boats: Boat[] = [
   {
     name: 'Slechtvalk',
     code: '4x+',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -457,7 +457,7 @@ export const boats: Boat[] = [
   {
     name: 'Smelleken',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -466,7 +466,7 @@ export const boats: Boat[] = [
   {
     name: 'Smient',
     code: 'C1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -475,7 +475,7 @@ export const boats: Boat[] = [
   {
     name: 'Sperwer',
     code: '4+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 2, steer: 3},
     users: 4,
     type: 'sweep',
@@ -484,7 +484,7 @@ export const boats: Boat[] = [
   {
     name: 'Steur',
     code: '1x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -493,7 +493,7 @@ export const boats: Boat[] = [
   {
     name: 'Stormvogel',
     code: '2x',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -502,7 +502,7 @@ export const boats: Boat[] = [
   {
     name: 'Suzanne',
     code: '1x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -511,7 +511,7 @@ export const boats: Boat[] = [
   {
     name: 'Taling',
     code: 'C2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
     users: 2,
     type: 'scull',
@@ -520,7 +520,7 @@ export const boats: Boat[] = [
   {
     name: 'Topper',
     code: '2x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 2,
     type: 'scull',
@@ -529,7 +529,7 @@ export const boats: Boat[] = [
   {
     name: 'VolM8cht',
     code: '8+',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 0, sweep: 2, steer: 3},
     users: 8,
     type: 'sweep',
@@ -538,7 +538,7 @@ export const boats: Boat[] = [
   {
     name: 'Vondeling',
     code: 'W1x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
     users: 1,
     type: 'scull',
@@ -547,7 +547,7 @@ export const boats: Boat[] = [
   {
     name: 'Waterhoen',
     code: 'C2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
     users: 2,
     type: 'scull',
@@ -556,7 +556,7 @@ export const boats: Boat[] = [
   {
     name: 'Wespendief',
     code: '8+',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 0, sweep: 3, steer: 3},
     users: 8,
     type: 'sweep',
@@ -565,7 +565,7 @@ export const boats: Boat[] = [
   {
     name: 'Wouw',
     code: '4x+',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 3, sweep: 0, steer: 3},
     users: 4,
     type: 'scull',
@@ -574,7 +574,7 @@ export const boats: Boat[] = [
   {
     name: 'Zaagbek',
     code: 'C2x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
     users: 2,
     type: 'scull',
@@ -583,7 +583,7 @@ export const boats: Boat[] = [
   {
     name: 'Zwaan',
     code: 'C4x+',
-    use: 'Algemeen',
+    use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
     users: 4,
     type: 'scull',
@@ -592,7 +592,7 @@ export const boats: Boat[] = [
   {
     name: 'Zwaardvis',
     code: '1x',
-    use: 'Jeugd',
+    use: 'youth',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
@@ -601,7 +601,7 @@ export const boats: Boat[] = [
   {
     name: 'Zwaluw',
     code: '2x',
-    use: 'Wedstrijd',
+    use: 'competition',
     permissions: {scull: 4, sweep: 0, steer: 3},
     users: 2,
     type: 'scull',
@@ -610,7 +610,7 @@ export const boats: Boat[] = [
   {
     name: 'Zwitserleven',
     code: '1x',
-    use: null,
+    use: 'none',
     permissions: {scull: 0, sweep: 0, steer: 0},
     users: 1,
     type: 'scull',
