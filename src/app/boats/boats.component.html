@@ -2,7 +2,7 @@
   <section>
     <h1>Crew</h1>
     <div class="row" (change)="getBoats()">
-      <div *ngFor='let person of personService.people' class="col-3">
+      <div *ngFor='let person of personService.people' class="col-4">
         <div class="card mt-4" (focusout)="personService.save(person)">
           <div class="card-body">
             <div class="form-group">
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <div class="col-auto">
+      <div class="col-4">
         <div class="btn btn-outline-primary person-add" (click)="personService.create()">
           +
         </div>
@@ -64,7 +64,7 @@
           <div class="card-header">
             {{boat.name}}
             <span class="float-right">
-              {{boat.users}}{{boat.type === 'scull' ? 'x' : ''}}{{boat.steer ? '+' : '-'}}
+              {{boat.steer ? boat.users - 1 : boat.users}}{{boat.type === 'scull' ? 'x' : ''}}{{boat.steer ? '+' : '-'}}
             </span>
           </div>
           <div class="card-body">
