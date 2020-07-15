@@ -72,7 +72,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -81,7 +81,7 @@ export const boats: Boat[] = [
     code: 'C4x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -108,7 +108,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -117,7 +117,7 @@ export const boats: Boat[] = [
     code: 'C2+',
     use: 'any',
     permissions: {scull: 0, sweep: 1, steer: 1},
-    users: 2,
+    users: 3,
     type: 'sweep',
     steer: true
   },
@@ -126,7 +126,7 @@ export const boats: Boat[] = [
     code: 'W2x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -153,7 +153,7 @@ export const boats: Boat[] = [
     code: 'C4+',
     use: 'any',
     permissions: {scull: 0, sweep: 1, steer: 2},
-    users: 4,
+    users: 5,
     type: 'sweep',
     steer: true
   },
@@ -189,7 +189,7 @@ export const boats: Boat[] = [
     code: 'C4x+',
     use: 'youth',
     permissions: {scull: 1, sweep: 0, steer: 2},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -216,7 +216,7 @@ export const boats: Boat[] = [
     code: '8+',
     use: 'any',
     permissions: {scull: 0, sweep: 2, steer: 3},
-    users: 8,
+    users: 9,
     type: 'sweep',
     steer: true
   },
@@ -243,7 +243,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'any',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -279,7 +279,7 @@ export const boats: Boat[] = [
     code: 'C4x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -288,7 +288,7 @@ export const boats: Boat[] = [
     code: 'W2x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -306,7 +306,7 @@ export const boats: Boat[] = [
     code: 'C4x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -342,7 +342,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'none',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -414,7 +414,7 @@ export const boats: Boat[] = [
     code: 'W2x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -450,7 +450,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'competition',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -477,7 +477,7 @@ export const boats: Boat[] = [
     code: '4+',
     use: 'any',
     permissions: {scull: 0, sweep: 2, steer: 3},
-    users: 4,
+    users: 5,
     type: 'sweep',
     steer: true
   },
@@ -513,7 +513,7 @@ export const boats: Boat[] = [
     code: 'C2x+',
     use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -531,7 +531,7 @@ export const boats: Boat[] = [
     code: '8+',
     use: 'competition',
     permissions: {scull: 0, sweep: 2, steer: 3},
-    users: 8,
+    users: 9,
     type: 'sweep',
     steer: true
   },
@@ -540,7 +540,7 @@ export const boats: Boat[] = [
     code: 'W1x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 1},
-    users: 1,
+    users: 2,
     type: 'scull',
     steer: true
   },
@@ -549,7 +549,7 @@ export const boats: Boat[] = [
     code: 'C2x+',
     use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -558,7 +558,7 @@ export const boats: Boat[] = [
     code: '8+',
     use: 'competition',
     permissions: {scull: 0, sweep: 3, steer: 3},
-    users: 8,
+    users: 9,
     type: 'sweep',
     steer: true
   },
@@ -567,7 +567,7 @@ export const boats: Boat[] = [
     code: '4x+',
     use: 'competition',
     permissions: {scull: 3, sweep: 0, steer: 3},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
@@ -576,7 +576,7 @@ export const boats: Boat[] = [
     code: 'C2x+',
     use: 'any',
     permissions: {scull: 2, sweep: 0, steer: 2},
-    users: 2,
+    users: 3,
     type: 'scull',
     steer: true
   },
@@ -585,7 +585,7 @@ export const boats: Boat[] = [
     code: 'C4x+',
     use: 'any',
     permissions: {scull: 1, sweep: 0, steer: 2},
-    users: 4,
+    users: 5,
     type: 'scull',
     steer: true
   },
