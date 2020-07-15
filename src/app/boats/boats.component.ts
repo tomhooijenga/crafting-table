@@ -26,20 +26,25 @@ export class BoatsComponent implements OnInit {
   constructor(public personService: PersonService, public boatService: BoatService) { }
 
   ngOnInit(): void {
-    // this.personService.getAll().subscribe((people) => this.people = people);
-    // this.people = this.personService.getAll();
-    // this.boats = this.boatService.boats;
     this.getBoats();
   }
 
   getBoats(): void {
-    const filteredBoats = Object
+    let filteredBoats = Object
       .entries(this.filters.use)
       .filter(([, enabled]) => enabled)
       .reduce((boats, [use]) => {
-        return boats.concat(this.boatService.getByUse(use));
+        return boats.concat(this.boatService.getByUse(this.boatService.boats, use));
     }, []);
 
-    this.boats = filteredBoats.filter(({name}) => name.toLowerCase().includes(this.filters.name.toLowerCase()));
+    filteredBoats = this.boatService.getByName(filteredBoats, this.filters.name);
+    filteredBoats = this.boatService.getByPermissions(filteredBoats, this.personService.people);
+
+    this.boats = filteredBoats;
+
+  }
+
+  getCrews() {
+    console.log(this.boatService.get(this.boats, this.personService.people));
   }
 }
