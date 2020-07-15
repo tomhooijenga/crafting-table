@@ -36,7 +36,7 @@
   <section class="mt-4">
     <h1>Boats</h1>
 
-    <form class="form-inline" (input)="getBoats()">
+    <form class="form-inline" (change)="getBoats()" (input)="getBoats()">
       <div class="form-group mr-2">
         <input type="text" class="form-control" name="name" placeholder="Naam..." [(ngModel)]="filters.name">
       </div>
