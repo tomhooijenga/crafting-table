@@ -31,6 +31,15 @@ export class StorageService {
     return Object.assign(new ctor(), item);
   }
 
+  delete<T extends ModelInterface>(model: T): void {
+    const ctor = model.constructor as ModelConstructor;
+    const map = this.getAllRaw(ctor);
+
+    delete map[model.id];
+
+    localStorage.setItem(ctor.name, JSON.stringify(map));
+  }
+
   getAll<T>(type: Constructor<T>): T[] {
     const map = this.getAllRaw(type);
 

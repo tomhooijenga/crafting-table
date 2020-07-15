@@ -24,4 +24,9 @@ export class PersonService {
   save(person: Person): void {
     this.storage.set(person);
   }
+
+  delete(person: Person): void {
+    this.storage.delete(person);
+    this.people.splice(this.people.indexOf(person), 1);
+  }
 }
