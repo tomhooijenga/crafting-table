@@ -38,25 +38,53 @@ export class BoatService {
   //   count = f(v, i + 1, S)
   //   count += f(v, i + 1, S - v[i])
   //   return count
+  // def g(v, S, memo):
+  //   subset = []
+  //   for i, x in enumerate(v):
+  //   # Check if there is still a solution if we include v[i]
+  //   if f(v, i + 1, S - x, memo) > 0:
+  //     subset.append(x)
+  //   S -= x
+  //   return subset
   get(boats: Boat[], people: Person[]): number {
+    function* powerset(l) {
+      yield* (function* ps(list) {
+        if (list.length === 0) {
+          return [[]];
+        }
+        const head = list.pop();
+        const tailPS = ps(list);
+        yield tailPS.concat(tailPS.map(function (e) {
+          return [head].concat(e);
+        }));
+      })(l.slice());
+    }
 
-    function sums(v, i, S, memo = {}): number {
-      if (i > v.length) {
-        return S === 0 ? 1 : 0;
-      }
-
-      const key = `${i},${S}`;
-      if (!memo[key]) {
-        const count = sums(v, i + 1, S, memo) + sums(v, i + 1, S - v[i], memo);
-        memo[key] = count;
-        return count;
-      }
-
-      return memo[key];
+    function sum(nums) {
+      return nums.reduce((total, num) => total + num, 0);
     }
 
     const seats = boats.map(({users}) => users);
+    const cache = new Set<string>();
+    const combinations = [];
 
-    return sums(seats, 0, people.length);
+    const memo = new Map();
+
+    for (const combination of allCombinations(seats)) {
+      const key = combination.sort().join(',');
+      memo.set(key, sum(combination));
+
+      if (cache.has(key)) {
+        continue;
+      }
+
+      if (sum(combination) === people.length) {
+        cache.add(key);
+        combinations.push(combination);
+      }
+    }
+
+    console.log(combinations);
+    return 2;
   }
 }
