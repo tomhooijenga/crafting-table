@@ -7,5 +7,5 @@ import {Item} from '../services/types';
 })
 export class ItemIconTileComponent {
   @Input() item: Item;
-  @Input() amount: Number | null;
+  @Input() amount: number | null;
 }

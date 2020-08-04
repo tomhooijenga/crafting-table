@@ -21,10 +21,4 @@ export class ItemService {
 
     return items[id];
   }
-
-  getSprite(item: Item): string {
-    const {x, y} = sprite[item.id] || {x: 0, y: 0};
-
-    return `-${x}px -${y}px`;
-  }
 }

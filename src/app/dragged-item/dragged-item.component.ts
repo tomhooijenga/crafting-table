@@ -1,12 +1,11 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input} from '@angular/core';
 import {Item} from '../services/types';
-import {ItemService} from '../services/item.service';
 
 @Component({
   selector: 'app-dragged-item',
   templateUrl: './dragged-item.component.html',
 })
-export class DraggedItemComponent implements OnInit {
+export class DraggedItemComponent {
 
   @Input()
   item: Item | null;
@@ -14,10 +13,7 @@ export class DraggedItemComponent implements OnInit {
   x: number;
   y: number;
 
-  constructor(public itemService: ItemService) { }
-
-  ngOnInit(): void {
-  }
+  constructor() { }
 
   @HostListener('document:mousemove', ['$event'])
   mouseMove(event: MouseEvent): void {

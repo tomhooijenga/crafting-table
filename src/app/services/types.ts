@@ -5,6 +5,14 @@ export interface Item {
   stackSize: number;
 }
 
+export interface Sprite {
+  id: number;
+  name?: string;
+  animated?: boolean;
+  x?: number;
+  y?: number;
+}
+
 export interface ItemRecipe extends Array<UnshapedRecipe | ShapedRecipe> {}
 
 interface Recipe {
