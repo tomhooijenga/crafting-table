@@ -1,1 +1,8 @@
-<p>app-items works!</p>
+Inventory
+<div class="grid grid--inventory items__body">
+  <app-item-icon-tile *ngFor="let item of itemService.getAll()"
+                      (mousedown)="mousedown(item)"
+                      (mouseup)="mouseup(item)"
+                      [item]="item">
+  </app-item-icon-tile>
+</div>

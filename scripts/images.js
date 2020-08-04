@@ -15,15 +15,16 @@ async function get(index) {
           .toLowerCase()
           .replace(/\(.+\)/, '')
           .replace(/[jb]e\d/g, '')
-          .replace('.png', '')
+          .replace(/\.(png|gif)/, '')
           .trim()
-          .replace(/ /g, '_')
+          .replace(/ /g, '_'),
+        ext: img.attribs.alt.slice(-3),
       }
     })
     .map((_, data) => {
       return new Promise((resolve => {
         request.get(data.src)
-          .pipe(fs.createWriteStream(`../src/assets/items/${data.id}.png`))
+          .pipe(fs.createWriteStream(`../src/assets/items/${data.id}.${data.ext}`))
           .on('close', resolve);
       }))
     });
@@ -32,6 +33,6 @@ async function get(index) {
 }
 
 (async () => {
-  // await get('https://minecraft.gamepedia.com/Category:Inventory_icons');
-  await get('https://minecraft.gamepedia.com/index.php?title=Category:Inventory_icons&filefrom=Iron+Ingot+JE2+BE2.png#mw-category-media');
+  await get('https://minecraft.gamepedia.com/Category:Inventory_icons');
+  // await get('https://minecraft.gamepedia.com/index.php?title=Category:Inventory_icons&filefrom=Iron+Ingot+JE2+BE2.png#mw-category-media');
 })();

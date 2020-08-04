@@ -1,1 +1,120 @@
+// Custom
+$sprite-size: 32px;
+
+$grid-padding: 6px;
+$grid-border-width: 2px;
+
+$tile-bg: #8B8B8B;
+$tile-border-width: 2px;
+$tile-padding: 2px;
+$tile-size: $sprite-size + $tile-padding * 2 + $tile-border-width * 2;
+
+$tile-large-padding: 8px;
+$tile-large-size: $sprite-size + $tile-large-padding * 2 + $tile-border-width * 2;
+
+// Bootstrap
+$body-bg: #f5f5f5;
+
 @import "~bootstrap";
+
+body {
+  min-height: 100vh;
+  display: flex;
+}
+
+app-root {
+  margin: auto;
+  padding: $grid-padding;
+  background: #C6C6C6;
+  border: $grid-border-width solid;
+  border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
+}
+
+.grid {
+  display: grid;
+
+  &--inventory {
+    grid-template-columns: repeat(9, $tile-size);
+  }
+
+  &--table {
+    grid-template-columns: repeat(3, $tile-size);
+    height: 3 * $tile-size;
+  }
+}
+
+.items {
+  &__body {
+    overflow-y: scroll;
+    height: 6 * $tile-size;
+  }
+}
+
+app-item-icon-tile,
+.tile {
+  display: inline-block;
+  line-height: 0;
+  width: $tile-size;
+  height: $tile-size;
+  padding: $tile-padding;
+  border: $tile-border-width solid;
+  border-color: #373737 #FFF #FFF #373737;
+  background-color: $tile-bg;
+  position: relative;
+
+  &:hover {
+    background-color: lighten($tile-bg, 20%);
+  }
+
+  &__count {
+    position: absolute;
+    color: white;
+    line-height: 1;
+    text-shadow: 1px 1px 0 black;
+    bottom: $tile-padding;
+    right: $tile-padding;
+  }
+
+  &--arrow {
+    background: transparent url(./assets/arrow.png) no-repeat center center;
+    border-color: transparent;
+  }
+
+  &--large {
+    padding: $tile-large-padding;
+    width: $tile-large-size;
+    height: $tile-large-size;
+
+    .tile__count {
+      bottom: $tile-large-padding;
+      right: $tile-large-padding;
+    }
+  }
+}
+
+app-item-icon {
+  display: inline-block;
+  line-height: 0;
+  width: $sprite-size;
+  height: $sprite-size;
+}
+
+.icon {
+  background-image: url(/assets/sprite.png);
+  display: inline-block;
+  width: $sprite-size;
+  height: $sprite-size;
+}
+
+app-dragged-item > app-item-icon {
+  position: absolute;
+  top: -$sprite-size * 0.5;
+  left: -$sprite-size * 0.5;
+  pointer-events: none;
+}
+
+app-crafting-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,15 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ItemService} from '../services/item.service';
+import {Item} from '../services/types';
 
 @Component({
   selector: 'app-items',
   templateUrl: './items.component.html',
-  styleUrls: ['./items.component.css']
 })
 export class ItemsComponent implements OnInit {
 
-  constructor() { }
+  @Input() currentItem: Item;
+  @Output() selectItem = new EventEmitter<Item>();
+
+  mouseUpAfterDown = true;
+
+  constructor(
+    public itemService: ItemService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  mousedown(item: Item): void {
+    if (this.currentItem) {
+      this.mouseUpAfterDown = true;
+    }
+    // Grab item.
+    else {
+      this.mouseUpAfterDown = false;
+      this.selectItem.emit(item);
+    }
+  }
+
+  mouseup(item: Item): void {
+    const {currentItem} = this;
+
+    if (this.mouseUpAfterDown) {
+      // Same item, drop what you're holding.
+      if (item === currentItem) {
+        this.selectItem.emit(null);
+      }
+      // Swap with whatever is there.
+      else {
+        this.selectItem.emit(item);
+      }
+    }
+
+    this.mouseUpAfterDown = true;
+  }
 }

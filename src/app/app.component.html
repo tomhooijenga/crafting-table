@@ -1,1 +1,12 @@
-<app-items></app-items>
+<div class="ui">
+  <app-crafting-table [currentItem]="currentItem"
+                      (selectItem)="selectItem($event)">
+  </app-crafting-table>
+
+  <app-items [currentItem]="currentItem"
+             (selectItem)="selectItem($event)">
+  </app-items>
+</div>
+
+<app-dragged-item [item]="currentItem">
+</app-dragged-item>
