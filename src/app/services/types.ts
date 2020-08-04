@@ -5,12 +5,6 @@ export interface Item {
   stackSize: number;
 }
 
-export interface Section {
-  id: number;
-  name: string;
-  items: number[];
-}
-
 export interface ItemRecipe extends Array<UnshapedRecipe | ShapedRecipe> {}
 
 interface Recipe {

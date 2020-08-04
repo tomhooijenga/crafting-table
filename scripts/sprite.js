@@ -22,7 +22,7 @@ function makeSprite(sprite) {
     .trim()
     .split('\n')
     .map((line) => {
-      const [, displayName, pos, section] = line.match(/(?:\[['"])?(.+?)(?:["']\])? = { pos = (\d+), section = (\d+)/);
+      const [, displayName, pos] = line.match(/(?:\[['"])?(.+?)(?:["']\])? = { pos = (\d+)/);
       const name = displayName
         .toLowerCase()
         .replace(/ /g, '_')
@@ -35,7 +35,6 @@ function makeSprite(sprite) {
         displayName,
         name,
         pos: +pos,
-        section,
         x,
         y
       };
@@ -51,13 +50,20 @@ function makeSprite(sprite) {
 
       obj[id] = {
         id,
+        animated: false,
         ...item
       };
       return obj;
     }, {})
 }
 
-const x = [
+const spriteData = Object.fromEntries(
+  Object
+    .values(makeSprite(sprite))
+    .map(({x, y, id}) => [id, {x, y, id}])
+);
+
+[
   'prismarine',
   'prismarine_stairs',
   'prismarine_slab',
@@ -65,13 +71,17 @@ const x = [
   'chain_command_block',
   'repeating_command_block',
   'sea_lantern',
-];
+  'compass',
+  'experience_bottle', // Bottle o' enchanting
+].forEach((name) => {
+  const item = itemsByName[name];
+  spriteData[item.id] = {
+    id: item.id,
+    animated: true,
+    name,
+  }
+});
 
-const spriteData = Object.fromEntries(
-  Object
-    .values(makeSprite(sprite))
-    .map(({x, y, id}) => [id, {x, y, id}])
-)
 fs.writeFileSync('../src/assets/data/sprite.json', JSON.stringify(spriteData, null, 2));
 
 module.exports = makeSprite.bind(null, sprite);
