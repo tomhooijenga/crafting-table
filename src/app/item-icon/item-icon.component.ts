@@ -1,14 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Item} from '../services/types';
 import {ItemService} from '../services/item.service';
+import {SpriteService} from '../services/sprite.service';
 
 @Component({
   selector: 'app-item-icon',
   templateUrl: './item-icon.component.html',
 })
-export class ItemIconComponent implements OnInit {
+export class ItemIconComponent {
 
-  private _item: Item;
+  private _item: Item = this.itemService.getById(0);
 
   @Input()
   set item(item: Item | null) {
@@ -19,14 +20,21 @@ export class ItemIconComponent implements OnInit {
     return this._item;
   }
 
-  constructor(public itemService: ItemService) {
+  constructor(public itemService: ItemService, public spriteService: SpriteService) {
   }
 
-  ngOnInit(): void {
-    // console.log(this.item);
+  animated(): boolean {
+    const sprite = this.spriteService.getByItem(this._item);
+    return sprite && sprite.animated;
   }
 
-  bgPosition(): string {
-    return this.itemService.getSprite(this.item);
+  src(): string {
+    const sprite = this.spriteService.getByItem(this._item);
+    return sprite.name;
+  }
+
+  position(): string {
+    const {x, y} = this.spriteService.getByItem(this._item) || {x: 0, y: 0};
+    return `-${x}px -${y}px`;
   }
 }

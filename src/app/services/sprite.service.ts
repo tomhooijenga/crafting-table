@@ -10,7 +10,6 @@ export class SpriteService {
   constructor() { }
 
   getByItem(item: Item): Sprite {
-    console.count('sprite');
     return sprite[item.id];
   }
 }

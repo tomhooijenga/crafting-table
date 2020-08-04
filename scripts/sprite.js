@@ -67,12 +67,14 @@ const spriteData = Object.fromEntries(
   'prismarine',
   'prismarine_stairs',
   'prismarine_slab',
+  'magma_block',
   'command_block',
   'chain_command_block',
   'repeating_command_block',
   'sea_lantern',
   'compass',
   'experience_bottle', // Bottle o' enchanting
+  'potion',
 ].forEach((name) => {
   const item = itemsByName[name];
   spriteData[item.id] = {

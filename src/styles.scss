@@ -100,10 +100,13 @@ app-item-icon {
 }
 
 .icon {
-  background-image: url(/assets/sprite.png);
   display: inline-block;
   width: $sprite-size;
   height: $sprite-size;
+
+  &--sprite {
+    background-image: url(/assets/sprite.png);
+  }
 }
 
 app-dragged-item > app-item-icon {

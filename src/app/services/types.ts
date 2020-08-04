@@ -25,6 +25,7 @@ interface Recipe {
 export interface UnshapedRecipe extends Recipe {
   ingredients: Array<number | null>;
 }
+
 export interface ShapedRecipe extends Recipe {
   inShape: Array<number | null>[];
 }
