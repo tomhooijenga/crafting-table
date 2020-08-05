@@ -5,10 +5,10 @@ export interface Item {
   stackSize: number;
 }
 
-export interface Sprite {
+export interface Icon {
   id: number;
-  name?: string;
-  animated?: boolean;
+  name: string;
+  animated: boolean;
   x?: number;
   y?: number;
 }

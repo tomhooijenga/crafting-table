@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {Item} from '../services/types';
 import {ItemService} from '../services/item.service';
-import {SpriteService} from '../services/sprite.service';
+import {IconService} from '../services/icon.service';
 
 @Component({
   selector: 'app-item-icon',
@@ -20,21 +20,21 @@ export class ItemIconComponent {
     return this._item;
   }
 
-  constructor(public itemService: ItemService, public spriteService: SpriteService) {
+  constructor(public itemService: ItemService, public iconService: IconService) {
   }
 
   animated(): boolean {
-    const sprite = this.spriteService.getByItem(this._item);
-    return sprite && sprite.animated;
+    const sprite = this.iconService.getByItem(this._item);
+    return sprite.animated;
   }
 
   src(): string {
-    const sprite = this.spriteService.getByItem(this._item);
+    const sprite = this.iconService.getByItem(this._item);
     return sprite.name;
   }
 
   position(): string {
-    const {x, y} = this.spriteService.getByItem(this._item) || {x: 0, y: 0};
+    const {x, y} = this.iconService.getByItem(this._item);
     return `-${x}px -${y}px`;
   }
 }
