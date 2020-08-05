@@ -35,6 +35,7 @@ app-root {
 
   &--inventory {
     grid-template-columns: repeat(9, $tile-size);
+    grid-template-rows: repeat(6, $tile-size);
   }
 
   &--table {
@@ -44,6 +45,30 @@ app-root {
 }
 
 .items {
+  &__header {
+    margin: 32px 0 6px 0;
+    line-height: 32px;
+
+    input {
+      height: 32px;
+      padding: $tile-padding;
+      border: $tile-border-width solid;
+      border-color: #373737 #FFF #FFF #373737;
+      background-color: $tile-bg;
+      float: right;
+      color: white;
+      text-shadow: 1px 1px 0 black;
+
+      &::placeholder {
+        color: white;
+      }
+
+      &:hover,
+      &:focus {
+        outline: none;
+      }
+    }
+  }
   &__body {
     overflow-y: scroll;
     height: 6 * $tile-size;

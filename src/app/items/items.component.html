@@ -1,6 +1,9 @@
-Inventory
+<div class="items__header">
+  Inventory
+  <input type="search" (input)="search($event)" placeholder="Search..." />
+</div>
 <div class="grid grid--inventory items__body">
-  <app-item-icon-tile *ngFor="let item of itemService.getAll()"
+  <app-item-icon-tile *ngFor="let item of items"
                       (mousedown)="mousedown(item)"
                       (mouseup)="mouseup(item)"
                       [item]="item">

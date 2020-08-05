@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import items from '../../assets/data/items.json';
-import sprite from '../../assets/data/sprite.json';
 import {Item} from './types';
+import search from 'fuzzysearch';
+
+const itemsArray = Object.values(items);
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class ItemService {
   constructor() { }
 
   getAll(): Item[] {
-    return Object.values(items);
+    return itemsArray;
   }
 
   getById(id: number | string | null): Item {
@@ -20,5 +22,15 @@ export class ItemService {
     }
 
     return items[id];
+  }
+
+  /**
+   * Search for items by their display name. Case insensitive.
+   */
+  search(query: string): Item[] {
+    const q = query.toLowerCase();
+    return itemsArray.filter(({displayName}) => {
+      return search(q, displayName.toLowerCase());
+    });
   }
 }

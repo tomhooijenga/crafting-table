@@ -13,11 +13,14 @@ export class ItemsComponent implements OnInit {
 
   mouseUpAfterDown = true;
 
+  items: Item[];
+
   constructor(
     public itemService: ItemService
   ) { }
 
   ngOnInit(): void {
+    this.items = this.itemService.getAll();
   }
 
   mousedown(item: Item): void {
@@ -46,5 +49,11 @@ export class ItemsComponent implements OnInit {
     }
 
     this.mouseUpAfterDown = true;
+  }
+
+  search(event: InputEvent): void {
+    const {value} = event.target as HTMLInputElement;
+console.log(value);
+    this.items = this.itemService.search(value);
   }
 }
