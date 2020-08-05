@@ -12,6 +12,7 @@ const aliases = {
   'mojang_banner_pattern': 'banner_pattern',
   'globe_banner_pattern': 'banner_pattern',
   'piglin_banner_pattern': 'banner_pattern',
+  'potion': 'water_bottle',
   'lingering_potion': 'lingering_water_bottle',
   'splash_potion': 'splash_water_bottle',
 }
@@ -27,7 +28,6 @@ const animated = new Set([
   'sea_lantern',
   'compass',
   'experience_bottle', // Bottle o' enchanting
-  'potion',
   'enchanted_book',
   'end_crystal',
   'enchanted_golden_apple',
