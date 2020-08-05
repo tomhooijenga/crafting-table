@@ -36,9 +36,10 @@ export class RecipeService {
   }
 
   getByItems(items: Item[]): ShapedRecipe | UnshapedRecipe | null {
+    const shapedItems = this.getShapedItems(items);
+    const unshapedItems = this.getUnshapedItems(items);
+
     for (const itemRecipe of Object.values(recipes)) {
-      const unshapedItems = this.getUnshapedItems(items);
-      const shapedItems = this.getShapedItems(items);
       const foundRecipe = this.canMake(itemRecipe, shapedItems, unshapedItems);
 
       if (foundRecipe) {
