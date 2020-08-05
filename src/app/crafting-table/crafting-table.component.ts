@@ -64,8 +64,8 @@ export class CraftingTableComponent implements OnInit {
         this.mouseUpAfterDown = false;
         this.items[index] = null;
         this.selectItem.emit(item);
+        this.craft();
       }
-      this.craft();
     }
   }
 
@@ -82,9 +82,8 @@ export class CraftingTableComponent implements OnInit {
       else {
         this.selectItem.emit(this.items[index]);
         this.items[index] = currentItem;
+        this.craft();
       }
-
-      this.craft();
     }
 
     this.mouseUpAfterDown = true;
@@ -95,7 +94,7 @@ export class CraftingTableComponent implements OnInit {
     const distance = Math.sqrt(Math.pow(event.movementX, 2) + Math.pow(event.movementY, 2));
 
     // MC won't allow smearing over items, but we do.
-    if (this.mouseIsDown && this.currentItem && distance > 1) {
+    if (this.mouseIsDown && this.currentItem && distance > 1 && this.items[index] !== this.currentItem) {
       this.items[index] = this.currentItem;
       this.mouseUpAfterDown = false;
       this.craft();
