@@ -1,5 +1,5 @@
-import {Component, Input, Output, OnInit, EventEmitter, HostListener, ElementRef} from '@angular/core';
-import {Item, ShapedRecipe, UnshapedRecipe} from '../services/types';
+import {Component, Input, Output, OnInit, EventEmitter, HostListener} from '@angular/core';
+import {Item} from '../services/types';
 import {ItemService} from '../services/item.service';
 import {RecipeService} from '../services/recipe.service';
 
@@ -45,10 +45,8 @@ export class CraftingTableComponent implements OnInit {
   }
 
   craft(): void {
-    console.time('r');
     const recipe = this.recipeService.getByItems(this.items);
     this.result = recipe?.result;
-    console.timeEnd('r');
   }
 
   itemMousedown(index): void {
@@ -62,7 +60,7 @@ export class CraftingTableComponent implements OnInit {
       // Grab item.
       else {
         this.mouseUpAfterDown = false;
-        this.items[index] = null;
+        this.items[index] = ItemService.AIR;
         this.selectItem.emit(item);
         this.craft();
       }

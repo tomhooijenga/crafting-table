@@ -10,6 +10,8 @@ const itemsArray = Object.values(items);
 })
 export class ItemService {
 
+  static readonly AIR = items[0];
+
   constructor() { }
 
   getAll(): Item[] {
