@@ -1,0 +1,11 @@
+<div class="grid grid--table">
+  <app-item-icon-tile *ngFor="let item of items"
+                      [item]="item">
+  </app-item-icon-tile>
+</div>
+<span class="tile tile--arrow tile--large"></span>
+<app-item-icon-tile class="tile--large"
+                    [item]="itemService.getById(result?.id)"
+                    [amount]="result?.count"
+>
+</app-item-icon-tile>

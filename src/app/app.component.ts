@@ -1,5 +1,5 @@
 import {Component, ElementRef, HostListener} from '@angular/core';
-import {Item} from './services/types';
+import {Item, ItemRecipe} from './services/types';
 
 @Component({
   selector: 'app-root',
@@ -7,12 +7,17 @@ import {Item} from './services/types';
 })
 export class AppComponent {
   currentItem: Item | null;
+  currentRecipe: ItemRecipe | null;
 
   constructor(protected elementRef: ElementRef) {
   }
 
   selectItem(item: Item): void {
     this.currentItem = item;
+  }
+
+  selectRecipe($event: ItemRecipe): void {
+    this.currentRecipe = $event;
   }
 
   @HostListener('document:click', ['$event.target'])

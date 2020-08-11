@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostBinding, Input, OnInit, Output} from '@angular/core';
 import {ItemService} from '../services/item.service';
 import {Item} from '../services/types';
 
@@ -7,6 +7,7 @@ import {Item} from '../services/types';
   templateUrl: './items.component.html',
 })
 export class ItemsComponent implements OnInit {
+  @HostBinding('className') className = 'panel grid grid--results';
 
   @Input() currentItem: Item;
   @Output() selectItem = new EventEmitter<Item>();

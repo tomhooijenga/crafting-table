@@ -1,12 +1,19 @@
-<div class="ui">
-  <app-crafting-table [currentItem]="currentItem"
-                      (selectItem)="selectItem($event)">
-  </app-crafting-table>
-
+<div class="app-grid">
   <app-items [currentItem]="currentItem"
              (selectItem)="selectItem($event)">
   </app-items>
+
+  <div class="panel grid grid--results">
+    <app-crafting-table [currentItem]="currentItem"
+                        (selectItem)="selectItem($event)"
+                        (selectRecipe)="selectRecipe($event)">
+    </app-crafting-table>
+    <app-result-list [currentRecipe]="currentRecipe">
+    </app-result-list>
+  </div>
 </div>
+
 
 <app-dragged-item [item]="currentItem">
 </app-dragged-item>
+

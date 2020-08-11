@@ -4,6 +4,8 @@ $sprite-size: 32px;
 $grid-padding: 6px;
 $grid-border-width: 2px;
 
+$panel-bg: #C6C6C6;
+
 $tile-bg: #8B8B8B;
 $tile-border-width: 2px;
 $tile-padding: 2px;
@@ -24,8 +26,23 @@ body {
 
 app-root {
   margin: auto;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: 100%;
+  grid-gap: 12px;
+  max-height: 30vmax;
+}
+
+app-items {
+  display: block;
+}
+
+.panel {
   padding: $grid-padding;
-  background: #C6C6C6;
+  background: $panel-bg;
   border: $grid-border-width solid;
   border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
 }
@@ -33,9 +50,13 @@ app-root {
 .grid {
   display: grid;
 
+  &--results {
+    grid-template-rows: auto 1fr;
+  }
+
   &--inventory {
     grid-template-columns: repeat(9, $tile-size);
-    grid-template-rows: repeat(6, $tile-size);
+    //grid-template-rows: repeat(6, $tile-size);
   }
 
   &--table {
@@ -46,7 +67,7 @@ app-root {
 
 .items {
   &__header {
-    margin: 32px 0 6px 0;
+    margin: 0 0 $grid-padding 0;
     line-height: 32px;
 
     input {
@@ -71,7 +92,7 @@ app-root {
   }
   &__body {
     overflow-y: scroll;
-    height: 6 * $tile-size;
+    //height: 6 * $tile-size;
   }
 }
 
@@ -103,6 +124,10 @@ app-item-icon-tile,
   &--arrow {
     background: transparent url(./assets/arrow.png) no-repeat center center;
     border-color: transparent;
+
+    &:hover {
+      background-color: transparent;
+    }
   }
 
   &--large {
@@ -141,8 +166,26 @@ app-dragged-item > app-item-icon {
   pointer-events: none;
 }
 
-app-crafting-table {
+app-crafting-table,
+app-crafting-grid {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+app-result-list {
+  display: block;
+  overflow-y: scroll;
+}
+
+.result-list {
+  &__header {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: $panel-bg;
+    padding: $grid-padding 0;
+    margin-bottom: $grid-padding * 2;
+  }
 }

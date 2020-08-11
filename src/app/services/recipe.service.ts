@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import recipes from '../../assets/data/recipes.json';
 import {Item, ItemRecipe, ShapedRecipe, UnshapedRecipe} from './types';
 import {ItemService} from './item.service';
@@ -12,7 +12,8 @@ function padNull<T>(arr: Array<T>, length: number): Array<T> {
 })
 export class RecipeService {
 
-  constructor(protected itemService: ItemService) { }
+  constructor(protected itemService: ItemService) {
+  }
 
   getByItem(item: Item): ItemRecipe {
     return recipes[item.id];
@@ -49,7 +50,17 @@ export class RecipeService {
     return null;
   }
 
-  canMake(itemRecipe: ItemRecipe, shapedItems: Item[], unshapedItems: Item[]): ShapedRecipe | UnshapedRecipe | null {
+  getRecipesUsingItem(item: Item): Array<ShapedRecipe | UnshapedRecipe> {
+    return Object
+      .values(recipes)
+      .map((itemRecipe: ItemRecipe) => {
+        return itemRecipe.filter((recipe) => {
+          return this.getItemsForRecipe(recipe).includes(item);
+        });
+      }).flat();
+  }
+
+  protected canMake(itemRecipe: ItemRecipe, shapedItems: Item[], unshapedItems: Item[]): ShapedRecipe | UnshapedRecipe | null {
     return itemRecipe.find((recipe) => {
       if (this.isShaped(recipe)) {
         return this.canMakeShaped(recipe, shapedItems);
@@ -131,7 +142,7 @@ export class RecipeService {
     return items.every(({id}) => ingredients.includes(id));
   }
 
-  isShaped(recipe: ShapedRecipe | UnshapedRecipe): recipe is ShapedRecipe {
+  protected isShaped(recipe: ShapedRecipe | UnshapedRecipe): recipe is ShapedRecipe {
     return (recipe as ShapedRecipe).inShape !== undefined;
   }
 }

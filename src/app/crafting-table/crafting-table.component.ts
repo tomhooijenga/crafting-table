@@ -1,5 +1,5 @@
-import {Component, Input, Output, OnInit, EventEmitter, HostListener} from '@angular/core';
-import {Item} from '../services/types';
+import {Component, Input, Output, OnInit, EventEmitter, HostListener, HostBinding} from '@angular/core';
+import {Item, ItemRecipe} from '../services/types';
 import {ItemService} from '../services/item.service';
 import {RecipeService} from '../services/recipe.service';
 
@@ -24,9 +24,9 @@ import {RecipeService} from '../services/recipe.service';
   templateUrl: './crafting-table.component.html',
 })
 export class CraftingTableComponent implements OnInit {
-
   @Input() currentItem: Item | null;
   @Output() selectItem = new EventEmitter<Item | null>();
+  @Output() selectRecipe = new EventEmitter<ItemRecipe>();
 
   items: Item[] = new Array(9).fill(null);
 
@@ -44,9 +44,16 @@ export class CraftingTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  craft(): void {
+  findRecipe(): void {
     const recipe = this.recipeService.getByItems(this.items);
-    this.result = recipe?.result;
+    if (recipe) {
+      this.result = recipe.result;
+
+      const item = this.itemService.getById(recipe.result.id);
+      this.selectRecipe.emit(this.recipeService.getByItem(item));
+    } else {
+      this.result = null;
+    }
   }
 
   itemMousedown(index): void {
@@ -62,7 +69,7 @@ export class CraftingTableComponent implements OnInit {
         this.mouseUpAfterDown = false;
         this.items[index] = ItemService.AIR;
         this.selectItem.emit(item);
-        this.craft();
+        this.findRecipe();
       }
     }
   }
@@ -80,7 +87,7 @@ export class CraftingTableComponent implements OnInit {
       else {
         this.selectItem.emit(this.items[index]);
         this.items[index] = currentItem;
-        this.craft();
+        this.findRecipe();
       }
     }
 
@@ -95,7 +102,7 @@ export class CraftingTableComponent implements OnInit {
     if (this.mouseIsDown && this.currentItem && distance > 1 && this.items[index] !== this.currentItem) {
       this.items[index] = this.currentItem;
       this.mouseUpAfterDown = false;
-      this.craft();
+      this.findRecipe();
     }
   }
 
@@ -129,8 +136,8 @@ export class CraftingTableComponent implements OnInit {
       if (itemRecipe) {
         this.items = this.recipeService.getItemsForRecipe(itemRecipe[0]);
         this.result = itemRecipe[0].result;
+        this.selectRecipe.emit(itemRecipe);
       } else {
-        this.items = new Array(9).fill(null);
         this.result = {id: currentItem.id, count: 1};
       }
     }

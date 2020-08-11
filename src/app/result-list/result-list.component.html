@@ -1,0 +1,13 @@
+<span *ngIf="currentRecipe" class="result-list__header">Other recipes for this item</span>
+<div *ngFor="let recipe of currentRecipe">
+  <app-crafting-grid [items]="recipeService.getItemsForRecipe(recipe)"
+                     [result]="recipe.result">
+  </app-crafting-grid>
+</div>
+
+<span *ngIf="recipesUsingResult.length" class="result-list__header">Usage</span>
+<div *ngFor="let recipe of recipesUsingResult">
+  <app-crafting-grid [items]="recipeService.getItemsForRecipe(recipe)"
+                     [result]="recipe.result">
+  </app-crafting-grid>
+</div>
