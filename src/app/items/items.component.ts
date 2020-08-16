@@ -54,7 +54,6 @@ export class ItemsComponent implements OnInit {
 
   search(event: InputEvent): void {
     const {value} = event.target as HTMLInputElement;
-console.log(value);
     this.items = this.itemService.search(value);
   }
 }
