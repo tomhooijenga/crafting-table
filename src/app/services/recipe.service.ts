@@ -71,7 +71,7 @@ export class RecipeService {
   }
 
   protected getShapedItems(items: Item[]): Item[] {
-    let result = [...items];
+    let result = [...items].map((item) => item === ItemService.AIR ? null : item);
 
     // Move empty columns from left to right
     for (let i = 0; i < 3; i++) {
@@ -129,7 +129,7 @@ export class RecipeService {
   }
 
   protected getUnshapedItems(items: Item[]): Item[] {
-    return items.filter((item) => item !== null);
+    return items.filter((item) => item !== null && item !== ItemService.AIR);
   }
 
   protected canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {

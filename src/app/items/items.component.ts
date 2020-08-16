@@ -7,7 +7,7 @@ import {Item} from '../services/types';
   templateUrl: './items.component.html',
 })
 export class ItemsComponent implements OnInit {
-  @HostBinding('className') className = 'panel grid grid--results';
+  @HostBinding() className = 'panel grid grid--results';
 
   @Input() currentItem: Item;
   @Output() selectItem = new EventEmitter<Item>();

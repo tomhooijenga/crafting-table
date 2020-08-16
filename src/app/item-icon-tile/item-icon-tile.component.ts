@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, HostBinding, Input} from '@angular/core';
 import {Item} from '../services/types';
 
 @Component({
@@ -6,6 +6,8 @@ import {Item} from '../services/types';
   templateUrl: './item-icon-tile.component.html',
 })
 export class ItemIconTileComponent {
+  @HostBinding() className = 'tile';
+
   @Input() item: Item;
   @Input() amount: number | null;
 }
