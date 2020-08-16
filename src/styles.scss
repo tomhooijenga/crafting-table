@@ -178,6 +178,10 @@ app-tabs {
   display: block;
 }
 
+app-tab {
+  display: flex;
+}
+
 .tabs {
   &__header {
     display: flex;

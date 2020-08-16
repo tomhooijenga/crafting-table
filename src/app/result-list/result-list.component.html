@@ -1,11 +1,11 @@
 <app-tabs>
-  <app-tab [tabTitle]="'Recipes'" class="d-flex">
+  <app-tab [tabTitle]="'Recipes'">
     <app-crafting-grid *ngFor="let recipe of currentRecipe"
                        [items]="recipeService.getItemsForRecipe(recipe)"
                        [result]="recipe.result">
     </app-crafting-grid>
   </app-tab>
-  <app-tab [tabTitle]="'Usage'" class="d-flex">
+  <app-tab [tabTitle]="'Usage'">
     <app-crafting-grid *ngFor="let recipe of recipesUsingResult"
                        [items]="recipeService.getItemsForRecipe(recipe)"
                        [result]="recipe.result">
