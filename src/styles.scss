@@ -26,14 +26,7 @@ body {
 
 app-root {
   margin: auto;
-}
-
-.app-grid {
-  display: grid;
-  grid-template-columns: repeat(3, auto);
-  grid-template-rows: 100%;
-  grid-gap: 12px;
-  max-height: 30vmax;
+  max-width: 400px;
 }
 
 app-items {
@@ -55,8 +48,7 @@ app-items {
   }
 
   &--inventory {
-    grid-template-columns: repeat(9, $tile-size);
-    //grid-template-rows: repeat(6, $tile-size);
+    grid-template-columns: repeat(9, 1fr);
   }
 
   &--table {
@@ -92,7 +84,7 @@ app-items {
   }
   &__body {
     overflow-y: scroll;
-    //height: 6 * $tile-size;
+    height: 6 * $tile-size;
   }
 }
 
@@ -173,19 +165,46 @@ app-crafting-grid {
   justify-content: center;
 }
 
-app-result-list {
-  display: block;
-  overflow-y: scroll;
+app-crafting-grid + app-crafting-grid {
+  margin-left: 32px;
 }
 
-.result-list {
+app-result-list {
+  display: block;
+}
+
+app-tabs {
+  display: block;
+}
+
+.tabs {
   &__header {
+    display: flex;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__tab {
     display: block;
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    background: $panel-bg;
-    padding: $grid-padding 0;
-    margin-bottom: $grid-padding * 2;
+    flex: 1;
+    text-align: center;
+    background: $tile-bg;
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+
+    &--active {
+      border-bottom: 0;
+      background: $panel-bg;
+    }
+  }
+
+  &__content {
+    position: relative;
+    overflow: auto;
+    background-color: $panel-bg;
+    border: $grid-border-width solid;
+    border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
+    border-top: 0;
+    padding: $grid-padding;
   }
 }

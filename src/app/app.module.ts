@@ -9,6 +9,8 @@ import { DraggedItemComponent } from './dragged-item/dragged-item.component';
 import { ItemIconTileComponent } from './item-icon-tile/item-icon-tile.component';
 import { ResultListComponent } from './result-list/result-list.component';
 import { CraftingGridComponent } from './crafting-grid/crafting-grid.component';
+import { TabsComponent } from './tabs/tabs.component';
+import { TabComponent } from './tabs/tab.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +22,8 @@ import { CraftingGridComponent } from './crafting-grid/crafting-grid.component';
     ItemIconTileComponent,
     ResultListComponent,
     CraftingGridComponent,
+    TabsComponent,
+    TabComponent,
   ],
   imports: [
     BrowserModule,
