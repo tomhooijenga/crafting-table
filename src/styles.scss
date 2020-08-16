@@ -49,6 +49,7 @@ app-items {
 
   &--inventory {
     grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(6, 1fr);
   }
 
   &--table {
