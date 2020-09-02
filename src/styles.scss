@@ -5,6 +5,7 @@ $grid-padding: 6px;
 $grid-border-width: 2px;
 
 $panel-bg: #C6C6C6;
+$panel-border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
 
 $tile-bg: #8B8B8B;
 $tile-border-width: 2px;
@@ -37,7 +38,7 @@ app-items {
   padding: $grid-padding;
   background: $panel-bg;
   border: $grid-border-width solid;
-  border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
+  border-color: $panel-border-color;
 }
 
 .grid {
@@ -208,8 +209,12 @@ app-tab {
     overflow: auto;
     background-color: $panel-bg;
     border: $grid-border-width solid;
-    border-color: #DBDBDB #5B5B5B #5B5B5B #DBDBDB;
-    border-top: 0;
+    border-color: $panel-border-color;
+    border-top-width: 0;
     padding: $grid-padding;
   }
+}
+
+app-tab.active {
+  height: 3 * $tile-size;
 }
