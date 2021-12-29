@@ -24,5 +24,4 @@ const icon = computed<Icon>(() => {
 });
 
 const animated = import.meta.globEager('/src/assets/icons/*.gif');
-console.log(animated);
 </script>

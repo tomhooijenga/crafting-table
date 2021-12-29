@@ -1,10 +1,11 @@
 <template>
-  <section class="p-2 border-2 bg-[#C6C6C6] [border-color:#DBDBDB #5B5B5B #5B5B5B #DBDBDB]">
+  <Panel class="grid grid-cols-9 grid-rows-6 overflow-y-auto max-w-fit">
     <GridTile v-for="item of items" :key="item.id" :item="item"/>
-  </section>
+  </Panel>
 </template>
 
 <script setup lang="ts">
 import items from '@/assets/data/items.json';
 import GridTile from "./GridTile.vue";
+import Panel from "./Panel.vue";
 </script>

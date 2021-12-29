@@ -1,6 +1,6 @@
 <template>
-  <section class="w-64 m-auto">
-    <Inventory />
+  <section class="flex flex-col items-center">
+    <Inventory class="h-64" />
   </section>
 </template>
 
