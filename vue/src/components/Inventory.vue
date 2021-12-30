@@ -1,7 +1,7 @@
 <template>
-  <Panel class="max-w-fit">
+  <Panel>
     <div class="grid grid-cols-9 overflow-y-auto h-full">
-      <GridTile v-for="item of items" :key="item.id" :item="item" @mousedown="selectItem(item)"/>
+      <GridTile v-for="item of items" :key="item.id" :item="item" @click="selectItem(item)"/>
     </div>
   </Panel>
 </template>
@@ -12,18 +12,22 @@ import GridTile from "./GridTile.vue";
 import Panel from "./Panel.vue";
 import {useSelectionStore} from "../store";
 import {Item} from "../types";
-import {onUnmounted} from "vue";
+import {equals} from "../recipes";
 
 const store = useSelectionStore();
 
 function selectItem(item: Item) {
-  store.item = item;
+  if (equals(store.item, item)) {
+    store.item = null;
+  } else {
+    store.item = item;
+  }
 }
 
 function unselectItem() {
   store.item = null;
 }
 
-window.addEventListener('mouseup', unselectItem)
-onUnmounted(() => window.removeEventListener('mouseup', unselectItem))
+// window.addEventListener('mouseup', unselectItem)
+// onUnmounted(() => window.removeEventListener('mouseup', unselectItem))
 </script>
