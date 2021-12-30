@@ -5,7 +5,8 @@
                 :item="grid[index].item"
                 :amount="grid[index].amount"
                 @click="leftClick($event, index)"
-                @contextmenu.prevent="rightClick($event, index)"/>
+                @contextmenu.prevent="rightClick($event, index)"
+                @dblclick="dblclick(index)"/>
     </div>
     <div class="w-12 flex items-center justify-center">
       <img src="@/assets/arrow.png"/>
@@ -20,7 +21,7 @@ import GridTile from "./GridTile.vue";
 import {computed, reactive} from "vue";
 import {AIR, getByItems} from '@/recipes'
 import {useSelectionStore} from "../store";
-import {calculateAmount, equals, getItem} from "../recipes";
+import {equals, getItem} from "../recipes";
 import {Item} from "../types";
 
 const grid = reactive<{ item: Item; amount: number }>(
@@ -81,6 +82,34 @@ function rightClick(event: MouseEvent, index: number) {
     grid[index] = selection.select(prev.item, prev.amount);
   }
 }
+
+function dblclick(index: number) {
+  const tile = grid[index];
+
+  for (const [i, neighbour] of grid.entries()) {
+    if (index === i || !equals(neighbour.item, tile.item)) {
+      continue;
+    }
+
+    const stackLeft = tile.item.stackSize - tile.amount;
+
+    if (stackLeft === 0) {
+      break;
+    }
+
+    tile.amount += Math.min(neighbour.amount, stackLeft);
+    neighbour.amount -= Math.min(neighbour.amount, stackLeft);
+
+    if (neighbour.amount === 0) {
+      neighbour.item = AIR;
+    }
+  }
+
+  selection.select(tile.item, tile.amount);
+  tile.item = AIR;
+  tile.amount = 1;
+}
+
 const craftedRecipe = computed(() => getByItems(grid));
 const craftedItem = computed(() => {
   if (!craftedRecipe.value) {
