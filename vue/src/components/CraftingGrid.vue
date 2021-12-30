@@ -4,8 +4,12 @@
       <GridTile v-for="(n, index) in 9"
                 :item="grid[index].item"
                 :amount="grid[index].amount"
-                @click="leftClick($event, index)"
-                @contextmenu.prevent="rightClick($event, index)"
+                @mousedown.prevent="mousedown(index)"
+                @mouseup="mouseup(index)"
+                @mouseleave="mouseleave(index)"
+                @mouseenter="mouseenter(index)"
+                @click="leftClick(index)"
+                @contextmenu.prevent="rightClick(index)"
                 @dblclick="dblclick(index)"/>
     </div>
     <div class="w-12 flex items-center justify-center">
@@ -18,13 +22,13 @@
 
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import {computed, reactive} from "vue";
+import {computed, reactive, ref} from "vue";
 import {AIR, getByItems} from '@/recipes'
 import {useSelectionStore} from "../store";
 import {equals, getItem} from "../recipes";
-import {Item} from "../types";
+import {Item, ItemAmount} from "../types";
 
-const grid = reactive<{ item: Item; amount: number }>(
+const grid = reactive<ItemAmount[]>(
   Array.from({length: 9}).map(() => ({
     item: AIR,
     amount: 1,
@@ -32,7 +36,7 @@ const grid = reactive<{ item: Item; amount: number }>(
 )
 const selection = useSelectionStore();
 
-function leftClick(event: MouseEvent, index: number) {
+function leftClick(index: number) {
   const prev = grid[index];
 
   // Same and enough room in stack, merge stacks
@@ -55,7 +59,7 @@ function leftClick(event: MouseEvent, index: number) {
   }
 }
 
-function rightClick(event: MouseEvent, index: number) {
+function rightClick(index: number) {
   const prev = grid[index];
 
   // Air, set to item
@@ -113,6 +117,53 @@ function dblclick(index: number) {
   selection.select(tile.item, tile.amount);
   tile.item = AIR;
   tile.amount = 1;
+}
+
+let isMouseDown = false;
+let startAmount = 0;
+const smeared = new Set<number>();
+
+function mousedown(index: number) {
+  isMouseDown = true;
+  startAmount = selection.amount;
+}
+
+function mouseup(index: number) {
+  isMouseDown = false;
+  const amount = [...smeared]
+    .map((index) => grid[index].amount)
+    .reduce((sum, amount) => sum + amount, 0)
+  selection.amount -= amount;
+  smeared.clear();
+}
+
+function mouseleave(index: number) {
+  if (smeared.size === 0) {
+    mouseenter(index);
+  }
+}
+
+function mouseenter(index: number) {
+  const tile = grid[index];
+  const validItem = equals(tile.item, AIR) || equals(tile.item, selection.item);
+
+  if (isMouseDown && validItem && selection.item) {
+    smeared.add(index);
+
+    const amount = Math.floor(startAmount / (smeared.size));
+
+    grid[index].item = selection.item;
+    selection.amount = startAmount - (amount * smeared.size);
+
+    smeared.forEach((index) => {
+      grid[index].amount = amount;
+    });
+
+    // Placed last of stack, drop
+    if (amount === 1 && smeared.size === startAmount) {
+      selection.drop();
+    }
+  }
 }
 
 const craftedRecipe = computed(() => getByItems(grid));
