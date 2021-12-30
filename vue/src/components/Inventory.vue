@@ -1,6 +1,5 @@
 <template>
   <Panel>
-    {{selection.amount}}
     <div class="grid grid-cols-9 overflow-y-auto h-full">
       <GridTile v-for="item of items" :key="item.id" :item="item" @click="leftClick($event, item)" @contextmenu.prevent="rightClick($event, item)"/>
     </div>
