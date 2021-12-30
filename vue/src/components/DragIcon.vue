@@ -3,6 +3,7 @@
        :style="`transform: translate(${selection.mouse.x}px, ${selection.mouse.y}px)`">
     <Icon v-if="selection.item"
           class="-translate-x-1/2 -translate-y-1/2"
+          :amount="selection.amount"
           :item="selection.item"/>
   </div>
 </template>

@@ -5,6 +5,11 @@ export interface Item {
   stackSize: number;
 }
 
+export interface ItemAmount {
+  item: Item;
+  amount: number;
+}
+
 export type Icon = {
   id: number;
   name: string;

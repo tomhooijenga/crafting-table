@@ -1,6 +1,6 @@
 import recipes from './assets/data/recipes.json';
 import items from '@/assets/data/items.json';
-import {Item, ItemRecipe, ShapedRecipe, UnshapedRecipe} from './types';
+import {Item, ItemAmount, ItemRecipe, ShapedRecipe, UnshapedRecipe} from './types';
 
 export const AIR = items[0];
 
@@ -40,7 +40,8 @@ export function equals(item: Item, item2: Item): boolean {
 //   }
 // }
 //
-export function getByItems(items: Item[]): ShapedRecipe | UnshapedRecipe | null {
+export function getByItems(grid: ItemAmount[]): ShapedRecipe | UnshapedRecipe | null {
+  const items = grid.map(({item}) => item);
   const shapedItems = getShapedItems(items);
   const unshapedItems = getUnshapedItems(items);
 

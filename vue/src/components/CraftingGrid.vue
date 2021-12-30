@@ -2,38 +2,86 @@
   <Panel class="flex flex-row justify-center w-full">
     <div class="grid grid-cols-3">
       <GridTile v-for="(n, index) in 9"
-                :item="grid[index]"
-                @click="dropItem(index)" />
+                :item="grid[index].item"
+                :amount="grid[index].amount"
+                @click="leftClick($event, index)"
+                @contextmenu.prevent="rightClick($event, index)"/>
     </div>
     <div class="w-12 flex items-center justify-center">
-      <img src="@/assets/arrow.png" />
+      <img src="@/assets/arrow.png"/>
     </div>
-    <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount" />
+    <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount"/>
   </Panel>
 </template>
 <script setup lang="ts">
 
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import {computed, ref} from "vue";
-import { AIR, getByItems } from '@/recipes'
+import {computed, reactive} from "vue";
+import {AIR, getByItems} from '@/recipes'
 import {useSelectionStore} from "../store";
-import {getItem} from "../recipes";
+import {calculateAmount, equals, getItem} from "../recipes";
+import {Item} from "../types";
 
-const grid = ref(new Array(9).fill(AIR))
+const grid = reactive<{ item: Item; amount: number }>(
+  Array.from({length: 9}).map(() => ({
+    item: AIR,
+    amount: 1,
+  }))
+)
 const selection = useSelectionStore();
 
-function dropItem(index: number) {
-  if (selection.item) {
-    grid.value[index] = selection.item;
-    selection.item = null;
-  } else {
-    selection.item = grid.value[index]
-    grid.value[index] = AIR;
+function leftClick(event: MouseEvent, index: number) {
+  const prev = grid[index];
+
+  // Same and enough room in stack, merge stacks
+  if (equals(prev.item, selection.item) && prev.amount + selection.amount <= prev.item.stackSize) {
+    prev.amount += selection.amount;
+    selection.drop();
+  }
+  // Not same or stack overflow, swap
+  else {
+    const next = selection.select(prev.item, prev.amount);
+
+    grid[index] = {
+      item: next.item ?? AIR,
+      amount: next.amount
+    }
+
+    if (equals(prev.item, AIR)) {
+      selection.drop();
+    }
   }
 }
 
-const craftedRecipe = computed(() => getByItems(grid.value));
+function rightClick(event: MouseEvent, index: number) {
+  const prev = grid[index];
+
+  // Air, set to item
+  if (equals(prev.item, AIR)) {
+    // Will increase directly
+    prev.amount = 0;
+    prev.item = selection.item;
+  }
+
+  // Same
+  if (equals(prev.item, selection.item)) {
+    // If room, increase
+    if (prev.amount + 1 <= prev.item.stackSize) {
+      prev.amount += 1;
+      selection.amount--;
+
+      if (selection.amount === 0) {
+        selection.drop();
+      }
+    }
+  }
+  // Not same, swap
+  else {
+    grid[index] = selection.select(prev.item, prev.amount);
+  }
+}
+const craftedRecipe = computed(() => getByItems(grid));
 const craftedItem = computed(() => {
   if (!craftedRecipe.value) {
     return AIR;
@@ -41,5 +89,5 @@ const craftedItem = computed(() => {
 
   return getItem(craftedRecipe.value.result.id);
 });
-const craftedAmount = computed(() => craftedRecipe.value?.result.count ?? 0)
+const craftedAmount = computed(() => craftedRecipe.value?.result.count ?? 0);
 </script>
