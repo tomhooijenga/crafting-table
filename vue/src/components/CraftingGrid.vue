@@ -65,8 +65,13 @@ function rightClick(event: MouseEvent, index: number) {
     prev.item = selection.item;
   }
 
+  if (selection.item === null) {
+    const amount = Math.ceil(prev.amount / 2);
+    prev.amount -= amount;
+    selection.select(prev.item, amount);
+  }
   // Same
-  if (equals(prev.item, selection.item)) {
+  else if (equals(prev.item, selection.item)) {
     // If room, increase
     if (prev.amount + 1 <= prev.item.stackSize) {
       prev.amount += 1;
