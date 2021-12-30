@@ -133,7 +133,7 @@ function canMakeShaped(recipe: ShapedRecipe, items: Item[]): boolean {
 }
 
 function getUnshapedItems(items: Item[]): Item[] {
-  return items.filter((item) => item !== null && item !== AIR);
+  return items.filter((item) => item !== null && !equals(item, AIR));
 }
 
 function canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {
