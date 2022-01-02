@@ -10,24 +10,26 @@ export interface ItemAmount {
   amount: number;
 }
 
-export type Icon = {
-  id: number;
-  name: string;
-  animated: true;
-} | {
-  id: number;
-  name: string;
-  animated: false;
-  x: number;
-  y: number;
-};
+export type Icon =
+  | {
+      id: number;
+      name: string;
+      animated: true;
+    }
+  | {
+      id: number;
+      name: string;
+      animated: false;
+      x: number;
+      y: number;
+    };
 
 export interface ItemRecipe extends Array<UnshapedRecipe | ShapedRecipe> {}
 
 interface Recipe {
   result: {
-    count: number,
-    id: number,
+    count: number;
+    id: number;
   };
 }
 

@@ -1,46 +1,50 @@
 <template>
   <Panel class="flex flex-row justify-center w-full">
     <div class="grid grid-cols-3">
-      <GridTile v-for="(n, index) in 9"
-                :item="grid[index].item"
-                :amount="grid[index].amount"
-                @mousedown.prevent="mousedown(index)"
-                @mouseup="mouseup(index)"
-                @mouseleave="mouseleave(index)"
-                @mouseenter="mouseenter(index)"
-                @click="leftClick(index)"
-                @contextmenu.prevent="rightClick(index)"
-                @dblclick="dblclick(index)"/>
+      <GridTile
+        v-for="(n, index) in 9"
+        :item="grid[index].item"
+        :amount="grid[index].amount"
+        @mousedown.prevent="mousedown(index)"
+        @mouseup="mouseup(index)"
+        @mouseleave="mouseleave(index)"
+        @mouseenter="mouseenter(index)"
+        @click="leftClick(index)"
+        @contextmenu.prevent="rightClick(index)"
+        @dblclick="dblclick(index)"
+      />
     </div>
     <div class="w-12 flex items-center justify-center">
-      <img src="@/assets/arrow.png"/>
+      <img src="@/assets/arrow.png" />
     </div>
-    <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount"/>
+    <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount" />
   </Panel>
 </template>
 <script setup lang="ts">
-
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import {computed, reactive, ref} from "vue";
-import {AIR, getByItems} from '@/recipes'
-import {useSelectionStore} from "../store";
-import {equals, getItem} from "../recipes";
-import {Item, ItemAmount} from "../types";
+import { computed, reactive, ref } from "vue";
+import { AIR, getByItems } from "@/recipes";
+import { useSelectionStore } from "../store";
+import { equals, getItem } from "../recipes";
+import { Item, ItemAmount } from "../types";
 
 const grid = reactive<ItemAmount[]>(
-  Array.from({length: 9}).map(() => ({
+  Array.from({ length: 9 }).map(() => ({
     item: AIR,
     amount: 1,
   }))
-)
+);
 const selection = useSelectionStore();
 
 function leftClick(index: number) {
   const prev = grid[index];
 
   // Same and enough room in stack, merge stacks
-  if (equals(prev.item, selection.item) && prev.amount + selection.amount <= prev.item.stackSize) {
+  if (
+    equals(prev.item, selection.item) &&
+    prev.amount + selection.amount <= prev.item.stackSize
+  ) {
     prev.amount += selection.amount;
     selection.drop();
   }
@@ -50,8 +54,8 @@ function leftClick(index: number) {
 
     grid[index] = {
       item: next.item ?? AIR,
-      amount: next.amount
-    }
+      amount: next.amount,
+    };
 
     if (equals(prev.item, AIR)) {
       selection.drop();
@@ -132,7 +136,7 @@ function mouseup(index: number) {
   isMouseDown = false;
   const amount = [...smeared]
     .map((index) => grid[index].amount)
-    .reduce((sum, amount) => sum + amount, 0)
+    .reduce((sum, amount) => sum + amount, 0);
   selection.amount -= amount;
   smeared.clear();
 }
@@ -150,10 +154,10 @@ function mouseenter(index: number) {
   if (isMouseDown && validItem && selection.item) {
     smeared.add(index);
 
-    const amount = Math.floor(startAmount / (smeared.size));
+    const amount = Math.floor(startAmount / smeared.size);
 
     grid[index].item = selection.item;
-    selection.amount = startAmount - (amount * smeared.size);
+    selection.amount = startAmount - amount * smeared.size;
 
     smeared.forEach((index) => {
       grid[index].amount = amount;

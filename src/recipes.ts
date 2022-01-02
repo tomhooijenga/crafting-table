@@ -1,6 +1,12 @@
-import recipes from './assets/data/recipes.json';
-import items from '@/assets/data/items.json';
-import {Item, ItemAmount, ItemRecipe, ShapedRecipe, UnshapedRecipe} from './types';
+import recipes from "./assets/data/recipes.json";
+import items from "@/assets/data/items.json";
+import {
+  Item,
+  ItemAmount,
+  ItemRecipe,
+  ShapedRecipe,
+  UnshapedRecipe,
+} from "./types";
 
 export const AIR = items[0];
 
@@ -40,8 +46,10 @@ export function equals(item: Item, item2: Item): boolean {
 //   }
 // }
 //
-export function getByItems(grid: ItemAmount[]): ShapedRecipe | UnshapedRecipe | null {
-  const items = grid.map(({item}) => item);
+export function getByItems(
+  grid: ItemAmount[]
+): ShapedRecipe | UnshapedRecipe | null {
+  const items = grid.map(({ item }) => item);
   const shapedItems = getShapedItems(items);
   const unshapedItems = getUnshapedItems(items);
 
@@ -65,26 +73,38 @@ export function getByItems(grid: ItemAmount[]): ShapedRecipe | UnshapedRecipe | 
 //     }).flat();
 // }
 
-function canMake(itemRecipe: ItemRecipe, shapedItems: Item[], unshapedItems: Item[]): ShapedRecipe | UnshapedRecipe | null {
-  return itemRecipe.find((recipe) => {
-    if (isShaped(recipe)) {
-      return canMakeShaped(recipe, shapedItems);
-    } else {
-      return canMakeUnshaped(recipe, unshapedItems);
-    }
-  }) || null;
+function canMake(
+  itemRecipe: ItemRecipe,
+  shapedItems: Item[],
+  unshapedItems: Item[]
+): ShapedRecipe | UnshapedRecipe | null {
+  return (
+    itemRecipe.find((recipe) => {
+      if (isShaped(recipe)) {
+        return canMakeShaped(recipe, shapedItems);
+      } else {
+        return canMakeUnshaped(recipe, unshapedItems);
+      }
+    }) || null
+  );
 }
 
 function getShapedItems(items: Item[]): Item[] {
-  let result = [...items].map((item) => equals(item, AIR) ? null : item);
+  let result = [...items].map((item) => (equals(item, AIR) ? null : item));
 
   // Move empty columns from left to right
   for (let i = 0; i < 3; i++) {
     if (result[0] === null && result[3] === null && result[6] === null) {
       result = [
-        result[1], result[2], null,
-        result[4], result[5], null,
-        result[7], result[8], null,
+        result[1],
+        result[2],
+        null,
+        result[4],
+        result[5],
+        null,
+        result[7],
+        result[8],
+        null,
       ];
     } else {
       break;
@@ -94,7 +114,11 @@ function getShapedItems(items: Item[]): Item[] {
   // Remove trailing empty rows
   for (let i = 0; i < 3; i++) {
     const length = result.length;
-    if (result[length - 1] === null && result[length - 2] === null && result[length - 3] === null) {
+    if (
+      result[length - 1] === null &&
+      result[length - 2] === null &&
+      result[length - 3] === null
+    ) {
       result = result.slice(0, -3);
     } else {
       break;
@@ -138,15 +162,17 @@ function getUnshapedItems(items: Item[]): Item[] {
 }
 
 function canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {
-  const {ingredients} = recipe;
+  const { ingredients } = recipe;
 
   if (ingredients.length !== items.length) {
     return false;
   }
 
-  return items.every(({id}) => ingredients.includes(id));
+  return items.every(({ id }) => ingredients.includes(id));
 }
 
-function isShaped(recipe: ShapedRecipe | UnshapedRecipe): recipe is ShapedRecipe {
-  return 'inShape' in recipe;
+function isShaped(
+  recipe: ShapedRecipe | UnshapedRecipe
+): recipe is ShapedRecipe {
+  return "inShape" in recipe;
 }
