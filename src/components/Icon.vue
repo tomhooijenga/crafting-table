@@ -1,6 +1,7 @@
 <template>
   <img
     v-if="icon.animated"
+    :title="item.displayName"
     class="w-8 h-8"
     :src="animated[`/src/assets/icons/${item.name}.gif`].default"
   />
@@ -19,17 +20,17 @@
 </template>
 
 <script setup lang="ts">
-import sprite from "@/assets/data/sprite.json";
 import { Item, Icon } from "@/types";
 import { computed } from "vue";
+import { getIcon } from "@/lib/icon";
 
 const props = defineProps<{
   item: Item;
   amount?: number;
 }>();
 
-const icon = computed<Icon>(() => {
-  return sprite[props.item.id];
+const icon = computed((): Icon => {
+  return getIcon(props.item.id.toString());
 });
 
 const animated = import.meta.globEager("/src/assets/icons/*.gif");

@@ -1,28 +1,31 @@
 import { defineStore } from "pinia";
-import { Item } from "./types";
+import { Item, ItemAmount } from "./types";
+import { AIR } from "@/lib/items";
 
 export const useSelectionStore = defineStore("selection", {
   state: (): {
-    item: Item | null;
-    amount: number;
+    itemAmount: ItemAmount;
     mouse: { x: number; y: number };
   } => ({
-    item: null,
-    amount: 1,
+    itemAmount: {
+      item: AIR,
+      amount: 0,
+    },
     mouse: { x: 0, y: 0 },
   }),
   actions: {
-    select(item: Item, amount = 1): { item: Item; amount: number } {
-      const { item: oldItem, amount: oldAmount } = this;
+    select(itemAmount: ItemAmount): ItemAmount {
+      const { itemAmount: oldItemAmount } = this;
 
-      this.item = item;
-      this.amount = amount;
+      this.itemAmount = itemAmount;
 
-      return { item: oldItem, amount: oldAmount };
+      return oldItemAmount;
     },
     drop(): void {
-      this.item = null;
-      this.amount = 1;
+      this.itemAmount = {
+        item: AIR,
+        amount: 1,
+      };
     },
   },
 });

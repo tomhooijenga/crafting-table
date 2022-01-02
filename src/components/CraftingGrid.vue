@@ -5,7 +5,7 @@
         v-for="(n, index) in 9"
         :item="grid[index].item"
         :amount="grid[index].amount"
-        @mousedown.prevent="mousedown(index)"
+        @mousedown.prevent="mousedown()"
         @mouseup="mouseup(index)"
         @mouseleave="mouseleave(index)"
         @mouseenter="mouseenter(index)"
@@ -23,11 +23,11 @@
 <script setup lang="ts">
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import { computed, reactive, ref } from "vue";
-import { AIR, getByItems } from "@/recipes";
-import { useSelectionStore } from "../store";
-import { equals, getItem } from "../recipes";
-import { Item, ItemAmount } from "../types";
+import { computed, reactive } from "vue";
+import { getByItems } from "@/lib/recipes";
+import { useSelectionStore } from "@/store";
+import { ItemAmount } from "@/types";
+import { AIR, getItem, equals } from "@/lib/items";
 
 const grid = reactive<ItemAmount[]>(
   Array.from({ length: 9 }).map(() => ({
@@ -42,18 +42,18 @@ function leftClick(index: number) {
 
   // Same and enough room in stack, merge stacks
   if (
-    equals(prev.item, selection.item) &&
-    prev.amount + selection.amount <= prev.item.stackSize
+    equals(prev.item, selection.itemAmount.item) &&
+    prev.amount + selection.itemAmount.amount <= prev.item.stackSize
   ) {
-    prev.amount += selection.amount;
+    prev.amount += selection.itemAmount.amount;
     selection.drop();
   }
   // Not same or stack overflow, swap
   else {
-    const next = selection.select(prev.item, prev.amount);
+    const next = selection.select(prev);
 
     grid[index] = {
-      item: next.item ?? AIR,
+      item: next.item,
       amount: next.amount,
     };
 
@@ -70,29 +70,32 @@ function rightClick(index: number) {
   if (equals(prev.item, AIR)) {
     // Will increase directly
     prev.amount = 0;
-    prev.item = selection.item;
+    prev.item = selection.itemAmount.item;
   }
 
-  if (selection.item === null) {
+  if (equals(selection.itemAmount.item, AIR)) {
     const amount = Math.ceil(prev.amount / 2);
     prev.amount -= amount;
-    selection.select(prev.item, amount);
+    selection.select({
+      item: prev.item,
+      amount: 0,
+    });
   }
   // Same
-  else if (equals(prev.item, selection.item)) {
+  else if (equals(prev.item, selection.itemAmount.item)) {
     // If room, increase
     if (prev.amount + 1 <= prev.item.stackSize) {
       prev.amount += 1;
-      selection.amount--;
+      selection.itemAmount.amount--;
 
-      if (selection.amount === 0) {
+      if (selection.itemAmount.amount === 0) {
         selection.drop();
       }
     }
   }
   // Not same, swap
   else {
-    grid[index] = selection.select(prev.item, prev.amount);
+    grid[index] = selection.select(prev);
   }
 }
 
@@ -117,8 +120,7 @@ function dblclick(index: number) {
       neighbour.item = AIR;
     }
   }
-
-  selection.select(tile.item, tile.amount);
+  selection.select({ ...tile });
   tile.item = AIR;
   tile.amount = 1;
 }
@@ -127,9 +129,9 @@ let isMouseDown = false;
 let startAmount = 0;
 const smeared = new Set<number>();
 
-function mousedown(index: number) {
+function mousedown() {
   isMouseDown = true;
-  startAmount = selection.amount;
+  startAmount = selection.itemAmount.amount;
 }
 
 function mouseup(index: number) {
@@ -137,7 +139,7 @@ function mouseup(index: number) {
   const amount = [...smeared]
     .map((index) => grid[index].amount)
     .reduce((sum, amount) => sum + amount, 0);
-  selection.amount -= amount;
+  selection.itemAmount.amount -= amount;
   smeared.clear();
 }
 
@@ -149,15 +151,16 @@ function mouseleave(index: number) {
 
 function mouseenter(index: number) {
   const tile = grid[index];
-  const validItem = equals(tile.item, AIR) || equals(tile.item, selection.item);
+  const validItem =
+    equals(tile.item, AIR) || equals(tile.item, selection.itemAmount.item);
 
-  if (isMouseDown && validItem && selection.item) {
+  if (isMouseDown && validItem && selection.itemAmount.item) {
     smeared.add(index);
 
     const amount = Math.floor(startAmount / smeared.size);
 
-    grid[index].item = selection.item;
-    selection.amount = startAmount - amount * smeared.size;
+    grid[index].item = selection.itemAmount.item;
+    selection.itemAmount.amount = startAmount - amount * smeared.size;
 
     smeared.forEach((index) => {
       grid[index].amount = amount;

@@ -1,33 +1,19 @@
-import recipes from "./assets/data/recipes.json";
-import items from "@/assets/data/items.json";
+import _recipes from "../assets/data/recipes.json";
 import {
   Item,
   ItemAmount,
   ItemRecipe,
   ShapedRecipe,
   UnshapedRecipe,
-} from "./types";
+} from "@/types";
+import { AIR, equals } from "@/lib/items";
 
-export const AIR = items[0];
+const recipes = _recipes as Record<string, ItemRecipe>;
 
 function padNull<T>(arr: Array<T>, length: number): Array<T> {
   return arr.concat(new Array(length - arr.length).fill(null));
 }
 
-export function getItem(id: number | null): Item {
-  if (id === null) {
-    return AIR;
-  }
-  return items[id];
-}
-
-export function equals(item: Item, item2: Item): boolean {
-  if (item === null || item2 === null) {
-    return item === item2;
-  }
-
-  return item.id === item2.id;
-}
 //
 // function getItemsForRecipe(recipe: ShapedRecipe | UnshapedRecipe): Item[] {
 //   if (isShaped(recipe)) {
@@ -75,7 +61,7 @@ export function getByItems(
 
 function canMake(
   itemRecipe: ItemRecipe,
-  shapedItems: Item[],
+  shapedItems: (Item | null)[],
   unshapedItems: Item[]
 ): ShapedRecipe | UnshapedRecipe | null {
   return (
@@ -89,7 +75,7 @@ function canMake(
   );
 }
 
-function getShapedItems(items: Item[]): Item[] {
+function getShapedItems(items: Item[]): (Item | null)[] {
   let result = [...items].map((item) => (equals(item, AIR) ? null : item));
 
   // Move empty columns from left to right
@@ -137,7 +123,7 @@ function getShapedItems(items: Item[]): Item[] {
   return result;
 }
 
-function canMakeShaped(recipe: ShapedRecipe, items: Item[]): boolean {
+function canMakeShaped(recipe: ShapedRecipe, items: (Item | null)[]): boolean {
   // Recipes are stored upside down
   const inShape = [...recipe.inShape]
     .reverse()
