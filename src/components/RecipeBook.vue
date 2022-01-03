@@ -1,7 +1,5 @@
 <template>
-  <Panel class="w-64">
-    Book
-  </Panel>
+  <Panel class="w-64"> Book </Panel>
 </template>
 
 <script setup lang="ts">

@@ -12,10 +12,10 @@ import Inventory from "@/components/Inventory.vue";
 import RecipeBook from "@/components/RecipeBook.vue";
 import HoverIcon from "./components/DragIcon.vue";
 import CraftingGrid from "./components/CraftingGrid.vue";
-import { useSelectionStore } from "./store";
+import { useStore } from "./store";
 import { ref } from "vue";
 
-const selection = useSelectionStore();
+const selection = useStore();
 const root = ref();
 
 document.body.addEventListener("click", function clickOutsideEvent(event) {

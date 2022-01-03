@@ -3,30 +3,36 @@
     <div class="flex flex-row justify-center w-full">
       <div class="grid grid-cols-3">
         <GridTile
-            v-for="(n, index) in grid.length"
-            :item="grid[index].value.item"
-            :amount="grid[index].value.amount"
+          v-for="(n, index) in grid.length"
+          :item="grid[index].value.item"
+          :amount="grid[index].value.amount"
+          @click="store.click(grid[index])"
+          @contextmenu.prevent="store.rightClick(grid[index])"
         />
       </div>
       <div class="w-12 flex items-center justify-center">
-        <img src="@/assets/arrow.png"/>
+        <img src="@/assets/arrow.png" />
       </div>
-      <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount"/>
+      <GridTile class="my-auto" :item="craftedItem" :amount="craftedAmount" />
     </div>
 
     <div class="grid grid-cols-9 mt-2">
       <GridTile
-          v-for="(n, index) in inventory.length"
-          :item="inventory[index].value.item"
-          :amount="inventory[index].value.amount"
+        v-for="(n, index) in inventory.length"
+        :item="inventory[index].value.item"
+        :amount="inventory[index].value.amount"
+        @click="store.click(inventory[index])"
+        @contextmenu.prevent="store.rightClick(inventory[index])"
       />
     </div>
 
     <div class="grid grid-cols-9 mt-2">
       <GridTile
-          v-for="(n, index) in hotbar.length"
-          :item="hotbar[index].value.item"
-          :amount="hotbar[index].value.amount"
+        v-for="(n, index) in hotbar.length"
+        :item="hotbar[index].value.item"
+        :amount="hotbar[index].value.amount"
+        @click="store.click(hotbar[index])"
+        @contextmenu.prevent="store.rightClick(hotbar[index])"
       />
     </div>
   </Panel>
@@ -34,96 +40,21 @@
 <script setup lang="ts">
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import {computed, ref} from "vue";
+import { computed, reactive, ref, shallowReactive } from "vue";
 import { getByItems } from "@/lib/recipes";
-// import { useSelectionStore } from "@/store";
-import {ItemAmount, ItemRecipe, ShapedRecipe, UnshapedRecipe} from "@/types";
-import {AIR, getItem} from "@/lib/items";
-//
-const grid = Array
-    .from({length: 9})
-    .map(() => ref<Readonly<ItemAmount>>({
-      item: AIR,
-      amount: 1,
-    }))
-const inventory = Array
-    .from({length: 27})
-    .map(() => ref<Readonly<ItemAmount>>({
-      item: AIR,
-      amount: 1,
-    }))
-const hotbar = Array
-    .from({length: 9})
-    .map(() => ref<Readonly<ItemAmount>>({
-      item: AIR,
-      amount: 1,
-    }))
+import { ItemAmount, ItemRecipe, ShapedRecipe, UnshapedRecipe } from "@/types";
+import { AIR, getItem } from "@/lib/items";
+import { useStore } from "@/store";
 
+const store = useStore();
 
+const grid = store.createRegion(9);
+const inventory = store.createRegion(27);
+const hotbar = store.createRegion(9);
 
-// const selection = useSelectionStore();
-//
-// function leftClick(index: number) {
-//   const prev = grid[index];
-//
-//   // Same and enough room in stack, merge stacks
-//   if (
-//     equals(prev.item, selection.itemAmount.item) &&
-//     prev.amount + selection.itemAmount.amount <= prev.item.stackSize
-//   ) {
-//     prev.amount += selection.itemAmount.amount;
-//     selection.drop();
-//   }
-//   // Not same or stack overflow, swap
-//   else {
-//     const next = selection.select(prev);
-//
-//     grid[index] = {
-//       item: next.item,
-//       amount: next.amount,
-//     };
-//
-//     if (equals(prev.item, AIR)) {
-//       selection.drop();
-//     }
-//   }
-// }
-//
-// function rightClick(index: number) {
-//   const prev = grid[index];
-//
-//   // Air, set to item
-//   if (equals(prev.item, AIR)) {
-//     // Will increase directly
-//     prev.amount = 0;
-//     prev.item = selection.itemAmount.item;
-//   }
-//
-//   if (equals(selection.itemAmount.item, AIR)) {
-//     const amount = Math.ceil(prev.amount / 2);
-//     prev.amount -= amount;
-//     selection.select({
-//       item: prev.item,
-//       amount: 0,
-//     });
-//   }
-//   // Same
-//   else if (equals(prev.item, selection.itemAmount.item)) {
-//     // If room, increase
-//     if (prev.amount + 1 <= prev.item.stackSize) {
-//       prev.amount += 1;
-//       selection.itemAmount.amount--;
-//
-//       if (selection.itemAmount.amount === 0) {
-//         selection.drop();
-//       }
-//     }
-//   }
-//   // Not same, swap
-//   else {
-//     grid[index] = selection.select(prev);
-//   }
-// }
+hotbar[0].value = { item: getItem(44), amount: 8 };
+hotbar[1].value = { item: getItem(45), amount: 8 };
+
 //
 // function dblclick(index: number) {
 //   const tile = grid[index];
@@ -199,7 +130,9 @@ const hotbar = Array
 //   }
 // }
 //
-const craftedRecipe = computed<UnshapedRecipe | ShapedRecipe | null>(() => null);
+const craftedRecipe = computed<UnshapedRecipe | ShapedRecipe | null>(
+  () => null
+);
 // const craftedRecipe = computed(() => getByItems(grid));
 const craftedItem = computed(() => {
   if (!craftedRecipe.value) {
