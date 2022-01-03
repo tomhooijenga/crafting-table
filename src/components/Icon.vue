@@ -3,7 +3,7 @@
     <span
       v-if="amount && amount > 1"
       v-text="amount"
-      class="text-white [text-shadow:1px_1px_0_black] text-xl leading-none absolute -right-0.5 -bottom-0.5"
+      class="text-white [text-shadow:1px_1px_0_black] text-xl leading-none absolute -right-0.5 -bottom-0.5 pointer-events-none"
     />
   </div>
 </template>
