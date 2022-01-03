@@ -1,111 +1,116 @@
 import { defineStore } from "pinia";
 import { ItemAmount } from "./types";
 import { AIR, equals } from "@/lib/items";
-import { ref, Ref } from "vue";
+import { reactive, ref, Ref } from "vue";
 
 type Tile = Ref<Readonly<ItemAmount>>;
 const EMPTY = { item: AIR, amount: 0 };
 
-export const useStore = defineStore("selection", {
-  state: (): {
-    selection: ItemAmount;
-    tiles: Tile[];
-    mouse: { x: number; y: number };
-  } => ({
-    selection: {
-      item: AIR,
-      amount: 0,
-    },
-    tiles: [],
-    mouse: { x: 0, y: 0 },
-  }),
-  actions: {
-    createRegion(amount: number): Tile[] {
-      const region = Array.from({ length: amount }).map(() => ref(EMPTY));
-      this.tiles.push(...region);
-      return region;
-    },
+export const useStore = defineStore("selection", () => {
+  const selection = ref(EMPTY);
+  const tiles = reactive<Tile[]>([]);
+  const mouse = reactive({
+    x: 0,
+    y: 0,
+  });
 
-    drop(): void {
-      this.selection = EMPTY;
-    },
-    tileToSelection(tile: Tile, takeAmount = tile.value.amount): void {
-      const { item, amount } = tile.value;
-      const newAmount = amount - takeAmount;
+  function transfer(from: Tile, to: Tile, transferAmount = from.value.amount) {
+    const { item: fromItem, amount: fromAmount } = from.value;
+    const { item: toItem, amount: toAmount } = to.value;
 
-      tile.value = {
-        item: newAmount > 0 ? item : AIR,
-        amount: newAmount,
-      };
+    const newFromAmount = fromAmount - transferAmount;
+    const newToAmount = toAmount + transferAmount;
 
-      this.selection = {
-        item,
-        amount: takeAmount,
-      };
-    },
-    selectionToTile(tile: Tile, placeAmount = this.selection.amount) {
-      const { amount } = tile.value;
-      const { item } = this.selection;
+    // Can't take this much.
+    if (!equals(toItem, AIR) && toItem.stackSize < newToAmount) {
+      return;
+    }
 
-      const tileAmount = amount + placeAmount;
-      const selectionAmount = this.selection.amount - placeAmount;
+    from.value =
+      newFromAmount <= 0
+        ? EMPTY
+        : {
+            item: fromItem,
+            amount: newFromAmount,
+          };
 
-      if (item.stackSize >= tileAmount) {
-        tile.value = {
-          item,
-          amount: tileAmount,
-        };
+    to.value = {
+      item: fromItem,
+      amount: newToAmount,
+    };
+  }
 
-        this.selection = {
-          item: selectionAmount > 0 ? item : AIR,
-          amount: selectionAmount,
-        };
-      }
-    },
-    swap(tile: Tile) {
-      const { item, amount } = tile.value;
-      tile.value = this.selection;
-      this.selection = { item, amount };
-    },
-    click(tile: Tile): void {
-      const { item } = tile.value;
+  function createRegion(amount: number): Tile[] {
+    const region = Array.from({ length: amount }).map(() => ref(EMPTY));
+    tiles.push(...region);
+    return region;
+  }
 
-      // Selection is air, take tile
-      if (equals(this.selection.item, AIR)) {
-        this.tileToSelection(tile);
-      }
-      // Selection is same as tile, place on tile
-      else if (equals(this.selection.item, item)) {
-        this.selectionToTile(tile);
-      }
-      // Tile is air, place selection on tile
-      else if (equals(item, AIR)) {
-        this.selectionToTile(tile);
-      }
-      // Items are not same, swap
-      else {
-        this.swap(tile);
-      }
-    },
-    rightClick(tile: Tile): any {
-      const { item, amount } = tile.value;
+  function tileToSelection(tile: Tile, takeAmount = tile.value.amount): void {
+    transfer(tile, selection, takeAmount);
+  }
 
-      // Selection is air, take half of tile
-      if (equals(this.selection.item, AIR)) {
-        this.tileToSelection(tile, Math.ceil(amount / 2));
-      }
-      // Selection is same as tile, place 1 on tile
-      else if (equals(this.selection.item, item)) {
-        this.selectionToTile(tile, 1);
-      }
-      // Tile is air, place 1 on tile
-      else if (equals(item, AIR)) {
-        this.selectionToTile(tile, 1);
-      }
-      // Items are not same, swap
-      else {
-        this.swap(tile);
-      }
-    },
-  },
+  function selectionToTile(tile: Tile, placeAmount = selection.value.amount): void {
+    transfer(selection, tile, placeAmount);
+  }
+
+  function drop(): void {
+    selection.value = EMPTY;
+  }
+
+  function swap(tile: Tile): void {
+    [tile.value, selection.value] = [selection.value, tile.value];
+  }
+
+  function click(tile: Tile): void {
+    const { item } = tile.value;
+
+    // Selection is air, take tile
+    if (equals(selection.value.item, AIR)) {
+      tileToSelection(tile);
+    }
+    // Selection is same as tile, place on tile
+    else if (equals(selection.value.item, item)) {
+      selectionToTile(tile);
+    }
+    // Tile is air, place selection on tile
+    else if (equals(item, AIR)) {
+      selectionToTile(tile);
+    }
+    // Items are not same, swap
+    else {
+      swap(tile);
+    }
+  }
+
+  function rightClick(tile: Tile): any {
+    const { item, amount } = tile.value;
+
+    // Selection is air, take half of tile
+    if (equals(selection.value.item, AIR)) {
+      tileToSelection(tile, Math.ceil(amount / 2));
+    }
+    // Selection is same as tile, place 1 on tile
+    else if (equals(selection.value.item, item)) {
+      selectionToTile(tile, 1);
+    }
+    // Tile is air, place 1 on tile
+    else if (equals(item, AIR)) {
+      selectionToTile(tile, 1);
+    }
+    // Items are not same, swap
+    else {
+      swap(tile);
+    }
+  }
+
+  return {
+    selection,
+    mouse,
+
+    createRegion,
+    drop,
+    click,
+    rightClick,
+  };
 });
