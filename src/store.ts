@@ -9,6 +9,7 @@ const EMPTY = { item: AIR, amount: 0 };
 export const useStore = defineStore("selection", () => {
   const selection = ref(EMPTY);
   const tiles = reactive<Tile[]>([]);
+  const regions = reactive<Tile[][]>([]);
   const mouse = reactive({
     x: 0,
     y: 0,
@@ -43,6 +44,7 @@ export const useStore = defineStore("selection", () => {
   function createRegion(amount: number): Tile[] {
     const region = Array.from({ length: amount }).map(() => ref(EMPTY));
     tiles.push(...region);
+    regions.push(region);
     return region;
   }
 
@@ -50,7 +52,10 @@ export const useStore = defineStore("selection", () => {
     transfer(tile, selection, takeAmount);
   }
 
-  function selectionToTile(tile: Tile, placeAmount = selection.value.amount): void {
+  function selectionToTile(
+    tile: Tile,
+    placeAmount = selection.value.amount
+  ): void {
     transfer(selection, tile, placeAmount);
   }
 
@@ -83,7 +88,7 @@ export const useStore = defineStore("selection", () => {
     }
   }
 
-  function rightClick(tile: Tile): any {
+  function rightClick(tile: Tile): void {
     const { item, amount } = tile.value;
 
     // Selection is air, take half of tile
@@ -104,6 +109,51 @@ export const useStore = defineStore("selection", () => {
     }
   }
 
+  function dblClick(tile: Tile): void {
+    for (const neighbour of tiles) {
+      const { item, amount } = tile.value;
+      const stackLeft = item.stackSize - amount;
+
+      if (neighbour === tile) {
+        continue;
+      }
+      if (!equals(neighbour.value.item, item)) {
+        continue;
+      }
+      if (stackLeft === 0) {
+        break;
+      }
+
+      const take = Math.min(neighbour.value.amount, stackLeft);
+
+      transfer(neighbour, tile, take);
+    }
+
+    tileToSelection(tile);
+  }
+
+  function shiftClick(tile: Tile): void {
+    for (const region of regions) {
+      // Skip own region.
+      if (region.includes(tile)) {
+        continue;
+      }
+
+      const available =
+          // Find first of own item, or air.
+        region.find((neighbour) => {
+          return (
+            equals(neighbour.value.item, tile.value.item) && neighbour !== tile
+          );
+        }) || region.find((neighbour) => equals(neighbour.value.item, AIR));
+
+      if (available) {
+        transfer(tile, available);
+        break;
+      }
+    }
+  }
+
   return {
     selection,
     mouse,
@@ -111,6 +161,8 @@ export const useStore = defineStore("selection", () => {
     createRegion,
     drop,
     click,
+    shiftClick,
     rightClick,
+    dblClick,
   };
 });

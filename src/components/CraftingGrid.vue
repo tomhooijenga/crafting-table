@@ -6,8 +6,10 @@
           v-for="(n, index) in grid.length"
           :item="grid[index].value.item"
           :amount="grid[index].value.amount"
-          @click="store.click(grid[index])"
-          @contextmenu.prevent="store.rightClick(grid[index])"
+          @click.exact="store.click(grid[index])"
+          @click.right="store.rightClick(grid[index])"
+          @click.shift.exact="store.shiftClick(grid[index])"
+          @dblclick="store.dblClick(grid[index])"
         />
       </div>
       <div class="w-12 flex items-center justify-center">
@@ -21,8 +23,10 @@
         v-for="(n, index) in inventory.length"
         :item="inventory[index].value.item"
         :amount="inventory[index].value.amount"
-        @click="store.click(inventory[index])"
-        @contextmenu.prevent="store.rightClick(inventory[index])"
+        @click.exact="store.click(inventory[index])"
+        @click.right="store.rightClick(inventory[index])"
+        @click.shift.exact="store.shiftClick(inventory[index])"
+        @dblclick="store.dblClick(inventory[index])"
       />
     </div>
 
@@ -31,8 +35,10 @@
         v-for="(n, index) in hotbar.length"
         :item="hotbar[index].value.item"
         :amount="hotbar[index].value.amount"
-        @click="store.click(hotbar[index])"
-        @contextmenu.prevent="store.rightClick(hotbar[index])"
+        @click.exact="store.click(hotbar[index])"
+        @click.right="store.rightClick(hotbar[index])"
+        @click.shift.exact="store.shiftClick(hotbar[index])"
+        @dblclick="store.dblClick(hotbar[index])"
       />
     </div>
   </Panel>
@@ -53,35 +59,8 @@ const inventory = store.createRegion(27);
 const hotbar = store.createRegion(9);
 
 hotbar[0].value = { item: getItem(44), amount: 8 };
-hotbar[1].value = { item: getItem(45), amount: 8 };
+hotbar[1].value = { item: getItem(44), amount: 8 };
 
-//
-// function dblclick(index: number) {
-//   const tile = grid[index];
-//
-//   for (const [i, neighbour] of grid.entries()) {
-//     if (index === i || !equals(neighbour.item, tile.item)) {
-//       continue;
-//     }
-//
-//     const stackLeft = tile.item.stackSize - tile.amount;
-//
-//     if (stackLeft === 0) {
-//       break;
-//     }
-//
-//     tile.amount += Math.min(neighbour.amount, stackLeft);
-//     neighbour.amount -= Math.min(neighbour.amount, stackLeft);
-//
-//     if (neighbour.amount === 0) {
-//       neighbour.item = AIR;
-//     }
-//   }
-//   selection.select({ ...tile });
-//   tile.item = AIR;
-//   tile.amount = 1;
-// }
-//
 // let isMouseDown = false;
 // let startAmount = 0;
 // const smeared = new Set<number>();
