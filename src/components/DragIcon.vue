@@ -13,15 +13,19 @@
 <script setup lang="ts">
 import Icon from "./Icon.vue";
 import { useStore } from "@/store";
-import { onMounted } from "vue";
+import {onMounted, onUnmounted} from "vue";
 
 const store = useStore();
 
-onMounted(() => {
-  window.addEventListener("mousemove", (event: MouseEvent) => {
-    const { clientX: x, clientY: y } = event;
+function mousemove(event: MouseEvent) {
+  const { clientX: x, clientY: y } = event;
+  store.mouse = { x, y };
+}
 
-    store.mouse = { x, y };
-  });
+onMounted(() => {
+  window.addEventListener("mousemove", mousemove);
 });
+onUnmounted(() => {
+  window.removeEventListener("mousemove", mousemove);
+})
 </script>
