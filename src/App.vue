@@ -18,9 +18,11 @@ import { ref } from "vue";
 const selection = useStore();
 const root = ref();
 
-document.body.addEventListener("click", function clickOutsideEvent(event) {
+document.body.addEventListener("click", function clickOutsideEvent(event: MouseEvent) {
   if (!(root.value == event.target || root.value.contains(event.target))) {
     selection.drop();
   }
 });
+
+document.body.addEventListener("contextmenu", (e) => e.preventDefault());
 </script>
