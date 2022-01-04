@@ -110,21 +110,43 @@ export const useStore = defineStore("selection", () => {
   }
 
   function dblClick(tile: Tile): void {
-    for (const neighbour of tiles) {
-      const { item, amount } = tile.value;
-      const stackLeft = item.stackSize - amount;
+    const stackedNeighbours = [];
+    const { item, amount } = tile.value;
+    let stackLeft = item.stackSize - amount;
 
+    for (const neighbour of tiles) {
+      const { item: neighbourItem, amount: neighbourAmount} = neighbour.value;
+
+      if (stackLeft === 0) {
+        break;
+      }
       if (neighbour === tile) {
         continue;
       }
-      if (!equals(neighbour.value.item, item)) {
+      if (!equals(neighbourItem, item)) {
         continue;
       }
+      // Try to avoid neighbours that are a full stack.
+      if (neighbourAmount === item.stackSize) {
+        stackedNeighbours.push(neighbour);
+        continue;
+      }
+
+      const take = Math.min(neighbourAmount, stackLeft);
+      stackLeft -= take;
+
+      transfer(neighbour, tile, take);
+    }
+
+    for (const neighbour of stackedNeighbours) {
+      const { amount: neighbourAmount} = neighbour.value;
+
       if (stackLeft === 0) {
         break;
       }
 
-      const take = Math.min(neighbour.value.amount, stackLeft);
+      const take = Math.min(neighbourAmount, stackLeft);
+      stackLeft -= take;
 
       transfer(neighbour, tile, take);
     }
