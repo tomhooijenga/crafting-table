@@ -115,7 +115,7 @@ export const useStore = defineStore("selection", () => {
     let stackLeft = item.stackSize - amount;
 
     for (const neighbour of tiles) {
-      const { item: neighbourItem, amount: neighbourAmount} = neighbour.value;
+      const { item: neighbourItem, amount: neighbourAmount } = neighbour.value;
 
       if (stackLeft === 0) {
         break;
@@ -139,7 +139,7 @@ export const useStore = defineStore("selection", () => {
     }
 
     for (const neighbour of stackedNeighbours) {
-      const { amount: neighbourAmount} = neighbour.value;
+      const { amount: neighbourAmount } = neighbour.value;
 
       if (stackLeft === 0) {
         break;
@@ -188,16 +188,20 @@ export const useStore = defineStore("selection", () => {
   function mouseup(tile: Tile): void {
     isMousedown = false;
     filled.clear();
+
+    if (selection.value.amount <= 0) {
+      drop();
+    }
   }
 
   function mouseleave(tile: Tile): void {
+    // Only the first tile gets filled on mouse leave.
     if (filled.size === 0) {
       mouseenter(tile);
     }
   }
 
   function mouseenter(tile: Tile): void {
-    console.log('move')
     const { item } = tile.value;
     const { item: selectionItem } = selection.value;
 
@@ -246,6 +250,6 @@ export const useStore = defineStore("selection", () => {
     mousedown,
     mouseup,
     mouseenter,
-    mouseleave
+    mouseleave,
   };
 });
