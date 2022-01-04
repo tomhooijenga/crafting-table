@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import Icon from "./Icon.vue";
 import { useStore } from "@/store";
-import {onMounted, onUnmounted} from "vue";
+import { onMounted, onUnmounted } from "vue";
 
 const store = useStore();
 
@@ -27,5 +27,5 @@ onMounted(() => {
 });
 onUnmounted(() => {
   window.removeEventListener("mousemove", mousemove);
-})
+});
 </script>

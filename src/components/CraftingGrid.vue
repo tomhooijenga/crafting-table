@@ -10,6 +10,10 @@
           @click.right="store.rightClick(grid[index])"
           @click.shift.exact="store.shiftClick(grid[index])"
           @dblclick="store.dblClick(grid[index])"
+          @mousedown="store.mousedown(grid[index])"
+          @mouseup="store.mouseup(grid[index])"
+          @mouseenter="store.mouseenter(grid[index])"
+          @mouseleave="store.mouseleave(grid[index])"
         />
       </div>
       <div class="w-12 flex items-center justify-center">
@@ -27,6 +31,10 @@
         @click.right="store.rightClick(inventory[index])"
         @click.shift.exact="store.shiftClick(inventory[index])"
         @dblclick="store.dblClick(inventory[index])"
+        @mouseup="store.mouseup(inventory[index])"
+        @mousedown="store.mousedown(inventory[index])"
+        @mouseenter="store.mouseenter(inventory[index])"
+        @mouseleave="store.mouseleave(inventory[index])"
       />
     </div>
 
@@ -39,6 +47,10 @@
         @click.right="store.rightClick(hotbar[index])"
         @click.shift.exact="store.shiftClick(hotbar[index])"
         @dblclick="store.dblClick(hotbar[index])"
+        @mousedown="store.mousedown(hotbar[index])"
+        @mouseup="store.mouseup(hotbar[index])"
+        @mouseenter="store.mouseenter(hotbar[index])"
+        @mouseleave="store.mouseleave(hotbar[index])"
       />
     </div>
   </Panel>
@@ -61,54 +73,6 @@ const hotbar = store.createRegion(9);
 hotbar[0].value = { item: getItem(44), amount: 8 };
 hotbar[1].value = { item: getItem(44), amount: 8 };
 
-// let isMouseDown = false;
-// let startAmount = 0;
-// const smeared = new Set<number>();
-//
-// function mousedown() {
-//   isMouseDown = true;
-//   startAmount = selection.itemAmount.amount;
-// }
-//
-// function mouseup(index: number) {
-//   isMouseDown = false;
-//   const amount = [...smeared]
-//     .map((index) => grid[index].amount)
-//     .reduce((sum, amount) => sum + amount, 0);
-//   selection.itemAmount.amount -= amount;
-//   smeared.clear();
-// }
-//
-// function mouseleave(index: number) {
-//   if (smeared.size === 0) {
-//     mouseenter(index);
-//   }
-// }
-//
-// function mouseenter(index: number) {
-//   const tile = grid[index];
-//   const validItem =
-//     equals(tile.item, AIR) || equals(tile.item, selection.itemAmount.item);
-//
-//   if (isMouseDown && validItem && selection.itemAmount.item) {
-//     smeared.add(index);
-//
-//     const amount = Math.floor(startAmount / smeared.size);
-//
-//     grid[index].item = selection.itemAmount.item;
-//     selection.itemAmount.amount = startAmount - amount * smeared.size;
-//
-//     smeared.forEach((index) => {
-//       grid[index].amount = amount;
-//     });
-//
-//     // Placed last of stack, drop
-//     if (amount === 1 && smeared.size === startAmount) {
-//       selection.drop();
-//     }
-//   }
-// }
-//
 const craftedRecipe = computed<UnshapedRecipe | ShapedRecipe | null>(
   () => null
 );

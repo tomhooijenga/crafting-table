@@ -140,7 +140,7 @@ export const useStore = defineStore("selection", () => {
       }
 
       const available =
-          // Find first of own item, or air.
+        // Find first of own item, or air.
         region.find((neighbour) => {
           return (
             equals(neighbour.value.item, tile.value.item) && neighbour !== tile
@@ -150,6 +150,63 @@ export const useStore = defineStore("selection", () => {
       if (available) {
         transfer(tile, available);
         break;
+      }
+    }
+  }
+
+  let isMousedown = false;
+  let startAmount = 0;
+  const filled = new Map<Tile, number>();
+
+  function mousedown(tile: Tile): void {
+    isMousedown = true;
+    startAmount = selection.value.amount;
+  }
+
+  function mouseup(tile: Tile): void {
+    isMousedown = false;
+    filled.clear();
+  }
+
+  function mouseleave(tile: Tile): void {
+    if (filled.size === 0) {
+      mouseenter(tile);
+    }
+  }
+
+  function mouseenter(tile: Tile): void {
+    console.log('move')
+    const { item } = tile.value;
+    const { item: selectionItem } = selection.value;
+
+    const validTarget = equals(item, AIR) || equals(item, selectionItem);
+
+    if (isMousedown && validTarget && selectionItem && !filled.has(tile)) {
+      filled.set(tile, tile.value.amount);
+
+      const perTileAmount = Math.floor(startAmount / filled.size);
+      let amountLeft = startAmount;
+      for (const [neighbour, originalAmount] of filled) {
+        const actualTileAmount = Math.min(
+          originalAmount + perTileAmount,
+          selectionItem.stackSize
+        );
+        amountLeft -= actualTileAmount;
+
+        neighbour.value = {
+          item: selectionItem,
+          amount: actualTileAmount,
+        };
+      }
+
+      selection.value = {
+        item: selectionItem,
+        amount: amountLeft,
+      };
+
+      // Placed last of stack, drop
+      if (perTileAmount === 1 && filled.size === startAmount) {
+        drop();
       }
     }
   }
@@ -164,5 +221,9 @@ export const useStore = defineStore("selection", () => {
     shiftClick,
     rightClick,
     dblClick,
+    mousedown,
+    mouseup,
+    mouseenter,
+    mouseleave
   };
 });
