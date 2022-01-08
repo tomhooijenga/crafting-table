@@ -1,3 +1,13 @@
+@font-face {
+    font-family: 'Minecraft';
+    src:url('@/assets/fonts/Minecraft-Regular.woff') format('woff'),
+    url('@/assets/fonts/Minecraft-Regular.svg#Minecraft-Regular') format('svg'),
+    url('@/assets/fonts/Minecraft-Regular.eot'),
+    url('@/assets/fonts/Minecraft-Regular.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
