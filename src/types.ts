@@ -1,4 +1,4 @@
-import {Ref} from "vue";
+import { Ref } from "vue";
 
 export interface Item {
   id: number;
@@ -27,18 +27,18 @@ export type Icon =
     };
 
 type RecipeBase = {
-    result: {
-        count: number;
-        id: number;
-    };
-}
+  result: {
+    count: number;
+    id: number;
+  };
+};
 
 export type UnshapedRecipe = {
-    ingredients: number[]
+  ingredients: number[];
 } & RecipeBase;
 
 export type ShapedRecipe = {
-    inShape: (number | null)[][];
+  inShape: (number | null)[][];
 } & RecipeBase;
 
 export type Recipe = ShapedRecipe | UnshapedRecipe;

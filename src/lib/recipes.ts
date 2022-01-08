@@ -35,9 +35,7 @@ function padNull<T>(arr: Array<T>, length: number): Array<T> {
 //
 
 // Todo: Find recipes if items are mirrored.
-export function getByItems(
-  grid: ItemAmount[]
-): Recipe | null {
+export function getByItems(grid: ItemAmount[]): Recipe | null {
   const items = grid.map(({ item }) => item);
   const shapedItems = getShapedItems(items);
   const unshapedItems = getUnshapedItems(items);
@@ -50,6 +48,33 @@ export function getByItems(
     }
   }
   return null;
+}
+
+export function hasEnoughItems(recipe: Recipe, inventory: Item[]): boolean {
+  const itemAmounts = inventory.reduce<Record<number, number>>(
+    (amounts, item) => {
+      amounts[item.id] = (amounts[item.id] || 0) + 1;
+      return amounts;
+    },
+    {}
+  );
+
+  const ingredients = isShaped(recipe)
+    ? recipe.inShape.flat().filter((id): id is number => id !== null)
+    : recipe.ingredients;
+
+  for (const ingredient of ingredients) {
+    if (ingredient in itemAmounts) {
+      if (itemAmounts[ingredient] === 0) {
+        return false;
+      }
+
+      itemAmounts[ingredient]--;
+    } else {
+      return false;
+    }
+  }
+  return true;
 }
 //
 // function getRecipesUsingItem(item: Item): Array<ShapedRecipe | UnshapedRecipe> {
@@ -160,8 +185,6 @@ function canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {
   return items.every(({ id }) => ingredients.includes(id));
 }
 
-export function isShaped(
-  recipe: Recipe
-): recipe is ShapedRecipe {
+export function isShaped(recipe: Recipe): recipe is ShapedRecipe {
   return "inShape" in recipe;
 }

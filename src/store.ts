@@ -10,8 +10,13 @@ const EMPTY = { item: AIR, amount: 0 };
 // Todo: Press Shift+Q, throw stack
 export const useStore = defineStore("selection", () => {
   const selection = ref(EMPTY);
-  const tiles = reactive<Tile[]>([]);
   const regions = reactive<Tile[][]>([]);
+
+  const tiles: Tile[] = [];
+  const grid = createRegion(9);
+  const inventory = createRegion(27);
+  const hotbar = createRegion(9);
+
   const mouse = reactive({
     x: 0,
     y: 0,

@@ -3,8 +3,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'mc': ['Minecraft']
-      }
+        mc: ["Minecraft"],
+      },
     },
   },
   plugins: [],
