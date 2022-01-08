@@ -1,3 +1,5 @@
+import {Ref} from "vue";
+
 export interface Item {
   id: number;
   displayName: string;
@@ -24,19 +26,23 @@ export type Icon =
       y: number;
     };
 
-export interface ItemRecipe extends Array<UnshapedRecipe | ShapedRecipe> {}
-
-interface Recipe {
-  result: {
-    count: number;
-    id: number;
-  };
+type RecipeBase = {
+    result: {
+        count: number;
+        id: number;
+    };
 }
 
-export interface UnshapedRecipe extends Recipe {
-  ingredients: Array<number | null>;
-}
+export type UnshapedRecipe = {
+    ingredients: number[]
+} & RecipeBase;
 
-export interface ShapedRecipe extends Recipe {
-  inShape: Array<number | null>[];
-}
+export type ShapedRecipe = {
+    inShape: (number | null)[][];
+} & RecipeBase;
+
+export type Recipe = ShapedRecipe | UnshapedRecipe;
+
+export type ItemRecipe = Recipe[];
+
+export type Tile = Ref<Readonly<ItemAmount>>;

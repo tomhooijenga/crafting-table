@@ -1,9 +1,8 @@
 import { defineStore } from "pinia";
-import { ItemAmount } from "./types";
+import { Tile } from "./types";
 import { AIR, equals } from "@/lib/items";
-import { reactive, ref, Ref } from "vue";
+import { reactive, ref } from "vue";
 
-type Tile = Ref<Readonly<ItemAmount>>;
 const EMPTY = { item: AIR, amount: 0 };
 
 // Todo: point + <num> key places from hotbar
@@ -241,10 +240,13 @@ export const useStore = defineStore("selection", () => {
   }
 
   return {
+    grid,
+    inventory,
+    hotbar,
     selection,
     mouse,
 
-    createRegion,
+    transfer,
     drop,
     click,
     shiftClick,

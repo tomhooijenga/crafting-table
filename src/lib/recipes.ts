@@ -3,12 +3,13 @@ import {
   Item,
   ItemAmount,
   ItemRecipe,
+  Recipe,
   ShapedRecipe,
   UnshapedRecipe,
 } from "@/types";
 import { AIR, equals } from "@/lib/items";
 
-const recipes = _recipes as Record<string, ItemRecipe>;
+export const recipes = _recipes as Record<string, ItemRecipe>;
 
 function padNull<T>(arr: Array<T>, length: number): Array<T> {
   return arr.concat(new Array(length - arr.length).fill(null));
@@ -36,7 +37,7 @@ function padNull<T>(arr: Array<T>, length: number): Array<T> {
 // Todo: Find recipes if items are mirrored.
 export function getByItems(
   grid: ItemAmount[]
-): ShapedRecipe | UnshapedRecipe | null {
+): Recipe | null {
   const items = grid.map(({ item }) => item);
   const shapedItems = getShapedItems(items);
   const unshapedItems = getUnshapedItems(items);
@@ -65,7 +66,7 @@ function canMake(
   itemRecipe: ItemRecipe,
   shapedItems: (Item | null)[],
   unshapedItems: Item[]
-): ShapedRecipe | UnshapedRecipe | null {
+): Recipe | null {
   return (
     itemRecipe.find((recipe) => {
       if (isShaped(recipe)) {
@@ -159,8 +160,8 @@ function canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {
   return items.every(({ id }) => ingredients.includes(id));
 }
 
-function isShaped(
-  recipe: ShapedRecipe | UnshapedRecipe
+export function isShaped(
+  recipe: Recipe
 ): recipe is ShapedRecipe {
   return "inShape" in recipe;
 }
