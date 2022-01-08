@@ -6,6 +6,9 @@ import { reactive, ref, Ref } from "vue";
 type Tile = Ref<Readonly<ItemAmount>>;
 const EMPTY = { item: AIR, amount: 0 };
 
+// Todo: point + <num> key places from hotbar
+// Todo: Press Q, throw 1
+// Todo: Press Shift+Q, throw stack
 export const useStore = defineStore("selection", () => {
   const selection = ref(EMPTY);
   const tiles = reactive<Tile[]>([]);

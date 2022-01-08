@@ -32,6 +32,8 @@ function padNull<T>(arr: Array<T>, length: number): Array<T> {
 //   }
 // }
 //
+
+// Todo: Find recipes if items are mirrored.
 export function getByItems(
   grid: ItemAmount[]
 ): ShapedRecipe | UnshapedRecipe | null {
