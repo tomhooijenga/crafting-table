@@ -21,13 +21,11 @@
 
 <script setup lang="ts">
 import Panel from "@/components/Panel.vue";
-import { hasEnoughItems, isShaped, recipes } from "@/lib/recipes";
+import {hasEnoughItems, isShaped, padNull, recipes} from "@/lib/recipes";
 import { computed, ref, unref } from "vue";
-
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
 import { useStore } from "@/store";
-import { equals } from "@/lib/items";
 
 const flatRecipes = Object.values(recipes).flat();
 const page = ref(0);
@@ -38,12 +36,12 @@ const currentPage = computed(() => {
   return flatRecipes.slice(start, start + pageSize);
 });
 
-const { grid, inventory, hotbar, transfer } = useStore();
+const { grid, inventory, hotbar, transfer, transferAll } = useStore();
 
 function craftable(recipe: Recipe): boolean {
   return hasEnoughItems(
     recipe,
-    inventory.concat(hotbar).map((tile) => unref(tile).item)
+    grid.concat(inventory, hotbar).map((tile) => unref(tile))
   );
 }
 
@@ -58,9 +56,21 @@ function fillGrid(recipe: Recipe) {
   lastRecipe = recipe;
   taken = {};
 
+  let ingredients: (number | null)[];
+
   if (isShaped(recipe)) {
-    return;
+    ingredients = [...recipe.inShape]
+        .reverse()
+        .map((row) => padNull(row, 3))
+        .flat()
+  } else {
+    ingredients = recipe.ingredients;
   }
+
+  ingredients.forEach((itemId, index) => {
+    if (itemId === null) {
+      return;
+    }
 
   recipe.ingredients.forEach((itemId, index) => {
     const tile = inventory

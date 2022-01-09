@@ -11,7 +11,7 @@ import { AIR, equals } from "@/lib/items";
 
 export const recipes = _recipes as Record<string, ItemRecipe>;
 
-function padNull<T>(arr: Array<T>, length: number): Array<T> {
+export function padNull<T>(arr: Array<T>, length: number): Array<T> {
   return arr.concat(new Array(length - arr.length).fill(null));
 }
 
@@ -50,10 +50,10 @@ export function getByItems(grid: ItemAmount[]): Recipe | null {
   return null;
 }
 
-export function hasEnoughItems(recipe: Recipe, inventory: Item[]): boolean {
+export function hasEnoughItems(recipe: Recipe, inventory: ItemAmount[]): boolean {
   const itemAmounts = inventory.reduce<Record<number, number>>(
-    (amounts, item) => {
-      amounts[item.id] = (amounts[item.id] || 0) + 1;
+    (amounts, { item, amount}) => {
+      amounts[item.id] = (amounts[item.id] || 0) + amount;
       return amounts;
     },
     {}
@@ -103,10 +103,10 @@ function canMake(
   );
 }
 
-function getShapedItems(items: Item[]): (Item | null)[] {
+export function getShapedItems(items: Item[]): (Item | null)[] {
   let result = [...items].map((item) => (equals(item, AIR) ? null : item));
 
-  // Move empty columns from left to right
+  // Remove leading empty columns
   for (let i = 0; i < 3; i++) {
     if (result[0] === null && result[3] === null && result[6] === null) {
       result = [
