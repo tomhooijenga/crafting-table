@@ -15,25 +15,6 @@ export function padNull<T>(arr: Array<T>, length: number): Array<T> {
   return arr.concat(new Array(length - arr.length).fill(null));
 }
 
-//
-// function getItemsForRecipe(recipe: ShapedRecipe | UnshapedRecipe): Item[] {
-//   if (isShaped(recipe)) {
-//     return padNull([...recipe.inShape].reverse(), 3)
-//       .map((row) => {
-//         if (row === null) {
-//           return padNull([], 3);
-//         }
-//         return padNull(row, 3);
-//       })
-//       .flat()
-//       .map((id) => getItem(id));
-//   } else {
-//     return padNull(recipe.ingredients, 9)
-//       .map((id) => getItem(id));
-//   }
-// }
-//
-
 // Todo: Find recipes if items are mirrored.
 export function getByItems(grid: ItemAmount[]): Recipe | null {
   const items = grid.map(({ item }) => item);
@@ -41,7 +22,7 @@ export function getByItems(grid: ItemAmount[]): Recipe | null {
   const unshapedItems = getUnshapedItems(items);
 
   for (const itemRecipe of Object.values(recipes)) {
-    const foundRecipe = canMake(itemRecipe, shapedItems, unshapedItems);
+    const foundRecipe = recipeEqualsItems(itemRecipe, shapedItems, unshapedItems);
 
     if (foundRecipe) {
       return foundRecipe;
@@ -54,7 +35,14 @@ export function hasEnoughItems(
   recipe: Recipe,
   inventory: ItemAmount[]
 ): boolean {
-  const itemAmounts = inventory.reduce<Record<number, number>>(
+  return craftableAmount(recipe, inventory) > 0;
+}
+
+export function craftableAmount(
+  recipe: Recipe,
+  inventory: ItemAmount[]
+): number {
+  const itemAmounts = inventory.reduce<Record<string, number>>(
     (amounts, { item, amount }) => {
       amounts[item.id] = (amounts[item.id] || 0) + amount;
       return amounts;
@@ -66,31 +54,24 @@ export function hasEnoughItems(
     ? recipe.inShape.flat().filter((id): id is number => id !== null)
     : recipe.ingredients;
 
-  for (const ingredient of ingredients) {
-    if (ingredient in itemAmounts) {
-      if (itemAmounts[ingredient] === 0) {
-        return false;
-      }
+  const ingredientAmounts = ingredients.reduce<Record<string, number>>(
+    (amounts, itemId) => {
+      amounts[itemId] = (amounts[itemId] || 0) + 1;
+      return amounts;
+    },
+    {}
+  );
 
-      itemAmounts[ingredient]--;
-    } else {
-      return false;
+  return Object.entries(ingredientAmounts).reduce((min, [itemId, amount]) => {
+    if (!(itemId in itemAmounts)) {
+      return 0;
     }
-  }
-  return true;
-}
-//
-// function getRecipesUsingItem(item: Item): Array<ShapedRecipe | UnshapedRecipe> {
-//   return Object
-//     .values(recipes)
-//     .map((itemRecipe: ItemRecipe) => {
-//       return itemRecipe.filter((recipe) => {
-//         return getItemsForRecipe(recipe).includes(item);
-//       });
-//     }).flat();
-// }
 
-function canMake(
+    return Math.min(min, itemAmounts[itemId] / amount);
+  }, Infinity);
+}
+
+function recipeEqualsItems(
   itemRecipe: ItemRecipe,
   shapedItems: (Item | null)[],
   unshapedItems: Item[]
@@ -98,9 +79,9 @@ function canMake(
   return (
     itemRecipe.find((recipe) => {
       if (isShaped(recipe)) {
-        return canMakeShaped(recipe, shapedItems);
+        return shapedRecipeEqualsItems(recipe, shapedItems);
       } else {
-        return canMakeUnshaped(recipe, unshapedItems);
+        return unshapedRecipeEqualsItems(recipe, unshapedItems);
       }
     }) || null
   );
@@ -154,7 +135,7 @@ export function getShapedItems(items: Item[]): (Item | null)[] {
   return result;
 }
 
-function canMakeShaped(recipe: ShapedRecipe, items: (Item | null)[]): boolean {
+function shapedRecipeEqualsItems(recipe: ShapedRecipe, items: (Item | null)[]): boolean {
   // Recipes are stored upside down
   const inShape = [...recipe.inShape]
     .reverse()
@@ -178,7 +159,7 @@ function getUnshapedItems(items: Item[]): Item[] {
   return items.filter((item) => item !== null && !equals(item, AIR));
 }
 
-function canMakeUnshaped(recipe: UnshapedRecipe, items: Item[]): boolean {
+function unshapedRecipeEqualsItems(recipe: UnshapedRecipe, items: Item[]): boolean {
   const { ingredients } = recipe;
 
   if (ingredients.length !== items.length) {

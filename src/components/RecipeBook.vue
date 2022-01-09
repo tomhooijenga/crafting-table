@@ -40,7 +40,13 @@
 
 <script setup lang="ts">
 import Panel from "@/components/Panel.vue";
-import { hasEnoughItems, isShaped, padNull, recipes } from "@/lib/recipes";
+import {
+  craftableAmount,
+  hasEnoughItems,
+  isShaped,
+  padNull,
+  recipes,
+} from "@/lib/recipes";
 import { computed, ref, unref, watch } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
@@ -98,17 +104,14 @@ const currentPage = computed(() => {
 const { grid, inventory, hotbar, transfer, transferAll } = useStore();
 
 function craftable(recipe: Recipe): boolean {
-  return hasEnoughItems(
-    recipe,
-    grid.concat(inventory, hotbar).map((tile) => unref(tile))
-  );
+  return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));
 }
 
 let lastRecipe: Recipe;
 let taken: Record<number, Tile> = {};
 
 function fillGrid(recipe: Recipe, all: boolean) {
-  if (lastRecipe !== recipe) {
+  if (all || lastRecipe !== recipe) {
     removeRecipe();
   }
 
@@ -126,6 +129,10 @@ function fillGrid(recipe: Recipe, all: boolean) {
     ingredients = recipe.ingredients;
   }
 
+  const amount = all
+    ? craftableAmount(recipe, grid.concat(inventory, hotbar).map(unref))
+    : 1;
+
   ingredients.forEach((itemId, index) => {
     if (itemId === null) {
       return;
@@ -140,7 +147,7 @@ function fillGrid(recipe: Recipe, all: boolean) {
     }
 
     taken[index] = tile;
-    transfer(tile, grid[index], 1);
+    transfer(tile, grid[index], amount);
   });
 }
 
