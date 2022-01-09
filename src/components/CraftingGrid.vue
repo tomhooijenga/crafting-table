@@ -2,7 +2,7 @@
   <Panel>
     <div class="flex justify-center">
       <div class="inline-grid grid-flow-row auto-rows-max">
-        <span class="font-mc text-[#3f3f3f] text-lg">Crafting</span>
+        <span class="text-[#3f3f3f] text-lg">Crafting</span>
         <div class="flex">
           <div class="grid grid-cols-3">
             <GridTile
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <span class="font-mc text-[#3f3f3f] text-lg">Inventory</span>
+    <span class="text-[#3f3f3f] text-lg">Inventory</span>
     <div class="grid grid-cols-9">
       <GridTile
         v-for="(n, index) in inventory.length"

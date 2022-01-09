@@ -1,5 +1,5 @@
 <template>
-  <section ref="root" class="flex h-[368px] space-x-2">
+  <section ref="root" class="flex h-[368px] space-x-2 font-mc">
     <RecipeBook />
     <CraftingGrid />
     <Inventory />
