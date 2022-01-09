@@ -78,24 +78,7 @@ function fillGrid(recipe: Recipe) {
 
 function removeRecipe() {
   grid.forEach((tile) => {
-    let { item: gridItem, amount: gridAmount } = tile.value;
-
-    for (const neighbours of inventory.concat(hotbar)) {
-      const { item, amount } = neighbours.value;
-      const transferAmount = Math.min(gridAmount, item.stackSize - amount);
-
-      if (!equals(gridItem, item)) {
-        continue;
-      }
-
-      transfer(tile, neighbours, transferAmount);
-
-      gridAmount -= transferAmount;
-
-      if (gridAmount === 0) {
-        break;
-      }
-    }
+    transferAll(tile, inventory.concat(hotbar));
   });
 }
 </script>

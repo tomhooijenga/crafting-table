@@ -26,6 +26,10 @@
             class="my-auto"
             :item="craftedItem"
             :amount="craftedAmount"
+            @click.exact="craft(false)"
+            @click.right.exact="craft(false)"
+            @click.shift.exact="craft(true)"
+            @click.right.shift.exact="craft(true)"
           />
         </div>
       </div>
@@ -96,4 +100,14 @@ const craftedItem = computed(() => {
   return getItem(craftedRecipe.value.result.id);
 });
 const craftedAmount = computed(() => craftedRecipe.value?.result.count ?? 0);
+
+function craft(all: boolean) {
+  if (craftedRecipe.value) {
+    if (all) {
+      store.craftAll(craftedRecipe.value);
+    } else {
+      store.craft(craftedRecipe.value);
+    }
+  }
+}
 </script>

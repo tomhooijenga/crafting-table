@@ -1,5 +1,5 @@
 import _items from "@/assets/data/items.json";
-import { Item } from "@/types";
+import { Item, Tile } from "@/types";
 
 const items = _items as Record<string, Item>;
 
@@ -11,4 +11,13 @@ export function getItem(id: string | number): Item {
 
 export function equals(item: Item, item2: Item): boolean {
   return item.id === item2.id;
+}
+
+export function tileStackLeft(
+  tile: Tile,
+  item: Item = tile.value.item
+): number {
+  const { amount } = tile.value;
+
+  return item.stackSize - amount;
 }

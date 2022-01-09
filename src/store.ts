@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { Tile } from "./types";
-import { AIR, equals } from "@/lib/items";
+import { Recipe, Tile } from "./types";
+import { AIR, equals, getItem, tileStackLeft } from "@/lib/items";
 import { reactive, ref } from "vue";
 
-const EMPTY = { item: AIR, amount: 0 };
+export const EMPTY = { item: AIR, amount: 0 };
 
 // Todo: point + <num> key places from hotbar
 // Todo: Press Q, throw 1
@@ -46,6 +46,38 @@ export const useStore = defineStore("selection", () => {
       item: fromItem,
       amount: newToAmount,
     };
+  }
+
+  function transferAll(from: Tile, to: Tile[]): number {
+    const { item } = from.value
+    const targets = to
+      .filter(
+        (tile) =>
+          equals(tile.value.item, AIR) ||
+          equals(tile.value.item, item)
+      )
+      .sort((a, b) => {
+        if (equals(a.value.item, b.value.item)) {
+          return 0;
+        }
+
+        return equals(a.value.item, AIR) ? 1 : -1;
+      });
+
+    const startAmount = from.value.amount;
+    let transferAmount = startAmount;
+
+    for (const target of targets) {
+      const amount = Math.min(transferAmount, tileStackLeft(target, item));
+      transfer(from, target, amount);
+
+      transferAmount -= amount;
+      if (transferAmount === 0) {
+        break;
+      }
+    }
+
+    return startAmount - transferAmount;
   }
 
   function createRegion(amount: number): Tile[] {
@@ -118,8 +150,8 @@ export const useStore = defineStore("selection", () => {
 
   function dblClick(tile: Tile): void {
     const stackedNeighbours = [];
-    const { item, amount } = tile.value;
-    let stackLeft = item.stackSize - amount;
+    const { item } = tile.value;
+    let stackLeft = tileStackLeft(tile);
 
     for (const neighbour of tiles) {
       const { item: neighbourItem, amount: neighbourAmount } = neighbour.value;
@@ -244,6 +276,59 @@ export const useStore = defineStore("selection", () => {
     }
   }
 
+  function craft(recipe: Recipe) {
+    const item = getItem(recipe.result.id);
+
+    if (
+      !equals(selection.value.item, AIR) &&
+      !equals(selection.value.item, item)
+    ) {
+      return;
+    }
+
+    const crafted = ref({
+      item,
+      amount: recipe.result.count,
+    });
+
+    transfer(crafted, selection);
+
+    const trash: Tile = ref(EMPTY);
+    grid.forEach((tile) => {
+      transfer(tile, trash, 1);
+    });
+  }
+
+  function craftAll(recipe: Recipe) {
+    const item = getItem(recipe.result.id);
+
+    if (
+      !equals(selection.value.item, AIR) &&
+      !equals(selection.value.item, item)
+    ) {
+      return;
+    }
+
+    const trash: Tile = ref(EMPTY);
+
+    let recipeAmount = Math.min(
+      ...grid
+        .filter((tile) => !equals(tile.value.item, AIR))
+        .map((tile) => tile.value.amount)
+    );
+
+    const crafted = ref({
+      item,
+      amount: recipeAmount * recipe.result.count,
+    });
+
+    const transferred = transferAll(crafted, inventory.concat(hotbar));
+
+    grid.forEach((tile) => {
+      transfer(tile, trash, transferred / recipe.result.count);
+    });
+  }
+
   return {
     grid,
     inventory,
@@ -252,6 +337,7 @@ export const useStore = defineStore("selection", () => {
     mouse,
 
     transfer,
+    transferAll,
     drop,
     click,
     shiftClick,
@@ -261,5 +347,8 @@ export const useStore = defineStore("selection", () => {
     mouseup,
     mouseenter,
     mouseleave,
+
+    craft,
+    craftAll,
   };
 });
