@@ -50,9 +50,12 @@ export function getByItems(grid: ItemAmount[]): Recipe | null {
   return null;
 }
 
-export function hasEnoughItems(recipe: Recipe, inventory: ItemAmount[]): boolean {
+export function hasEnoughItems(
+  recipe: Recipe,
+  inventory: ItemAmount[]
+): boolean {
   const itemAmounts = inventory.reduce<Record<number, number>>(
-    (amounts, { item, amount}) => {
+    (amounts, { item, amount }) => {
       amounts[item.id] = (amounts[item.id] || 0) + amount;
       return amounts;
     },

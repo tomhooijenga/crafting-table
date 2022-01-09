@@ -49,12 +49,10 @@ export const useStore = defineStore("selection", () => {
   }
 
   function transferAll(from: Tile, to: Tile[]): number {
-    const { item } = from.value
+    const { item } = from.value;
     const targets = to
       .filter(
-        (tile) =>
-          equals(tile.value.item, AIR) ||
-          equals(tile.value.item, item)
+        (tile) => equals(tile.value.item, AIR) || equals(tile.value.item, item)
       )
       .sort((a, b) => {
         if (equals(a.value.item, b.value.item)) {
