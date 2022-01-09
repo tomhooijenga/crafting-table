@@ -11,7 +11,7 @@
 <script setup lang="ts">
 import { Icon, Item } from "@/types";
 import { computed } from "vue";
-import { getIcon } from "@/lib/icon";
+import { getIcon } from "@/lib/icons";
 import sprite from "@/assets/sprite.png";
 
 const props = defineProps<{
