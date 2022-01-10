@@ -1,8 +1,10 @@
 <template>
   <div
-    class="p-0.5 border-2 border-t-[#370501] border-r-white border-b-white border-l-[#370501] bg-[#8B8B8B] hover:bg-[#BEBEBE]"
+    class="flex justify-center items-center border-2 border-t-[#370501] border-r-white border-b-white border-l-[#370501] bg-[#8B8B8B]"
   >
-    <Icon :item="item" :amount="amount" />
+    <div class="hover:bg-[#BEBEBE]">
+      <Icon :item="item" :amount="amount" />
+    </div>
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div :title="item.displayName" class="relative w-8 h-8" :style="style">
+  <div :title="item.displayName" class="relative w-8 h-8 m-0.5" :style="style">
     <span
       v-if="amount && amount > 1"
       v-text="amount"

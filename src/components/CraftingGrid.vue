@@ -1,8 +1,16 @@
 <template>
   <Panel>
-    <div class="flex justify-center">
-      <div class="inline-grid grid-flow-row auto-rows-max">
-        <span class="text-lg">Crafting</span>
+    <div>
+      <div class="inline-grid">
+        <span class="text-lg col-start-2">Crafting</span>
+
+        <div
+          class="my-auto mr-4"
+          :style="book.style.value"
+          @mouseenter="book.id.value = 'crafting_book_hover'"
+          @mouseleave="book.id.value = 'crafting_book'"
+        ></div>
+
         <div class="flex">
           <div class="grid grid-cols-3">
             <GridTile
@@ -19,11 +27,10 @@
               @mouseleave="store.mouseleave(grid[index])"
             />
           </div>
-          <div class="w-12 flex items-center justify-center">
-            <img src="@/assets/arrow.png" />
-          </div>
+          <div class="my-auto mx-[0.875rem]" :style="arrow.style.value"></div>
+
           <GridTile
-            class="my-auto"
+            class="my-auto h-[3.375rem] w-[3.375rem]"
             :item="craftedItem"
             :amount="craftedAmount"
             @click.exact="craft(false)"
@@ -77,6 +84,7 @@ import { getByItems } from "@/lib/recipes";
 import { Recipe } from "@/types";
 import { AIR, getItem } from "@/lib/items";
 import { useStore } from "@/store";
+import { useSprite } from "@/lib/sprite";
 
 const store = useStore();
 const { grid, inventory, hotbar } = store;
@@ -106,4 +114,7 @@ function craft(all: boolean) {
     }
   }
 }
+
+const book = useSprite("crafting_book");
+const arrow = useSprite("crafting_arrow");
 </script>
