@@ -16,7 +16,6 @@
         <span v-if="page.length === 0" class="w-11"></span>
         <RecipeTile
           v-for="recipe of page"
-          :key="recipe"
           :recipe="recipe"
           :craftable="craftable(recipe)"
           @click.exact="fillGrid(recipe, false)"

@@ -1,4 +1,4 @@
-import { computed, ref } from "vue";
+import {computed, ref, StyleValue} from "vue";
 
 type SpriteEntry = {
   url: string;
@@ -48,7 +48,7 @@ export function getEntry(id: SpriteId | null): SpriteEntry | null {
 export function useSprite(initialId: SpriteId | null = null) {
   const id = ref<SpriteId | null>(initialId);
   const entry = computed(() => getEntry(id.value));
-  const style = computed(() => {
+  const style = computed((): StyleValue => {
     if (entry.value === null) {
       return {};
     }
