@@ -7,6 +7,7 @@
         <div
           class="my-auto mr-4"
           :style="book.style.value"
+          @click="uiStore.showBook = !uiStore.showBook"
           @mouseenter="book.id.value = 'crafting_book_hover'"
           @mouseleave="book.id.value = 'crafting_book'"
         ></div>
@@ -83,10 +84,12 @@ import { computed, unref } from "vue";
 import { getByItems } from "@/lib/recipes";
 import { Recipe } from "@/types";
 import { AIR, getItem } from "@/lib/items";
-import { useStore } from "@/store";
+import { useStore } from "@/stores/store";
 import { useSprite } from "@/lib/sprite";
+import { useUIStore } from "@/stores/ui";
 
 const store = useStore();
+const uiStore = useUIStore();
 const { grid, inventory, hotbar } = store;
 
 hotbar[0].value = { item: getItem(37), amount: 8 };

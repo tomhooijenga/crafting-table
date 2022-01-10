@@ -48,7 +48,7 @@ import {
 import { unref } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
-import { useStore } from "@/store";
+import { useStore } from "@/stores/store";
 import { getItem } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 

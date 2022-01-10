@@ -30,42 +30,44 @@
 <script setup lang="ts">
 import GridTile from "./GridTile.vue";
 import Panel from "./Panel.vue";
-import { useStore } from "@/store";
+import { useStore } from "@/stores/store";
 import { Item } from "@/types";
 import { items, AIR, equals } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 import { computed } from "vue";
+import { useSelectionStore } from "@/stores/selection";
 
 const store = useStore();
+const selectionStore = useSelectionStore();
 
 function leftClick(event: MouseEvent, item: Item) {
   const amount = event.shiftKey ? item.stackSize : 1;
 
-  if (equals(store.selection.item, AIR)) {
-    store.selection = { item, amount };
-  } else if (equals(store.selection.item, item)) {
-    store.selection.amount = Math.min(
-      store.selection.amount + amount,
+  if (equals(selectionStore.selection.item, AIR)) {
+    selectionStore.selection = { item, amount };
+  } else if (equals(selectionStore.selection.item, item)) {
+    selectionStore.selection.amount = Math.min(
+      selectionStore.selection.amount + amount,
       item.stackSize
     );
   }
   // click a different item, drop
   else {
-    store.drop();
+    selectionStore.drop();
   }
 }
 
 function rightClick(event: MouseEvent, item: Item) {
   // No item means pick up
-  if (equals(store.selection.item, AIR)) {
+  if (equals(selectionStore.selection.item, AIR)) {
     const amount = event.shiftKey ? item.stackSize : 1;
-    store.selection = { item, amount };
+    selectionStore.selection = { item, amount };
   }
   // Last item, drop
-  else if (store.selection.amount === 1) {
-    store.drop();
+  else if (selectionStore.selection.amount === 1) {
+    selectionStore.drop();
   } else {
-    store.selection.amount--;
+    selectionStore.selection.amount--;
   }
 }
 

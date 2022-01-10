@@ -1,26 +1,23 @@
-import { defineStore } from "pinia";
-import { Recipe, Tile } from "./types";
+import { defineStore, storeToRefs } from "pinia";
+import { Recipe, Tile } from "@/types";
 import { AIR, equals, getItem, tileStackLeft } from "@/lib/items";
-import { reactive, ref } from "vue";
+import { reactive, ref, toRaw, toRef } from "vue";
+import { useSelectionStore } from "@/stores/selection";
 
 export const EMPTY = { item: AIR, amount: 0 };
 
 // Todo: point + <num> key places from hotbar
 // Todo: Press Q, throw 1
 // Todo: Press Shift+Q, throw stack
-export const useStore = defineStore("selection", () => {
-  const selection = ref(EMPTY);
+export const useStore = defineStore("writableTile", () => {
+  const selectionStore = useSelectionStore();
+  const selection = toRef(selectionStore, "selection");
   const regions = reactive<Tile[][]>([]);
 
   const tiles: Tile[] = [];
   const grid = createRegion(9);
   const inventory = createRegion(27);
   const hotbar = createRegion(9);
-
-  const mouse = reactive({
-    x: 0,
-    y: 0,
-  });
 
   function transfer(from: Tile, to: Tile, transferAmount = from.value.amount) {
     const { item: fromItem, amount: fromAmount } = from.value;
@@ -96,11 +93,7 @@ export const useStore = defineStore("selection", () => {
     transfer(selection, tile, placeAmount);
   }
 
-  function drop(): void {
-    selection.value = EMPTY;
-  }
-
-  function swap(tile: Tile): void {
+  function swapSelectionToTile(tile: Tile): void {
     [tile.value, selection.value] = [selection.value, tile.value];
   }
 
@@ -121,7 +114,7 @@ export const useStore = defineStore("selection", () => {
     }
     // Items are not same, swap
     else {
-      swap(tile);
+      swapSelectionToTile(tile);
     }
   }
 
@@ -142,7 +135,7 @@ export const useStore = defineStore("selection", () => {
     }
     // Items are not same, swap
     else {
-      swap(tile);
+      swapSelectionToTile(tile);
     }
   }
 
@@ -227,7 +220,7 @@ export const useStore = defineStore("selection", () => {
     filled.clear();
 
     if (selection.value.amount <= 0) {
-      drop();
+      selectionStore.drop();
     }
   }
 
@@ -269,7 +262,7 @@ export const useStore = defineStore("selection", () => {
 
       // Placed last of stack, drop
       if (perTileAmount === 1 && filled.size === startAmount) {
-        drop();
+        selectionStore.drop();
       }
     }
   }
@@ -332,11 +325,9 @@ export const useStore = defineStore("selection", () => {
     inventory,
     hotbar,
     selection,
-    mouse,
 
     transfer,
     transferAll,
-    drop,
     click,
     shiftClick,
     rightClick,
