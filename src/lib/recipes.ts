@@ -1,4 +1,4 @@
-import _recipes from "../assets/data/recipes.json";
+import _recipes from "@/assets/data/recipes.json";
 import {
   Item,
   ItemAmount,
@@ -22,7 +22,11 @@ export function getByItems(grid: ItemAmount[]): Recipe | null {
   const unshapedItems = getUnshapedItems(items);
 
   for (const itemRecipe of Object.values(recipes)) {
-    const foundRecipe = recipeEqualsItems(itemRecipe, shapedItems, unshapedItems);
+    const foundRecipe = recipeEqualsItems(
+      itemRecipe,
+      shapedItems,
+      unshapedItems
+    );
 
     if (foundRecipe) {
       return foundRecipe;
@@ -135,7 +139,10 @@ export function getShapedItems(items: Item[]): (Item | null)[] {
   return result;
 }
 
-function shapedRecipeEqualsItems(recipe: ShapedRecipe, items: (Item | null)[]): boolean {
+function shapedRecipeEqualsItems(
+  recipe: ShapedRecipe,
+  items: (Item | null)[]
+): boolean {
   // Recipes are stored upside down
   const inShape = [...recipe.inShape]
     .reverse()
@@ -159,7 +166,10 @@ function getUnshapedItems(items: Item[]): Item[] {
   return items.filter((item) => item !== null && !equals(item, AIR));
 }
 
-function unshapedRecipeEqualsItems(recipe: UnshapedRecipe, items: Item[]): boolean {
+function unshapedRecipeEqualsItems(
+  recipe: UnshapedRecipe,
+  items: Item[]
+): boolean {
   const { ingredients } = recipe;
 
   if (ingredients.length !== items.length) {

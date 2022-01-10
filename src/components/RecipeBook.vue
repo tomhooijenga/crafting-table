@@ -13,8 +13,9 @@
       </div>
 
       <div class="grid grid-cols-5 h-auto gap-0.5">
+        <span v-if="page.length === 0" class="w-11"></span>
         <RecipeTile
-          v-for="recipe of currentPage"
+          v-for="recipe of page"
           :key="recipe"
           :recipe="recipe"
           :craftable="craftable(recipe)"
@@ -22,15 +23,12 @@
           @click.shift.exact="fillGrid(recipe, true)"
         />
       </div>
-      <div
-        class="grid grid-cols-3 mt-auto text-white text-lg"
-        v-if="pageCount > 1"
-      >
-        <button class="ml-auto" v-if="page > 0" @click="page--">&lt;</button>
+      <div class="grid grid-cols-3 mt-auto text-white text-lg" v-if="pages > 1">
+        <button class="ml-auto" v-if="index > 0" @click="index--">&lt;</button>
         <span class="col-start-2 text-center"
-          >{{ page + 1 }} / {{ pageCount }}</span
+          >{{ index + 1 }} / {{ pages }}</span
         >
-        <button class="mr-auto" v-if="page + 1 < pageCount" @click="page++">
+        <button class="mr-auto" v-if="index + 1 < pages" @click="index++">
           &gt;
         </button>
       </div>
@@ -47,59 +45,20 @@ import {
   padNull,
   recipes,
 } from "@/lib/recipes";
-import { computed, ref, unref, watch } from "vue";
+import { unref } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
 import { useStore } from "@/store";
 import { getItem } from "@/lib/items";
+import { useSearch } from "@/lib/searchable";
 
 const flatRecipes = Object.values(recipes).flat();
 
-const search = ref("");
-const page = ref(0);
-const pageSize = 20;
-
-function contains(query: string, string: string): boolean {
-  if (!query) {
-    return true;
-  }
-
-  let lastIndex = 0;
-  for (const char of query) {
-    const newIndex = string.indexOf(char, lastIndex);
-
-    if (newIndex === -1) {
-      return false;
-    }
-
-    lastIndex = newIndex;
-  }
-  return true;
-}
-
-const searchResult = computed(() => {
-  const query = search.value.trim().toLowerCase();
-  return flatRecipes.filter((recipe) => {
-    const item = getItem(recipe.result.id);
-
-    return contains(query, item.displayName.toLowerCase());
-  });
-});
-
-const pageCount = computed(() => {
-  return Math.ceil(searchResult.value.length / pageSize);
-});
-
-watch(pageCount, (count) => {
-  if (count < page.value) {
-    page.value = 0;
-  }
-});
-
-const currentPage = computed(() => {
-  const start = page.value * pageSize;
-  return searchResult.value.slice(start, start + pageSize);
-});
+const { search, index, page, pages } = useSearch(
+  flatRecipes,
+  20,
+  (item) => getItem(item.result.id).displayName
+);
 
 const { grid, inventory, hotbar, transfer, transferAll } = useStore();
 

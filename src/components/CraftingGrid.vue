@@ -2,7 +2,7 @@
   <Panel>
     <div class="flex justify-center">
       <div class="inline-grid grid-flow-row auto-rows-max">
-        <span class="text-[#3f3f3f] text-lg">Crafting</span>
+        <span class="text-lg">Crafting</span>
         <div class="flex">
           <div class="grid grid-cols-3">
             <GridTile
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <span class="text-[#3f3f3f] text-lg">Inventory</span>
+    <span class="text-lg">Inventory</span>
     <div class="grid grid-cols-9">
       <GridTile
         v-for="(n, index) in inventory.length"
@@ -80,10 +80,6 @@ import { useStore } from "@/store";
 
 const store = useStore();
 const { grid, inventory, hotbar } = store;
-
-// const grid = store.createRegion(9);
-// const inventory = store.createRegion(27);
-// const hotbar = store.createRegion(9);
 
 hotbar[0].value = { item: getItem(37), amount: 8 };
 hotbar[1].value = { item: getItem(44), amount: 8 };

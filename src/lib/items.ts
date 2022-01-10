@@ -1,7 +1,7 @@
 import _items from "@/assets/data/items.json";
 import { Item, Tile } from "@/types";
 
-const items = _items as Record<string, Item>;
+export const items = _items as Record<string, Item>;
 
 export const AIR = items[0];
 

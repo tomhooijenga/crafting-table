@@ -9,7 +9,7 @@
     <div
       class="p-0.5 border-2 bg-[#8B8B8B] hover:bg-[#BEBEBE]"
       :class="{
-        'border-t-[#373737] border-r-[#FFFFFF] border-b-[#FFFFFF] border-l-[#373737]':
+        'border-t-[#373737] border-r-white border-b-white border-l-[#373737]':
           craftable,
         'border-t-[#501b1b] border-r-[#c24f4f] border-b-[#c24f4f] border-l-[#501b1b]':
           !craftable,
