@@ -4,13 +4,11 @@
       <div class="inline-grid">
         <span class="text-lg col-start-2">Crafting</span>
 
-        <div
-          class="my-auto mr-4"
-          :style="book.style.value"
+        <Sprite
+          id="crafting_book"
           @click="uiStore.showBook = !uiStore.showBook"
-          @mouseenter="book.id.value = 'crafting_book_hover'"
-          @mouseleave="book.id.value = 'crafting_book'"
-        ></div>
+          class="my-auto mr-4"
+        />
 
         <div class="flex">
           <div class="grid grid-cols-3">
@@ -28,7 +26,8 @@
               @mouseleave="store.mouseleave(grid[index])"
             />
           </div>
-          <div class="my-auto mx-[0.875rem]" :style="arrow.style.value"></div>
+
+          <Sprite id="crafting_arrow" class="my-auto mx-[0.875rem]" />
 
           <GridTile
             class="my-auto h-[3.375rem] w-[3.375rem]"
@@ -80,13 +79,13 @@
 <script setup lang="ts">
 import Panel from "./Panel.vue";
 import GridTile from "./GridTile.vue";
-import { computed, unref } from "vue";
+import { computed, ref, unref } from "vue";
 import { getByItems } from "@/lib/recipes";
 import { Recipe } from "@/types";
 import { AIR, getItem } from "@/lib/items";
 import { useStore } from "@/stores/store";
-import { useSprite } from "@/lib/sprite";
 import { useUIStore } from "@/stores/ui";
+import Sprite from "@/components/Sprite.vue";
 
 const store = useStore();
 const uiStore = useUIStore();
@@ -117,7 +116,4 @@ function craft(all: boolean) {
     }
   }
 }
-
-const book = useSprite("crafting_book");
-const arrow = useSprite("crafting_arrow");
 </script>

@@ -1,4 +1,4 @@
-import { computed, ref, watch } from "vue";
+import { computed, Ref, ref, unref, watch } from "vue";
 
 function contains(query: string, string: string): boolean {
   if (!query) {
@@ -9,7 +9,7 @@ function contains(query: string, string: string): boolean {
 }
 
 export function useSearch<T>(
-  source: T[],
+  source: T[] | Ref<T[]>,
   pageSize: number,
   searchValue: (item: T) => string
 ) {
@@ -18,7 +18,7 @@ export function useSearch<T>(
 
   const filtered = computed(() => {
     const query = search.value.trim().toLowerCase();
-    return source.filter((item) => contains(query, searchValue(item)));
+    return unref(source).filter((item) => contains(query, searchValue(item)));
   });
 
   const page = computed(() => {

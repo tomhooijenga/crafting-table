@@ -1,22 +1,10 @@
-import {computed, ref, StyleValue} from "vue";
-
-type SpriteEntry = {
-  url: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-  scale: number;
-};
-
-const sprites = {
+export const sprites = {
   crafting_book: {
     url: "/src/assets/gui/crafting_table.png",
     x: 0,
     y: 168,
     width: 20,
     height: 18,
-    scale: 2,
   },
   crafting_book_hover: {
     url: "/src/assets/gui/crafting_table.png",
@@ -24,7 +12,6 @@ const sprites = {
     y: 187,
     width: 20,
     height: 18,
-    scale: 2,
   },
   crafting_arrow: {
     url: "/src/assets/gui/crafting_table.png",
@@ -32,42 +19,70 @@ const sprites = {
     y: 35,
     width: 22,
     height: 15,
-    scale: 2,
+  },
+  recipe_search: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 10,
+    y: 13,
+    width: 12,
+    height: 12,
+  },
+  recipe_arrow_left: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 15,
+    y: 208,
+    width: 11,
+    height: 17,
+  },
+  recipe_arrow_left_hover: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 15,
+    y: 226,
+    width: 11,
+    height: 17,
+  },
+  recipe_arrow_right: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 1,
+    y: 208,
+    width: 11,
+    height: 17,
+  },
+  recipe_arrow_right_hover: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 1,
+    y: 226,
+    width: 11,
+    height: 17,
+  },
+  recipe_showing_all: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 152,
+    y: 41,
+    width: 26,
+    height: 16,
+  },
+  recipe_showing_all_hover: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 152,
+    y: 59,
+    width: 26,
+    height: 16,
+  },
+  recipe_showing_craftable: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 180,
+    y: 41,
+    width: 26,
+    height: 16,
+  },
+  recipe_showing_craftable_hover: {
+    url: "/src/assets/gui/recipe_book.png",
+    x: 180,
+    y: 59,
+    width: 26,
+    height: 16,
   },
 } as const;
 
-type SpriteId = keyof typeof sprites;
-
-export function getEntry(id: SpriteId | null): SpriteEntry | null {
-  if (id === null) {
-    return null;
-  }
-  return sprites[id];
-}
-
-export function useSprite(initialId: SpriteId | null = null) {
-  const id = ref<SpriteId | null>(initialId);
-  const entry = computed(() => getEntry(id.value));
-  const style = computed((): StyleValue => {
-    if (entry.value === null) {
-      return {};
-    }
-
-    const { url, x, y, width, height, scale } = entry.value;
-
-    return {
-      width: `${width * scale}px`,
-      height: `${height * scale}px`,
-      backgroundImage: `url(${url})`,
-      backgroundPosition: `-${x * scale}px -${y * scale}px`,
-      backgroundSize: `512px 512px`,
-      imageRendering: "pixelated",
-    };
-  });
-
-  return {
-    id,
-    entry,
-    style,
-  };
-}
+export type SpriteId = keyof typeof sprites;

@@ -3,12 +3,18 @@
     <div
       class="flex flex-col bg-[#373737] h-full border-2 border-white border-t-black border-l-black p-1.5"
     >
-      <div class="mb-3">
+      <div class="flex flex-row space-x-2 mb-1">
+        <Sprite id="recipe_search" />
         <input
           type="text"
           v-model="search"
           placeholder="Search"
-          class="placeholder:italic h-6 w-full bg-transparent outline-none text-white caret-white [caret-shape:underscore]"
+          class="placeholder:italic h-6 w-0 flex-1 bg-transparent outline-none text-white caret-white [caret-shape:underscore]"
+        />
+        <Sprite
+          :id="showingAll ? 'recipe_showing_all' : 'recipe_showing_craftable'"
+          @click="showingAll = !showingAll"
+          :title="showingAll ? 'Showing All' : 'Showing Craftable'"
         />
       </div>
 
@@ -22,13 +28,18 @@
           @click.shift.exact="fillGrid(recipe, true)"
         />
       </div>
-      <div class="grid grid-cols-3 mt-auto text-white text-lg" v-if="pages > 1">
-        <button class="ml-auto" v-if="index > 0" @click="index--">&lt;</button>
-        <span class="col-start-2 text-center"
-          >{{ index + 1 }} / {{ pages }}</span
-        >
-        <button class="mr-auto" v-if="index + 1 < pages" @click="index++">
-          &gt;
+      <div
+        class="grid grid-cols-3 items-center mt-auto text-white text-lg"
+        v-if="pages > 1"
+      >
+        <button v-if="index > 0" class="ml-auto" @click="index--">
+          <Sprite id="recipe_arrow_left" />
+        </button>
+        <span class="col-start-2 text-center">
+          {{ index + 1 }} / {{ pages }}
+        </span>
+        <button v-if="index + 1 < pages" class="mr-auto" @click="index++">
+          <Sprite id="recipe_arrow_right" />
         </button>
       </div>
     </div>
@@ -44,17 +55,28 @@ import {
   padNull,
   recipes,
 } from "@/lib/recipes";
-import { unref } from "vue";
+import { computed, ref, unref } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
 import { useStore } from "@/stores/store";
 import { getItem } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
+import Sprite from "@/components/Sprite.vue";
 
 const flatRecipes = Object.values(recipes).flat();
 
+const showingAll = ref(true);
+
+const recipesToShow = computed(() => {
+  if (showingAll.value) {
+    return flatRecipes;
+  }
+
+  return flatRecipes.filter((recipe) => craftable(recipe));
+});
+
 const { search, index, page, pages } = useSearch(
-  flatRecipes,
+  recipesToShow,
   20,
   (item) => getItem(item.result.id).displayName
 );
