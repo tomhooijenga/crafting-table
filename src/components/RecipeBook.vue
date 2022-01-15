@@ -58,7 +58,7 @@ import {
 import { computed, ref, unref } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { Recipe, Tile } from "@/types";
-import { useStore } from "@/stores/store";
+import { useWritableTileStore } from "@/stores/writable-tile";
 import { getItem } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 import Sprite from "@/components/Sprite.vue";
@@ -81,7 +81,8 @@ const { search, index, page, pages } = useSearch(
   (item) => getItem(item.result.id).displayName
 );
 
-const { grid, inventory, hotbar, transfer, transferAll } = useStore();
+const { grid, inventory, hotbar, transfer, transferAll } =
+  useWritableTileStore();
 
 function craftable(recipe: Recipe): boolean {
   return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));

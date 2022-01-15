@@ -18,8 +18,10 @@
           v-for="item of page"
           :key="item.id"
           :item="item"
-          @click="leftClick($event, item)"
-          @contextmenu.prevent="rightClick($event, item)"
+          @click.exact="createTileStore.click(item)"
+          @click.shift.exact="createTileStore.shiftclick(item)"
+          @click.right="createTileStore.rightclick(item)"
+          @click.shift.right.exact="createTileStore.shiftrightclick(item)"
         />
         <GridTile v-for="i of fill" :key="i" :item="AIR" />
       </div>
@@ -30,46 +32,12 @@
 <script setup lang="ts">
 import GridTile from "./GridTile.vue";
 import Panel from "./Panel.vue";
-import { useStore } from "@/stores/store";
-import { Item } from "@/types";
-import { items, AIR, equals } from "@/lib/items";
+import { items, AIR } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 import { computed } from "vue";
-import { useSelectionStore } from "@/stores/selection";
+import { useCreativeTileStore } from "@/stores/creative-tile";
 
-const store = useStore();
-const selectionStore = useSelectionStore();
-
-function leftClick(event: MouseEvent, item: Item) {
-  const amount = event.shiftKey ? item.stackSize : 1;
-
-  if (equals(selectionStore.selection.item, AIR)) {
-    selectionStore.selection = { item, amount };
-  } else if (equals(selectionStore.selection.item, item)) {
-    selectionStore.selection.amount = Math.min(
-      selectionStore.selection.amount + amount,
-      item.stackSize
-    );
-  }
-  // click a different item, drop
-  else {
-    selectionStore.drop();
-  }
-}
-
-function rightClick(event: MouseEvent, item: Item) {
-  // No item means pick up
-  if (equals(selectionStore.selection.item, AIR)) {
-    const amount = event.shiftKey ? item.stackSize : 1;
-    selectionStore.selection = { item, amount };
-  }
-  // Last item, drop
-  else if (selectionStore.selection.amount === 1) {
-    selectionStore.drop();
-  } else {
-    selectionStore.selection.amount--;
-  }
-}
+const createTileStore = useCreativeTileStore();
 
 const fill = computed(() => Math.max(Math.ceil(page.value.length / 9) * 9, 72));
 

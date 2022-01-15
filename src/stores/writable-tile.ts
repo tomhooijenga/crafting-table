@@ -1,7 +1,7 @@
-import { defineStore, storeToRefs } from "pinia";
-import { Recipe, Tile } from "@/types";
-import { AIR, equals, getItem, tileStackLeft } from "@/lib/items";
-import { reactive, ref, toRaw, toRef } from "vue";
+import { defineStore } from "pinia";
+import { Tile } from "@/types";
+import { AIR, equals, tileStackLeft } from "@/lib/items";
+import { reactive, ref, toRef } from "vue";
 import { useSelectionStore } from "@/stores/selection";
 
 export const EMPTY = { item: AIR, amount: 0 };
@@ -9,7 +9,7 @@ export const EMPTY = { item: AIR, amount: 0 };
 // Todo: point + <num> key places from hotbar
 // Todo: Press Q, throw 1
 // Todo: Press Shift+Q, throw stack
-export const useStore = defineStore("writableTile", () => {
+export const useWritableTileStore = defineStore("writableTile", () => {
   const selectionStore = useSelectionStore();
   const selection = toRef(selectionStore, "selection");
   const regions = reactive<Tile[][]>([]);
@@ -267,64 +267,10 @@ export const useStore = defineStore("writableTile", () => {
     }
   }
 
-  function craft(recipe: Recipe) {
-    const item = getItem(recipe.result.id);
-
-    if (
-      !equals(selection.value.item, AIR) &&
-      !equals(selection.value.item, item)
-    ) {
-      return;
-    }
-
-    const crafted = ref({
-      item,
-      amount: recipe.result.count,
-    });
-
-    transfer(crafted, selection);
-
-    const trash: Tile = ref(EMPTY);
-    grid.forEach((tile) => {
-      transfer(tile, trash, 1);
-    });
-  }
-
-  function craftAll(recipe: Recipe) {
-    const item = getItem(recipe.result.id);
-
-    if (
-      !equals(selection.value.item, AIR) &&
-      !equals(selection.value.item, item)
-    ) {
-      return;
-    }
-
-    const trash: Tile = ref(EMPTY);
-
-    let recipeAmount = Math.min(
-      ...grid
-        .filter((tile) => !equals(tile.value.item, AIR))
-        .map((tile) => tile.value.amount)
-    );
-
-    const crafted = ref({
-      item,
-      amount: recipeAmount * recipe.result.count,
-    });
-
-    const transferred = transferAll(crafted, inventory.concat(hotbar));
-
-    grid.forEach((tile) => {
-      transfer(tile, trash, transferred / recipe.result.count);
-    });
-  }
-
   return {
     grid,
     inventory,
     hotbar,
-    selection,
 
     transfer,
     transferAll,
@@ -336,8 +282,5 @@ export const useStore = defineStore("writableTile", () => {
     mouseup,
     mouseenter,
     mouseleave,
-
-    craft,
-    craftAll,
   };
 });

@@ -1,4 +1,4 @@
-import { EMPTY } from "@/stores/store";
+import { EMPTY } from "@/stores/writable-tile";
 import { defineStore } from "pinia";
 
 export const useSelectionStore = defineStore("selection", {
