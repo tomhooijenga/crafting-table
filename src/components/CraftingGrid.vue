@@ -24,6 +24,7 @@
               @mouseup="writableTileStore.mouseup(grid[index])"
               @mouseenter="writableTileStore.mouseenter(grid[index])"
               @mouseleave="writableTileStore.mouseleave(grid[index])"
+              :class="{ 'bg-[#a17171]': !craftingGridStore.craftable }"
             />
           </div>
 
@@ -33,10 +34,12 @@
             class="my-auto h-[3.375rem] w-[3.375rem]"
             :item="craftingGridStore.item"
             :amount="craftingGridStore.amount"
+            @mousedown="craftingGridStore.resetIfPreview()"
             @click.exact="craft(false)"
             @click.right.exact="craft(false)"
             @click.shift.exact="craft(true)"
             @click.right.shift.exact="craft(true)"
+            :class="{ 'bg-[#a17171]': !craftingGridStore.craftable }"
           />
         </div>
       </div>

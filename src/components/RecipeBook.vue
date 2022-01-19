@@ -57,8 +57,9 @@ import {
 } from "@/lib/recipes";
 import { computed, ref, unref } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
-import { Recipe, Tile } from "@/types";
+import { Recipe } from "@/types";
 import { useWritableTileStore } from "@/stores/writable-tile";
+import { useCraftingGridStore } from "@/stores/crafting-grid";
 import { getItem } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 import Sprite from "@/components/Sprite.vue";
@@ -83,21 +84,20 @@ const { search, index, page, pages } = useSearch(
 
 const { grid, inventory, hotbar, transfer, transferAll } =
   useWritableTileStore();
+const craftingGridStore = useCraftingGridStore();
 
 function craftable(recipe: Recipe): boolean {
   return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));
 }
 
 let lastRecipe: Recipe;
-let taken: Record<number, Tile> = {};
 
 function fillGrid(recipe: Recipe, all: boolean) {
-  if (all || lastRecipe !== recipe) {
+  if (all || lastRecipe !== recipe || !craftingGridStore.craftable) {
     removeRecipe();
   }
 
   lastRecipe = recipe;
-  taken = {};
 
   let ingredients: (number | null)[];
 
@@ -114,27 +114,37 @@ function fillGrid(recipe: Recipe, all: boolean) {
     ? craftableAmount(recipe, grid.concat(inventory, hotbar).map(unref))
     : 1;
 
+  const canCraft = craftable(recipe);
+
   ingredients.forEach((itemId, index) => {
     if (itemId === null) {
       return;
     }
 
-    const tile = inventory
-      .concat(hotbar)
-      .find((tile) => tile.value.item.id === itemId);
+    if (canCraft) {
+      const tile = inventory
+        .concat(hotbar)
+        .find((tile) => tile.value.item.id === itemId);
 
-    if (!tile) {
-      return;
+      if (!tile) {
+        return;
+      }
+
+      transfer(tile, grid[index], amount);
+    } else {
+      grid[index].value = {
+        item: getItem(itemId),
+        amount: 0,
+      };
     }
-
-    taken[index] = tile;
-    transfer(tile, grid[index], amount);
   });
 }
 
 function removeRecipe() {
-  grid.forEach((tile) => {
-    transferAll(tile, inventory.concat(hotbar));
-  });
+  if (!craftingGridStore.resetIfPreview()) {
+    grid.forEach((tile) => {
+      transferAll(tile, inventory.concat(hotbar));
+    });
+  }
 }
 </script>

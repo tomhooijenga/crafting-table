@@ -3,6 +3,7 @@ import { Tile } from "@/types";
 import { AIR, equals, tileStackLeft } from "@/lib/items";
 import { reactive, ref, toRef } from "vue";
 import { useSelectionStore } from "@/stores/selection";
+import { useCraftingGridStore } from "@/stores/crafting-grid";
 
 export const EMPTY = { item: AIR, amount: 0 };
 
@@ -211,6 +212,10 @@ export const useWritableTileStore = defineStore("writableTile", () => {
   const filled = new Map<Tile, number>();
 
   function mousedown(tile: Tile): void {
+    if (useCraftingGridStore().resetIfPreview()) {
+      return;
+    }
+
     isMousedown = true;
     startAmount = selection.value.amount;
   }

@@ -2,7 +2,7 @@
   <div
     class="flex justify-center items-center border-2 border-t-[#370501] border-r-white border-b-white border-l-[#370501] bg-[#8B8B8B]"
   >
-    <div class="hover:bg-[#BEBEBE]">
+    <div class="hover:bg-white/30">
       <Icon :item="item" :amount="amount" />
     </div>
   </div>
