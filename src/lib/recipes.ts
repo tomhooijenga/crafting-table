@@ -176,7 +176,8 @@ function unshapedRecipeEqualsItems(
     return false;
   }
 
-  return items.every(({ id }) => ingredients.includes(id));
+  const itemIds = new Set(items.map(({ id }) => id));
+  return ingredients.every((id) => itemIds.has(id))
 }
 
 export function isShaped(recipe: Recipe): recipe is ShapedRecipe {
