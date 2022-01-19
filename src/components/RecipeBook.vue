@@ -90,14 +90,10 @@ function craftable(recipe: Recipe): boolean {
   return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));
 }
 
-let lastRecipe: Recipe;
-
 function fillGrid(recipe: Recipe, all: boolean) {
-  if (all || lastRecipe !== recipe || !craftingGridStore.craftable) {
+  if (all || craftingGridStore.recipe !== recipe || !craftingGridStore.craftable) {
     removeRecipe();
   }
-
-  lastRecipe = recipe;
 
   let ingredients: (number | null)[];
 
