@@ -103,7 +103,6 @@ function fillGrid(recipe: Recipe, all: boolean) {
 
   if (isShaped(recipe)) {
     ingredients = [...recipe.inShape]
-      .reverse()
       .map((row) => padNull(row, 3))
       .flat();
   } else {

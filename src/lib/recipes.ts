@@ -145,7 +145,6 @@ function shapedRecipeEqualsItems(
 ): boolean {
   // Recipes are stored upside down
   const inShape = [...recipe.inShape]
-    .reverse()
     .map((row) => padNull(row, 3))
     .flat();
 
