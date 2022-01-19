@@ -98,7 +98,9 @@ export const useCraftingGridStore = defineStore("craftingGrid", () => {
     return getItem(recipe.value.result.id);
   });
   const craftable = computed(() => {
-    return recipe.value === null ? true : hasEnoughItems(recipe.value, grid.concat(inventory, hotbar).map(unref));
+    return recipe.value === null
+      ? true
+      : hasEnoughItems(recipe.value, grid.concat(inventory, hotbar).map(unref));
   });
 
   return {
@@ -109,6 +111,6 @@ export const useCraftingGridStore = defineStore("craftingGrid", () => {
     recipe,
     item,
     amount,
-    craftable
+    craftable,
   };
 });
