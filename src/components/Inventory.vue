@@ -41,8 +41,7 @@ const createTileStore = useCreativeTileStore();
 
 const fill = computed(() => Math.max(Math.ceil(page.value.length / 9) * 9, 72));
 
-// Skip air
-const itemsArray = Object.values(items).slice(1);
+const itemsArray = Object.values(items);
 const { page, search } = useSearch(itemsArray, itemsArray.length, (item) =>
   item.displayName.toLowerCase()
 );

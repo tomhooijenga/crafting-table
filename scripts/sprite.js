@@ -1,9 +1,7 @@
-const data = require("minecraft-data")("1.16.1");
+const { data } = require("./");
+const util = require("util");
 const fs = require("fs");
-
-// https://minecraft.gamepedia.com/Template:InvSprite#Example
-// https://minecraft.gamepedia.com/Module:InvSprite
-// https://minecraft.gamepedia.com/Category:Animated_inventory_icons
+const request = util.promisify(require("request"));
 
 const aliases = {
   flower_banner_pattern: "banner_pattern",
@@ -15,6 +13,7 @@ const aliases = {
   potion: "water_bottle",
   lingering_potion: "lingering_water_bottle",
   splash_potion: "splash_water_bottle",
+  light: "light_0",
 };
 
 const animated = new Set([
@@ -83,8 +82,19 @@ function parseSprite(spriteText) {
     });
 }
 
-const sprite = parseSprite(fs.readFileSync("./items.txt", "utf-8"));
+const sprite = parseSprite(fs.readFileSync("./sprite.txt", "utf-8"));
 const icons = Object.entries(data.itemsByName)
+  // Air was removed from items but we still need it.
+  .concat([
+    [
+      "air",
+      {
+        id: -1,
+        name: "air",
+        displayName: "Air",
+      },
+    ],
+  ])
   .map(([name, item]) => {
     if (animated.has(name)) {
       return {
@@ -115,4 +125,13 @@ const icons = Object.entries(data.itemsByName)
     return obj;
   }, {});
 
-fs.writeFileSync("../src/assets/data/sprite.json", JSON.stringify(icons));
+request
+  .get(
+    "https://static.wikia.nocookie.net/minecraft_gamepedia/images/4/44/InvSprite.png/revision/latest"
+  )
+  .pipe(fs.createWriteStream("../src/assets/sprite.png"));
+
+fs.writeFileSync(
+  "../src/assets/data/sprite.json",
+  JSON.stringify(icons, null, 2)
+);
