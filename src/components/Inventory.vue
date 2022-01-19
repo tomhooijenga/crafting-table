@@ -1,48 +1,42 @@
 <template>
-  <Panel class="flex flex-col pt-0">
-    <div
-      class="grid grid-cols-9 my-auto flex-1 items-center overflow-y-auto [scrollbar-gutter:stable]"
-    >
-      <span class="col-span-4"> Search Items </span>
-      <input
-        type="text"
-        v-model="search"
-        class="placeholder:italic h-6 col-span-5 p-0.5 border-2 border-t-[#370501] border-r-white border-b-white border-l-[#370501] bg-[#8B8B8B] outline-none text-white caret-white [caret-shape:underscore]"
-      />
-    </div>
-    <div
-      class="h-80 overflow-y-auto overflow-x-hidden [scrollbar-gutter:stable] border-2 border-t-[#370501] border-r-white border-b-white border-l-[#370501]"
-    >
-      <div class="grid grid-cols-9 auto-rows-min -m-[2px]">
-        <GridTile
-          v-for="item of page"
-          :key="item.id"
-          :item="item"
-          @click.exact="createTileStore.click(item)"
-          @click.shift.exact="createTileStore.shiftclick(item)"
-          @click.right="createTileStore.rightclick(item)"
-          @click.shift.right.exact="createTileStore.shiftrightclick(item)"
-        />
-        <GridTile v-for="i of fill" :key="i" :item="AIR" />
-      </div>
-    </div>
-  </Panel>
+  <span class="text-lg">Inventory</span>
+  <div class="grid grid-cols-9">
+    <GridTile
+      v-for="(n, index) in inventory.length"
+      :item="inventory[index].value.item"
+      :amount="inventory[index].value.amount"
+      @click.exact="writableTileStore.click(inventory[index])"
+      @click.right="writableTileStore.rightClick(inventory[index])"
+      @click.shift.exact="writableTileStore.shiftClick(inventory[index])"
+      @dblclick="writableTileStore.dblClick(inventory[index])"
+      @mouseup="writableTileStore.mouseup(inventory[index])"
+      @mousedown="writableTileStore.mousedown(inventory[index])"
+      @mouseenter="writableTileStore.mouseenter(inventory[index])"
+      @mouseleave="writableTileStore.mouseleave(inventory[index])"
+    />
+  </div>
+
+  <div class="grid grid-cols-9 mt-2">
+    <GridTile
+      v-for="(n, index) in hotbar.length"
+      :item="hotbar[index].value.item"
+      :amount="hotbar[index].value.amount"
+      @click.exact="writableTileStore.click(hotbar[index])"
+      @click.right="writableTileStore.rightClick(hotbar[index])"
+      @click.shift.exact="writableTileStore.shiftClick(hotbar[index])"
+      @dblclick="writableTileStore.dblClick(hotbar[index])"
+      @mousedown="writableTileStore.mousedown(hotbar[index])"
+      @mouseup="writableTileStore.mouseup(hotbar[index])"
+      @mouseenter="writableTileStore.mouseenter(hotbar[index])"
+      @mouseleave="writableTileStore.mouseleave(hotbar[index])"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
 import GridTile from "./GridTile.vue";
-import Panel from "./Panel.vue";
-import { items, AIR } from "@/lib/items";
-import { useSearch } from "@/lib/searchable";
-import { computed } from "vue";
-import { useCreativeTileStore } from "@/stores/creative-tile";
+import { useWritableTileStore } from "@/stores/writable-tile";
 
-const createTileStore = useCreativeTileStore();
-
-const fill = computed(() => Math.max(Math.ceil(page.value.length / 9) * 9, 72));
-
-const itemsArray = Object.values(items);
-const { page, search } = useSearch(itemsArray, itemsArray.length, (item) =>
-  item.displayName.toLowerCase()
-);
+const writableTileStore = useWritableTileStore();
+const { inventory, hotbar } = writableTileStore;
 </script>
