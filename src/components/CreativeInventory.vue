@@ -38,11 +38,14 @@ import { computed } from "vue";
 import { useCreativeTileStore } from "@/stores/creative-tile";
 
 const createTileStore = useCreativeTileStore();
-
-const fill = computed(() => Math.max(Math.ceil(page.value.length / 9) * 9, 72));
-
 const itemsArray = Object.values(items);
 const { page, search } = useSearch(itemsArray, itemsArray.length, (item) =>
   item.displayName.toLowerCase()
 );
+const fill = computed(() => {
+  if (page.value.length > 72) {
+    return Math.ceil(page.value.length / 9) * 9 - page.value.length;
+  }
+  return Math.max(72 - page.value.length, 0);
+});
 </script>
