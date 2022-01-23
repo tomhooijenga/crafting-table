@@ -1,5 +1,6 @@
 import _items from "@/assets/data/items.json";
-import { Item, Tile } from "@/types";
+import { Item, RecipePart, Tile } from "@/types";
+import { getTagItems } from "@/lib/tags";
 
 export const items = _items as Record<string, Item>;
 
@@ -10,12 +11,24 @@ export const AIR: Readonly<Item> = {
   stackSize: 0,
 };
 
-export function getItem(id: string | number): Item {
-  if (id == AIR.id) {
+export function getItem(name: string | number): Item {
+  if (name == AIR.name) {
     return AIR;
   }
 
-  return items[id];
+  return items[name];
+}
+
+export function getRecipeItems(ingredient: RecipePart): Item[] {
+  if (Array.isArray(ingredient)) {
+    return ingredient.flatMap(getRecipeItems);
+  }
+
+  if ("item" in ingredient) {
+    return [getItem(ingredient.item)];
+  }
+
+  return getTagItems(ingredient.tag).map(getItem);
 }
 
 export function equals(item: Item, item2: Item): boolean {

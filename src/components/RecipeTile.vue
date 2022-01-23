@@ -3,7 +3,7 @@
     class="border-2 drop-shadow-[0.125rem_0.125rem_0_black]"
     :class="{
       'border-[#CCCCCC]': craftable,
-      'border-[#8a2222]': !craftable,
+      'border-[#8A2222]': !craftable,
     }"
   >
     <div
@@ -22,14 +22,14 @@
 
 <script setup lang="ts">
 import Icon from "@/components/Icon.vue";
-import { ShapedRecipe, UnshapedRecipe } from "@/types";
+import { ShapedRecipe, ShapelessRecipe } from "@/types";
 import { computed } from "vue";
 import { getItem } from "@/lib/items";
 
 const props = defineProps<{
-  recipe: ShapedRecipe | UnshapedRecipe;
+  recipe: ShapedRecipe | ShapelessRecipe;
   craftable: boolean;
 }>();
 
-const item = computed(() => getItem(props.recipe.result.id));
+const item = computed(() => getItem(props.recipe.result.item));
 </script>

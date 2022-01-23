@@ -24,8 +24,8 @@
           v-for="recipe of page"
           :recipe="recipe"
           :craftable="craftable(recipe)"
-          @click.exact="fillGrid(recipe, false)"
-          @click.shift.exact="fillGrid(recipe, true)"
+          @click.exact="previewRecipe(recipe, false)"
+          @click.shift.exact="previewRecipe(recipe, true)"
         />
       </div>
       <div
@@ -49,58 +49,59 @@
 <script setup lang="ts">
 import Panel from "@/components/Panel.vue";
 import {
+  compareRecipeItem,
   craftableAmount,
   hasEnoughItems,
   isShaped,
   padNull,
   recipes,
 } from "@/lib/recipes";
-import { computed, ref, unref } from "vue";
+import {computed, ref, unref, watch} from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
-import { Recipe } from "@/types";
+import { CraftingRecipe, RecipePart } from "@/types";
 import { useWritableTileStore } from "@/stores/writable-tile";
 import { useCraftingGridStore } from "@/stores/crafting-grid";
-import { getItem } from "@/lib/items";
+import { equals, getItem, getRecipeItems } from "@/lib/items";
 import { useSearch } from "@/lib/searchable";
 import Sprite from "@/components/Sprite.vue";
-
-const flatRecipes = Object.values(recipes).flat();
 
 const showingAll = ref(true);
 
 const recipesToShow = computed(() => {
   if (showingAll.value) {
-    return flatRecipes;
+    return recipes;
   }
 
-  return flatRecipes.filter((recipe) => craftable(recipe));
+  return recipes.filter((recipe) => craftable(recipe));
 });
 
 const { search, index, page, pages } = useSearch(
   recipesToShow,
   20,
-  (item) => getItem(item.result.id).displayName
+  (recipe) => getItem(recipe.result.item).displayName
 );
 
 const { grid, inventory, hotbar, transfer, transferAll } =
   useWritableTileStore();
 const craftingGridStore = useCraftingGridStore();
 
-function craftable(recipe: Recipe): boolean {
+function craftable(recipe: CraftingRecipe): boolean {
   return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));
 }
 
-function fillGrid(recipe: Recipe, all: boolean) {
-  if (all || craftingGridStore.recipe !== recipe || !craftingGridStore.craftable) {
+function previewRecipe(recipe: CraftingRecipe, all: boolean) {
+  if (
+    all ||
+    craftingGridStore.recipe !== recipe ||
+    !craftingGridStore.craftable
+  ) {
     removeRecipe();
   }
 
-  let ingredients: (number | null)[];
+  let ingredients: (RecipePart | null)[] = [];
 
   if (isShaped(recipe)) {
-    ingredients = [...recipe.inShape]
-      .map((row) => padNull(row, 3))
-      .flat();
+    ingredients = recipe.pattern;
   } else {
     ingredients = recipe.ingredients;
   }
@@ -109,31 +110,71 @@ function fillGrid(recipe: Recipe, all: boolean) {
     ? craftableAmount(recipe, grid.concat(inventory, hotbar).map(unref))
     : 1;
 
-  const canCraft = craftable(recipe);
+  if (craftable(recipe)) {
+    previewCraftableRecipe(ingredients, amount);
+  } else {
+    previewUncraftableRecipe(ingredients);
+  }
+}
 
-  ingredients.forEach((itemId, index) => {
-    if (itemId === null) {
+function previewCraftableRecipe(
+  ingredients: (RecipePart | null)[],
+  amount: number
+) {
+  ingredients.forEach((ingredient, index) => {
+    if (ingredient === null) {
       return;
     }
 
-    if (canCraft) {
-      const tile = inventory
-        .concat(hotbar)
-        .find((tile) => tile.value.item.id === itemId);
+    const tile = inventory
+      .concat(hotbar)
+      .find((tile) => compareRecipeItem(ingredient, tile.value.item));
 
-      if (!tile) {
+    if (!tile) {
+      return;
+    }
+
+    transfer(tile, grid[index], amount);
+  });
+}
+
+let intervalId: ReturnType<typeof setInterval>;
+function previewUncraftableRecipe(ingredients: (RecipePart | null)[]) {
+  clearInterval(intervalId);
+
+  let itemIndex = 0;
+
+  function rotateItems() {
+    ingredients.forEach((ingredient, index) => {
+      if (ingredient === null) {
         return;
       }
 
-      transfer(tile, grid[index], amount);
-    } else {
-      grid[index].value = {
-        item: getItem(itemId),
-        amount: 0,
-      };
-    }
-  });
+      const possibleItems = getRecipeItems(ingredient);
+      const item = possibleItems[itemIndex % possibleItems.length];
+
+      if (!equals(grid[index].value.item, item)) {
+        grid[index].value = {
+          item,
+          amount: 0,
+        };
+      }
+    });
+
+    itemIndex++;
+  }
+
+  rotateItems();
+
+  intervalId = setInterval(() => rotateItems(), 1500);
 }
+
+watch(() => craftingGridStore.recipe, (value) => {
+  console.log('aw', value, craftingGridStore.craftable);
+  if (craftingGridStore.craftable) {
+    clearInterval(intervalId);
+  }
+});
 
 function removeRecipe() {
   if (!craftingGridStore.resetIfPreview()) {

@@ -2,93 +2,93 @@ import _recipes from "@/assets/data/recipes.json";
 import {
   Item,
   ItemAmount,
-  ItemRecipe,
-  Recipe,
+  CraftingRecipe,
   ShapedRecipe,
-  UnshapedRecipe,
+  ShapelessRecipe,
+  RecipePart,
 } from "@/types";
 import { AIR, equals } from "@/lib/items";
+import { itemHasTag } from "@/lib/tags";
 
-export const recipes = _recipes as Record<string, ItemRecipe>;
+export const recipes = _recipes.filter(
+  ({ type }) => type === "crafting_shaped" || type === "crafting_shapeless"
+) as CraftingRecipe[];
 
-export function padNull<T>(arr: Array<T>, length: number): Array<T> {
+export function padNull<T>(arr: Array<T>, length: number): Array<T | null> {
   return arr.concat(new Array(length - arr.length).fill(null));
 }
 
 // Todo: Find recipes if items are mirrored.
-export function getByItems(grid: ItemAmount[]): Recipe | null {
+export function getByItems(grid: ItemAmount[]): CraftingRecipe | null {
   const items = grid.map(({ item }) => item);
   const shapedItems = getShapedItems(items);
   const unshapedItems = getUnshapedItems(items);
 
-  for (const itemRecipe of Object.values(recipes)) {
-    const foundRecipe = recipeEqualsItems(
-      itemRecipe,
-      shapedItems,
-      unshapedItems
-    );
-
-    if (foundRecipe) {
-      return foundRecipe;
-    }
-  }
-  return null;
+  return (
+    recipes.find((recipe) =>
+      recipeEqualsItems(recipe, shapedItems, unshapedItems)
+    ) ?? null
+  );
 }
 
 export function hasEnoughItems(
-  recipe: Recipe,
+  recipe: CraftingRecipe,
   inventory: ItemAmount[]
 ): boolean {
   return craftableAmount(recipe, inventory) > 0;
 }
 
 export function craftableAmount(
-  recipe: Recipe,
+  recipe: CraftingRecipe,
   inventory: ItemAmount[]
 ): number {
   const itemAmounts = inventory.reduce<Record<string, number>>(
     (amounts, { item, amount }) => {
-      amounts[item.id] = (amounts[item.id] || 0) + amount;
+      amounts[item.name] = (amounts[item.name] || 0) + amount;
       return amounts;
     },
     {}
   );
 
-  const ingredients = isShaped(recipe)
-    ? recipe.inShape.flat().filter((id): id is number => id !== null)
-    : recipe.ingredients;
+  const ingredients = isShaped(recipe) ? recipe.pattern : recipe.ingredients;
 
-  const ingredientAmounts = ingredients.reduce<Record<string, number>>(
-    (amounts, itemId) => {
-      amounts[itemId] = (amounts[itemId] || 0) + 1;
-      return amounts;
-    },
-    {}
-  );
+  let amount = 0;
 
-  return Object.entries(ingredientAmounts).reduce((min, [itemId, amount]) => {
-    if (!(itemId in itemAmounts)) {
-      return 0;
+  while (true) {
+    for (const ingredient of ingredients) {
+      if (ingredient === null) {
+        continue;
+      }
+
+      const item = inventory.find(({ item }) =>
+        compareRecipeItem(ingredient, item)
+      );
+
+      if (!item) {
+        return 0;
+      }
+
+      if (itemAmounts[item.item.name] === 0) {
+        return amount;
+      }
+
+      itemAmounts[item.item.name]--;
     }
 
-    return Math.min(min, itemAmounts[itemId] / amount);
-  }, Infinity);
+    amount++;
+  }
 }
 
 function recipeEqualsItems(
-  itemRecipe: ItemRecipe,
+  recipe: CraftingRecipe,
   shapedItems: (Item | null)[],
   unshapedItems: Item[]
-): Recipe | null {
-  return (
-    itemRecipe.find((recipe) => {
-      if (isShaped(recipe)) {
-        return shapedRecipeEqualsItems(recipe, shapedItems);
-      } else {
-        return unshapedRecipeEqualsItems(recipe, unshapedItems);
-      }
-    }) || null
-  );
+): boolean {
+  if (isShaped(recipe)) {
+    return shapedRecipeEqualsItems(recipe, shapedItems);
+  } else {
+    return unshapedRecipeEqualsItems(recipe, unshapedItems);
+  }
 }
 
 export function getShapedItems(items: Item[]): (Item | null)[] {
@@ -143,21 +143,18 @@ function shapedRecipeEqualsItems(
   recipe: ShapedRecipe,
   items: (Item | null)[]
 ): boolean {
-  // Recipes are stored upside down
-  const inShape = [...recipe.inShape]
-    .map((row) => padNull(row, 3))
-    .flat();
-
-  if (inShape.length !== items.length) {
+  if (items.length === 0) {
     return false;
   }
 
-  return items.every((item, index) => {
-    if (item === null) {
-      return inShape[index] === null;
+  return recipe.pattern.every((ingredient, index) => {
+    const item = items[index];
+
+    if (!item || !ingredient) {
+      return item == ingredient;
     }
 
-    return inShape[index] === item.id;
+    return compareRecipeItem(ingredient, item);
   });
 }
 
@@ -166,7 +163,7 @@ function getUnshapedItems(items: Item[]): Item[] {
 }
 
 function unshapedRecipeEqualsItems(
-  recipe: UnshapedRecipe,
+  recipe: ShapelessRecipe,
   items: Item[]
 ): boolean {
   const { ingredients } = recipe;
@@ -175,10 +172,35 @@ function unshapedRecipeEqualsItems(
     return false;
   }
 
-  const itemIds = new Set(items.map(({ id }) => id));
-  return ingredients.every((id) => itemIds.has(id));
+  const _items = [...items];
+
+  for (const ingredient of ingredients) {
+    const foundItemIndex = _items.findIndex((item) =>
+      compareRecipeItem(ingredient, item)
+    );
+
+    if (foundItemIndex === -1) {
+      return false;
+    }
+
+    _items.splice(foundItemIndex, 1);
+  }
+
+  return true;
 }
 
-export function isShaped(recipe: Recipe): recipe is ShapedRecipe {
-  return "inShape" in recipe;
+export function compareRecipeItem(recipeItem: RecipePart, item: Item): boolean {
+  if (Array.isArray(recipeItem)) {
+    return recipeItem.find((ri) => compareRecipeItem(ri, item)) !== null;
+  }
+
+  if ("item" in recipeItem) {
+    return recipeItem.item === item.name;
+  }
+
+  return itemHasTag(recipeItem.tag, item.name);
+}
+
+export function isShaped(recipe: CraftingRecipe): recipe is ShapedRecipe {
+  return recipe.type === "crafting_shaped";
 }

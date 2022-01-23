@@ -29,20 +29,32 @@ export type Icon =
 type RecipeBase = {
   result: {
     count: number;
-    id: number;
+    item: string;
   };
 };
 
-export type UnshapedRecipe = {
-  ingredients: number[];
+export type RecipeItem = {
+  item: string;
+};
+
+export type RecipeTag = {
+  tag: string;
+};
+
+export type RecipePart = RecipeItem | RecipeTag | (RecipeItem | RecipeTag)[];
+
+export type ShapelessRecipe = {
+  type: "crafting_shapeless";
+  group: string;
+  ingredients: (RecipeItem | RecipeTag)[];
 } & RecipeBase;
 
 export type ShapedRecipe = {
-  inShape: (number | null)[][];
+  type: "crafting_shaped";
+  group: string;
+  pattern: (RecipePart | null)[];
 } & RecipeBase;
 
-export type Recipe = ShapedRecipe | UnshapedRecipe;
-
-export type ItemRecipe = Recipe[];
+export type CraftingRecipe = ShapedRecipe | ShapelessRecipe;
 
 export type Tile = Ref<Readonly<ItemAmount>>;

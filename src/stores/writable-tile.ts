@@ -212,10 +212,6 @@ export const useWritableTileStore = defineStore("writableTile", () => {
   const filled = new Map<Tile, number>();
 
   function mousedown(tile: Tile): void {
-    if (useCraftingGridStore().resetIfPreview()) {
-      return;
-    }
-
     isMousedown = true;
     startAmount = selection.value.amount;
   }

@@ -13,11 +13,14 @@
 import Icon from "@/components/Icon.vue";
 import { Item } from "@/types";
 
-withDefaults(defineProps<{
-  item: Item;
-  amount?: number;
-  craftable?: boolean
-}>(), {
-  craftable: true
-});
+withDefaults(
+  defineProps<{
+    item: Item;
+    amount?: number;
+    craftable?: boolean;
+  }>(),
+  {
+    craftable: true,
+  }
+);
 </script>

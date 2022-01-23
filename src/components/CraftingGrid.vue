@@ -20,7 +20,7 @@
             @click.right="writableTileStore.rightClick(grid[index])"
             @click.shift.exact="writableTileStore.shiftClick(grid[index])"
             @dblclick="writableTileStore.dblClick(grid[index])"
-            @mousedown="writableTileStore.mousedown(grid[index])"
+            @mousedown="mousedown(grid[index])"
             @mouseup="writableTileStore.mouseup(grid[index])"
             @mouseenter="writableTileStore.mouseenter(grid[index])"
             @mouseleave="writableTileStore.mouseleave(grid[index])"
@@ -28,7 +28,7 @@
         </div>
 
         <Sprite id="crafting_arrow" class="my-auto mx-[0.875rem]" />
-
+        {{ craftingGridStore.craftable }}
         <GridTile
           class="my-auto h-[3.375rem] w-[3.375rem]"
           :item="craftingGridStore.item"
@@ -39,23 +39,29 @@
           @click.right.exact="craft(false)"
           @click.shift.exact="craft(true)"
           @click.right.shift.exact="craft(true)"
-          :class="{ 'bg-[#a17171]': !craftingGridStore.craftable }"
         />
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import GridTile from "./GridTile.vue";
+import GridTile from "@/components/GridTile.vue";
+import Sprite from "@/components/Sprite.vue";
 import { useWritableTileStore } from "@/stores/writable-tile";
 import { useUIStore } from "@/stores/ui";
-import Sprite from "@/components/Sprite.vue";
 import { useCraftingGridStore } from "@/stores/crafting-grid";
+import {Tile} from "@/types";
 
 const writableTileStore = useWritableTileStore();
 const craftingGridStore = useCraftingGridStore();
 const uiStore = useUIStore();
 const { grid } = writableTileStore;
+
+function mousedown(tile: Tile) {
+  if (!craftingGridStore.resetIfPreview()) {
+    writableTileStore.mousedown(tile)
+  }
+}
 
 function craft(all: boolean) {
   if (craftingGridStore.recipe) {

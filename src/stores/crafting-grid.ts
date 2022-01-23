@@ -1,5 +1,5 @@
 import { defineStore, storeToRefs } from "pinia";
-import { Recipe, Tile } from "@/types";
+import { CraftingRecipe, Tile } from "@/types";
 import { AIR, equals, getItem } from "@/lib/items";
 import { computed, ref, unref } from "vue";
 import { EMPTY, useWritableTileStore } from "@/stores/writable-tile";
@@ -13,8 +13,8 @@ export const useCraftingGridStore = defineStore("craftingGrid", () => {
   const selectionStore = useSelectionStore();
   const { selection } = storeToRefs(selectionStore);
 
-  function craft(recipe: Recipe) {
-    const item = getItem(recipe.result.id);
+  function craft(recipe: CraftingRecipe) {
+    const item = getItem(recipe.result.item);
 
     if (
       !equals(selection.value.item, AIR) &&
@@ -45,8 +45,8 @@ export const useCraftingGridStore = defineStore("craftingGrid", () => {
     });
   }
 
-  function craftAll(recipe: Recipe) {
-    const item = getItem(recipe.result.id);
+  function craftAll(recipe: CraftingRecipe) {
+    const item = getItem(recipe.result.item);
 
     if (
       !equals(selection.value.item, AIR) &&
@@ -76,26 +76,28 @@ export const useCraftingGridStore = defineStore("craftingGrid", () => {
   }
 
   function resetIfPreview(): boolean {
-    // Preview recipe
-    if (!craftable.value) {
-      grid.forEach((tile) => {
-        tile.value = EMPTY;
-      });
-
-      return true;
+    if (craftable.value) {
+      return false;
     }
 
-    return false;
+    // Preview recipe
+    grid.forEach((tile) => {
+      tile.value = EMPTY;
+    });
+
+    return true;
   }
 
-  const recipe = computed<Recipe | null>(() => getByItems(grid.map(unref)));
+  const recipe = computed<CraftingRecipe | null>(() =>
+    getByItems(grid.map(unref))
+  );
   const amount = computed(() => recipe.value?.result.count ?? 0);
   const item = computed(() => {
     if (!recipe.value) {
       return AIR;
     }
 
-    return getItem(recipe.value.result.id);
+    return getItem(recipe.value.result.item);
   });
   const craftable = computed(() => {
     return recipe.value === null
