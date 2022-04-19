@@ -13,10 +13,12 @@ async function processJar() {
   try {
     await fs2.mkdir(dir);
     const launcherRequest = await fetch(
-        "https://launchermeta.mojang.com/mc/game/version_manifest.json"
+      "https://launchermeta.mojang.com/mc/game/version_manifest.json"
     );
     const launcherJson = await launcherRequest.json();
-    const releaseUrl = launcherJson.versions.find(({ id }) => id === VERSION).url;
+    const releaseUrl = launcherJson.versions.find(
+      ({ id }) => id === VERSION
+    ).url;
 
     const releaseRequest = await fetch(releaseUrl);
     const releaseJson = await releaseRequest.json();

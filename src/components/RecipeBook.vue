@@ -53,10 +53,9 @@ import {
   craftableAmount,
   hasEnoughItems,
   isShaped,
-  padNull,
   recipes,
 } from "@/lib/recipes";
-import {computed, ref, unref, watch} from "vue";
+import { computed, ref, unref, watch } from "vue";
 import RecipeTile from "@/components/RecipeTile.vue";
 import { CraftingRecipe, RecipePart } from "@/types";
 import { useWritableTileStore } from "@/stores/writable-tile";
@@ -98,7 +97,7 @@ function previewRecipe(recipe: CraftingRecipe, all: boolean) {
     removeRecipe();
   }
 
-  let ingredients: (RecipePart | null)[] = [];
+  let ingredients: (RecipePart | null)[];
 
   if (isShaped(recipe)) {
     ingredients = recipe.pattern;
@@ -169,12 +168,15 @@ function previewUncraftableRecipe(ingredients: (RecipePart | null)[]) {
   intervalId = setInterval(() => rotateItems(), 1500);
 }
 
-watch(() => craftingGridStore.recipe, (value) => {
-  console.log('aw', value, craftingGridStore.craftable);
-  if (craftingGridStore.craftable) {
-    clearInterval(intervalId);
+watch(
+  () => craftingGridStore.recipe,
+  (value) => {
+    console.log("aw", value, craftingGridStore.craftable);
+    if (craftingGridStore.craftable) {
+      clearInterval(intervalId);
+    }
   }
-});
+);
 
 function removeRecipe() {
   if (!craftingGridStore.resetIfPreview()) {

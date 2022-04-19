@@ -50,7 +50,7 @@ import Sprite from "@/components/Sprite.vue";
 import { useWritableTileStore } from "@/stores/writable-tile";
 import { useUIStore } from "@/stores/ui";
 import { useCraftingGridStore } from "@/stores/crafting-grid";
-import {Tile} from "@/types";
+import { Tile } from "@/types";
 
 const writableTileStore = useWritableTileStore();
 const craftingGridStore = useCraftingGridStore();
@@ -59,7 +59,7 @@ const { grid } = writableTileStore;
 
 function mousedown(tile: Tile) {
   if (!craftingGridStore.resetIfPreview()) {
-    writableTileStore.mousedown(tile)
+    writableTileStore.mousedown(tile);
   }
 }
 
