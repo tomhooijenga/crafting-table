@@ -28,7 +28,7 @@
         </div>
 
         <Sprite id="crafting_arrow" class="my-auto mx-[0.875rem]" />
-        {{ craftingGridStore.craftable }}
+
         <GridTile
           class="my-auto h-[3.375rem] w-[3.375rem]"
           :item="craftingGridStore.item"
