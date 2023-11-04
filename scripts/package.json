@@ -4,15 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "update:data": "node ./data.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "adm-zip": "^0.5.9",
     "cheerio": "^1.0.0-rc.3",
-    "minecraft-data": "^2.106.0",
-    "node-fetch": "^2.6.7",
+    "minecraft-data": "^3.47.0",
     "request": "^2.88.2"
   }
 }

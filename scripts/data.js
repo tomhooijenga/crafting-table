@@ -1,95 +1,114 @@
-const fs2 = require("fs/promises");
+const fs = require("fs/promises");
 const { createWriteStream } = require("fs");
 const os = require("os");
 const path = require("path");
-const fetch = require("node-fetch");
 const { data, VERSION } = require("./");
 const { pipeline } = require("stream/promises");
 const Zip = require("adm-zip");
 
-async function processJar() {
-  const dir = path.join(os.tmpdir(), VERSION);
-
-  try {
-    await fs2.mkdir(dir);
-    const launcherRequest = await fetch(
+async function getReleaseUrl(version) {
+  const launcherRequest = await fetch(
       "https://launchermeta.mojang.com/mc/game/version_manifest.json"
-    );
-    const launcherJson = await launcherRequest.json();
-    const releaseUrl = launcherJson.versions.find(
-      ({ id }) => id === VERSION
-    ).url;
+  );
+  const launcherJson = await launcherRequest.json();
+  const { url } = launcherJson.versions.find(({ id }) => id === version);
 
-    const releaseRequest = await fetch(releaseUrl);
-    const releaseJson = await releaseRequest.json();
-
-    const jarRequest = await fetch(releaseJson.downloads.client.url);
-    const jarPath = path.join(os.tmpdir(), `${VERSION}.jar`);
-    const jar = new Zip(jarPath, {});
-    const target = createWriteStream(jarPath);
-    await pipeline(jarRequest.body, target);
-    jar.extractAllTo(dir, true);
-  } catch (e) {
-    if (e.code !== "EEXIST") {
-      throw e;
-    }
-  }
-
-  return dir;
+  return url;
 }
 
-(async () => {
-  const dir = await processJar();
+async function getJarUrl(releaseUrl) {
+  const releaseRequest = await fetch(releaseUrl);
+  const releaseJson = await releaseRequest.json();
 
-  await fs2.writeFile(
-    "../src/assets/data/items.json",
-    JSON.stringify(data.itemsByName, null, 2)
+  return releaseJson.downloads.client.url
+}
+
+async function downloadJar(jarUrl, jarPath) {
+  const jarRequest = await fetch(jarUrl);
+  const target = createWriteStream(jarPath);
+  await pipeline(jarRequest.body, target);
+}
+
+async function extractJarToDir(jarPath, dir) {
+  const jar = new Zip(jarPath, {});
+
+  jar.extractAllTo(dir, true);
+}
+
+async function writeItems() {
+  await fs.writeFile(
+      "../src/assets/data/items.json",
+      JSON.stringify(data.itemsByName, null, 2)
   );
+}
 
-  const entries = await fs2.readdir(path.join(dir, "data/minecraft/recipes"));
-  const recipes = [];
-  for (const entry of entries) {
-    const content = require(path.join(dir, "data/minecraft/recipes", entry));
+function removeMinecraftNamespace(key, value) {
+  if (typeof value === 'string') {
+    return value.replace(/minecraft:/, '');
+  }
+  return value;
+}
+
+async function writeRecipes(extractedJarPath) {
+  const entries = await fs.readdir(path.join(extractedJarPath, "data/minecraft/recipes"));
+
+  const recipes = entries.map((name) => {
+    const content = require(path.join(extractedJarPath, "data/minecraft/recipes", name));
 
     if (content.type === "minecraft:crafting_shaped") {
+      // Convert shaped recipe to flat array of 9 slots
       content.pattern = content.pattern
-        .map((row) => {
-          return row
-            .split("")
-            .map((char) => (char === null ? null : content.key[char]))
-            .concat(null, null, null)
-            .slice(0, 3);
-        })
-        .flat()
-        .concat(null, null, null, null, null, null, null)
-        .slice(0, 9);
+          .map((row) => {
+            return row
+                .split("")
+                .map((char) => (char === null ? null : content.key[char]))
+                .concat(null, null, null)
+                .slice(0, 3);
+          })
+          .flat()
+          .concat(null, null, null, null, null, null, null)
+          .slice(0, 9);
       delete content.key;
     }
 
     if (content.result) {
       content.result.count ??= 1;
     }
-    recipes.push(content);
-  }
 
-  const recipeJson = JSON.stringify(recipes, null, 2);
-  await fs2.writeFile("../src/assets/data/recipes.json", cleanup(recipeJson));
+    return content;
+  });
 
+  const recipeJson = JSON.stringify(recipes, removeMinecraftNamespace, 2);
+
+  await fs.writeFile("../src/assets/data/recipes.json", recipeJson);
+}
+
+async function writeTags(extractedJarPath) {
   const tags = {};
-  const tagEntries = await fs2.readdir(
-    path.join(dir, "data/minecraft/tags/items")
+  const tagEntries = await fs.readdir(
+      path.join(extractedJarPath, "data/minecraft/tags/items")
   );
 
   for (const tag of tagEntries) {
-    const content = require(path.join(dir, "data/minecraft/tags/items", tag));
+    const content = require(path.join(extractedJarPath, "data/minecraft/tags/items", tag));
 
-    tags[tag.split(".")[0]] = content.values;
+    tags[path.basename(tag, '.json')] = content.values;
   }
 
-  const tagJson = JSON.stringify(tags, null, 2);
-  await fs2.writeFile("../src/assets/data/tags.json", cleanup(tagJson));
-})();
-
-function cleanup(str) {
-  return str.replace(/minecraft:/g, "");
+  const tagJson = JSON.stringify(tags, removeMinecraftNamespace, 2);
+  await fs.writeFile("../src/assets/data/tags.json", tagJson);
 }
+
+(async () => {
+  const jarPath = path.join(os.tmpdir(), `${VERSION}.jar`);
+  const extractedJarPath = path.join(os.tmpdir(), VERSION);
+
+  const releaseUrl = await getReleaseUrl(VERSION);
+  const jarUrl = await getJarUrl(releaseUrl);
+  await downloadJar(jarUrl, jarPath);
+  await extractJarToDir(jarPath, extractedJarPath);
+
+  await writeItems();
+  await writeRecipes(extractedJarPath);
+  await writeTags(extractedJarPath);
+})()
