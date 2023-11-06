@@ -8,7 +8,7 @@ const Zip = require("adm-zip");
 
 async function getReleaseUrl(version) {
   const launcherRequest = await fetch(
-      "https://launchermeta.mojang.com/mc/game/version_manifest.json"
+    "https://launchermeta.mojang.com/mc/game/version_manifest.json"
   );
   const launcherJson = await launcherRequest.json();
   const { url } = launcherJson.versions.find(({ id }) => id === version);
@@ -20,7 +20,7 @@ async function getJarUrl(releaseUrl) {
   const releaseRequest = await fetch(releaseUrl);
   const releaseJson = await releaseRequest.json();
 
-  return releaseJson.downloads.client.url
+  return releaseJson.downloads.client.url;
 }
 
 async function downloadJar(jarUrl, jarPath) {
@@ -37,37 +37,43 @@ async function extractJarToDir(jarPath, dir) {
 
 async function writeItems() {
   await fs.writeFile(
-      "../src/assets/data/items.json",
-      JSON.stringify(data.itemsByName, null, 2)
+    "../src/assets/data/items.json",
+    JSON.stringify(data.itemsByName, null, 2)
   );
 }
 
 function removeMinecraftNamespace(key, value) {
-  if (typeof value === 'string') {
-    return value.replace(/minecraft:/, '');
+  if (typeof value === "string") {
+    return value.replace(/minecraft:/, "");
   }
   return value;
 }
 
 async function writeRecipes(extractedJarPath) {
-  const entries = await fs.readdir(path.join(extractedJarPath, "data/minecraft/recipes"));
+  const entries = await fs.readdir(
+    path.join(extractedJarPath, "data/minecraft/recipes")
+  );
 
   const recipes = entries.map((name) => {
-    const content = require(path.join(extractedJarPath, "data/minecraft/recipes", name));
+    const content = require(path.join(
+      extractedJarPath,
+      "data/minecraft/recipes",
+      name
+    ));
 
     if (content.type === "minecraft:crafting_shaped") {
       // Convert shaped recipe to flat array of 9 slots
       content.pattern = content.pattern
-          .map((row) => {
-            return row
-                .split("")
-                .map((char) => (char === null ? null : content.key[char]))
-                .concat(null, null, null)
-                .slice(0, 3);
-          })
-          .flat()
-          .concat(null, null, null, null, null, null, null)
-          .slice(0, 9);
+        .map((row) => {
+          return row
+            .split("")
+            .map((char) => (char === null ? null : content.key[char]))
+            .concat(null, null, null)
+            .slice(0, 3);
+        })
+        .flat()
+        .concat(null, null, null, null, null, null, null)
+        .slice(0, 9);
       delete content.key;
     }
 
@@ -86,13 +92,17 @@ async function writeRecipes(extractedJarPath) {
 async function writeTags(extractedJarPath) {
   const tags = {};
   const tagEntries = await fs.readdir(
-      path.join(extractedJarPath, "data/minecraft/tags/items")
+    path.join(extractedJarPath, "data/minecraft/tags/items")
   );
 
   for (const tag of tagEntries) {
-    const content = require(path.join(extractedJarPath, "data/minecraft/tags/items", tag));
+    const content = require(path.join(
+      extractedJarPath,
+      "data/minecraft/tags/items",
+      tag
+    ));
 
-    tags[path.basename(tag, '.json')] = content.values;
+    tags[path.basename(tag, ".json")] = content.values;
   }
 
   const tagJson = JSON.stringify(tags, removeMinecraftNamespace, 2);
@@ -111,4 +121,4 @@ async function writeTags(extractedJarPath) {
   await writeItems();
   await writeRecipes(extractedJarPath);
   await writeTags(extractedJarPath);
-})()
+})();
