@@ -191,7 +191,7 @@ function unshapedRecipeEqualsItems(
 
 export function compareRecipeItem(recipeItem: RecipePart, item: Item): boolean {
   if (Array.isArray(recipeItem)) {
-    return recipeItem.find((ri) => compareRecipeItem(ri, item)) !== null;
+    return recipeItem.some((ri) => compareRecipeItem(ri, item));
   }
 
   if ("item" in recipeItem) {
