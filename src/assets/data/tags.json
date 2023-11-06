@@ -5,16 +5,8 @@
     "stripped_acacia_log",
     "stripped_acacia_wood"
   ],
-  "anvil": [
-    "anvil",
-    "chipped_anvil",
-    "damaged_anvil"
-  ],
-  "arrows": [
-    "arrow",
-    "tipped_arrow",
-    "spectral_arrow"
-  ],
+  "anvil": ["anvil", "chipped_anvil", "damaged_anvil"],
+  "arrows": ["arrow", "tipped_arrow", "spectral_arrow"],
   "axes": [
     "diamond_axe",
     "stone_axe",
@@ -23,13 +15,8 @@
     "wooden_axe",
     "iron_axe"
   ],
-  "axolotl_tempt_items": [
-    "tropical_fish_bucket"
-  ],
-  "bamboo_blocks": [
-    "bamboo_block",
-    "stripped_bamboo_block"
-  ],
+  "axolotl_tempt_items": ["tropical_fish_bucket"],
+  "bamboo_blocks": ["bamboo_block", "stripped_bamboo_block"],
   "banners": [
     "white_banner",
     "orange_banner",
@@ -98,13 +85,8 @@
     "writable_book",
     "knowledge_book"
   ],
-  "breaks_decorated_pots": [
-    "#tools"
-  ],
-  "buttons": [
-    "#wooden_buttons",
-    "#stone_buttons"
-  ],
+  "breaks_decorated_pots": ["#tools"],
+  "buttons": ["#wooden_buttons", "#stone_buttons"],
   "candles": [
     "candle",
     "white_candle",
@@ -149,27 +131,11 @@
     "stone_pickaxe",
     "wooden_pickaxe"
   ],
-  "coals": [
-    "coal",
-    "charcoal"
-  ],
-  "coal_ores": [
-    "coal_ore",
-    "deepslate_coal_ore"
-  ],
-  "compasses": [
-    "compass",
-    "recovery_compass"
-  ],
-  "completes_find_tree_tutorial": [
-    "#logs",
-    "#leaves",
-    "#wart_blocks"
-  ],
-  "copper_ores": [
-    "copper_ore",
-    "deepslate_copper_ore"
-  ],
+  "coals": ["coal", "charcoal"],
+  "coal_ores": ["coal_ore", "deepslate_coal_ore"],
+  "compasses": ["compass", "recovery_compass"],
+  "completes_find_tree_tutorial": ["#logs", "#leaves", "#wart_blocks"],
+  "copper_ores": ["copper_ore", "deepslate_copper_ore"],
   "creeper_drop_music_discs": [
     "music_disc_13",
     "music_disc_cat",
@@ -184,30 +150,21 @@
     "music_disc_11",
     "music_disc_wait"
   ],
-  "creeper_igniters": [
-    "flint_and_steel",
-    "fire_charge"
-  ],
+  "creeper_igniters": ["flint_and_steel", "fire_charge"],
   "crimson_stems": [
     "crimson_stem",
     "stripped_crimson_stem",
     "crimson_hyphae",
     "stripped_crimson_hyphae"
   ],
-  "dampens_vibrations": [
-    "#wool",
-    "#wool_carpets"
-  ],
+  "dampens_vibrations": ["#wool", "#wool_carpets"],
   "dark_oak_logs": [
     "dark_oak_log",
     "dark_oak_wood",
     "stripped_dark_oak_log",
     "stripped_dark_oak_wood"
   ],
-  "decorated_pot_ingredients": [
-    "brick",
-    "#decorated_pot_sherds"
-  ],
+  "decorated_pot_ingredients": ["brick", "#decorated_pot_sherds"],
   "decorated_pot_sherds": [
     "angler_pottery_sherd",
     "archer_pottery_sherd",
@@ -230,10 +187,7 @@
     "skull_pottery_sherd",
     "snort_pottery_sherd"
   ],
-  "diamond_ores": [
-    "diamond_ore",
-    "deepslate_diamond_ore"
-  ],
+  "diamond_ores": ["diamond_ore", "deepslate_diamond_ore"],
   "dirt": [
     "dirt",
     "grass_block",
@@ -245,18 +199,9 @@
     "mud",
     "muddy_mangrove_roots"
   ],
-  "doors": [
-    "#wooden_doors",
-    "iron_door"
-  ],
-  "emerald_ores": [
-    "emerald_ore",
-    "deepslate_emerald_ore"
-  ],
-  "fences": [
-    "#wooden_fences",
-    "nether_brick_fence"
-  ],
+  "doors": ["#wooden_doors", "iron_door"],
+  "emerald_ores": ["emerald_ore", "deepslate_emerald_ore"],
+  "fences": ["#wooden_fences", "nether_brick_fence"],
   "fence_gates": [
     "acacia_fence_gate",
     "birch_fence_gate",
@@ -289,10 +234,7 @@
     "chorus_flower",
     "spore_blossom"
   ],
-  "fox_food": [
-    "sweet_berries",
-    "glow_berries"
-  ],
+  "fox_food": ["sweet_berries", "glow_berries"],
   "freeze_immune_wearables": [
     "leather_boots",
     "leather_leggings",
@@ -300,11 +242,7 @@
     "leather_helmet",
     "leather_horse_armor"
   ],
-  "gold_ores": [
-    "gold_ore",
-    "nether_gold_ore",
-    "deepslate_gold_ore"
-  ],
+  "gold_ores": ["gold_ore", "nether_gold_ore", "deepslate_gold_ore"],
   "hanging_signs": [
     "oak_hanging_sign",
     "spruce_hanging_sign",
@@ -326,23 +264,15 @@
     "wooden_hoe",
     "iron_hoe"
   ],
-  "ignored_by_piglin_babies": [
-    "leather"
-  ],
-  "iron_ores": [
-    "iron_ore",
-    "deepslate_iron_ore"
-  ],
+  "ignored_by_piglin_babies": ["leather"],
+  "iron_ores": ["iron_ore", "deepslate_iron_ore"],
   "jungle_logs": [
     "jungle_log",
     "jungle_wood",
     "stripped_jungle_log",
     "stripped_jungle_wood"
   ],
-  "lapis_ores": [
-    "lapis_ore",
-    "deepslate_lapis_ore"
-  ],
+  "lapis_ores": ["lapis_ore", "deepslate_lapis_ore"],
   "leaves": [
     "jungle_leaves",
     "oak_leaves",
@@ -355,15 +285,8 @@
     "mangrove_leaves",
     "cherry_leaves"
   ],
-  "lectern_books": [
-    "written_book",
-    "writable_book"
-  ],
-  "logs": [
-    "#logs_that_burn",
-    "#crimson_stems",
-    "#warped_stems"
-  ],
+  "lectern_books": ["written_book", "writable_book"],
+  "logs": ["#logs_that_burn", "#crimson_stems", "#warped_stems"],
   "logs_that_burn": [
     "#dark_oak_logs",
     "#oak_logs",
@@ -428,12 +351,7 @@
     "piglin_head",
     "player_head"
   ],
-  "oak_logs": [
-    "oak_log",
-    "oak_wood",
-    "stripped_oak_log",
-    "stripped_oak_wood"
-  ],
+  "oak_logs": ["oak_log", "oak_wood", "stripped_oak_log", "stripped_oak_wood"],
   "pickaxes": [
     "diamond_pickaxe",
     "stone_pickaxe",
@@ -442,10 +360,7 @@
     "wooden_pickaxe",
     "iron_pickaxe"
   ],
-  "piglin_food": [
-    "porkchop",
-    "cooked_porkchop"
-  ],
+  "piglin_food": ["porkchop", "cooked_porkchop"],
   "piglin_loved": [
     "#gold_ores",
     "gold_block",
@@ -471,11 +386,7 @@
     "raw_gold",
     "raw_gold_block"
   ],
-  "piglin_repellents": [
-    "soul_torch",
-    "soul_lantern",
-    "soul_campfire"
-  ],
+  "piglin_repellents": ["soul_torch", "soul_lantern", "soul_campfire"],
   "planks": [
     "oak_planks",
     "spruce_planks",
@@ -489,22 +400,9 @@
     "bamboo_planks",
     "cherry_planks"
   ],
-  "rails": [
-    "rail",
-    "powered_rail",
-    "detector_rail",
-    "activator_rail"
-  ],
-  "redstone_ores": [
-    "redstone_ore",
-    "deepslate_redstone_ore"
-  ],
-  "sand": [
-    "sand",
-    "red_sand",
-    "suspicious_sand",
-    "suspicious_sand"
-  ],
+  "rails": ["rail", "powered_rail", "detector_rail", "activator_rail"],
+  "redstone_ores": ["redstone_ore", "deepslate_redstone_ore"],
+  "sand": ["sand", "red_sand", "suspicious_sand", "suspicious_sand"],
   "saplings": [
     "oak_sapling",
     "spruce_sapling",
@@ -603,17 +501,9 @@
     "wither_rose",
     "torchflower"
   ],
-  "smelts_to_glass": [
-    "sand",
-    "red_sand"
-  ],
-  "sniffer_food": [
-    "torchflower_seeds"
-  ],
-  "soul_fire_base_blocks": [
-    "soul_sand",
-    "soul_soil"
-  ],
+  "smelts_to_glass": ["sand", "red_sand"],
+  "sniffer_food": ["torchflower_seeds"],
+  "soul_fire_base_blocks": ["soul_sand", "soul_soil"],
   "spruce_logs": [
     "spruce_log",
     "spruce_wood",
@@ -671,20 +561,13 @@
     "cracked_stone_bricks",
     "chiseled_stone_bricks"
   ],
-  "stone_buttons": [
-    "stone_button",
-    "polished_blackstone_button"
-  ],
+  "stone_buttons": ["stone_button", "polished_blackstone_button"],
   "stone_crafting_materials": [
     "cobblestone",
     "blackstone",
     "cobbled_deepslate"
   ],
-  "stone_tool_materials": [
-    "cobblestone",
-    "blackstone",
-    "cobbled_deepslate"
-  ],
+  "stone_tool_materials": ["cobblestone", "blackstone", "cobbled_deepslate"],
   "swords": [
     "diamond_sword",
     "stone_sword",
@@ -693,13 +576,7 @@
     "wooden_sword",
     "iron_sword"
   ],
-  "tall_flowers": [
-    "sunflower",
-    "lilac",
-    "peony",
-    "rose_bush",
-    "pitcher_plant"
-  ],
+  "tall_flowers": ["sunflower", "lilac", "peony", "rose_bush", "pitcher_plant"],
   "terracotta": [
     "terracotta",
     "white_terracotta",
@@ -719,18 +596,8 @@
     "red_terracotta",
     "black_terracotta"
   ],
-  "tools": [
-    "#swords",
-    "#axes",
-    "#pickaxes",
-    "#shovels",
-    "#hoes",
-    "trident"
-  ],
-  "trapdoors": [
-    "#wooden_trapdoors",
-    "iron_trapdoor"
-  ],
+  "tools": ["#swords", "#axes", "#pickaxes", "#shovels", "#hoes", "trident"],
+  "trapdoors": ["#wooden_trapdoors", "iron_trapdoor"],
   "trimmable_armor": [
     "netherite_helmet",
     "netherite_chestplate",
@@ -826,10 +693,7 @@
     "warped_hyphae",
     "stripped_warped_hyphae"
   ],
-  "wart_blocks": [
-    "nether_wart_block",
-    "warped_wart_block"
-  ],
+  "wart_blocks": ["nether_wart_block", "warped_wart_block"],
   "wooden_buttons": [
     "oak_button",
     "spruce_button",

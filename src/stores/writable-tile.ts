@@ -1,11 +1,10 @@
 import { defineStore } from "pinia";
-import { Tile } from "@/types";
+import { ItemAmount, Tile } from "@/types";
 import { AIR, equals, tileStackLeft } from "@/lib/items";
-import { reactive, ref, toRef } from "vue";
+import { computed, reactive, ref, toRef, unref, watch } from "vue";
 import { useSelectionStore } from "@/stores/selection";
-import { useCraftingGridStore } from "@/stores/crafting-grid";
 
-export const EMPTY = { item: AIR, amount: 0 };
+export const EMPTY: ItemAmount = { item: AIR, amount: 0 };
 
 // Todo: point + <num> key places from hotbar
 // Todo: Press Q, throw 1
@@ -19,6 +18,9 @@ export const useWritableTileStore = defineStore("writableTile", () => {
   const grid = createRegion(9);
   const inventory = createRegion(27);
   const hotbar = createRegion(9);
+  const availableItems = computed(() =>
+    [...grid, ...hotbar, ...inventory].map(unref)
+  );
 
   function transfer(from: Tile, to: Tile, transferAmount = from.value.amount) {
     const { item: fromItem, amount: fromAmount } = from.value;
@@ -272,6 +274,7 @@ export const useWritableTileStore = defineStore("writableTile", () => {
     grid,
     inventory,
     hotbar,
+    availableItems,
 
     transfer,
     transferAll,

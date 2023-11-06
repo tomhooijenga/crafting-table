@@ -1810,10 +1810,7 @@
     "name": "carved_pumpkin",
     "displayName": "Carved Pumpkin",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "jack_o_lantern": {
     "id": 302,
@@ -4406,10 +4403,7 @@
     "name": "carrot_on_a_stick",
     "displayName": "Carrot on a Stick",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "vanishable"],
     "maxDurability": 25
   },
   "warped_fungus_on_a_stick": {
@@ -4417,10 +4411,7 @@
     "name": "warped_fungus_on_a_stick",
     "displayName": "Warped Fungus on a Stick",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "vanishable"],
     "maxDurability": 100
   },
   "elytra": {
@@ -4428,14 +4419,8 @@
     "name": "elytra",
     "displayName": "Elytra",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "wearable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "phantom_membrane"
-    ],
+    "enchantCategories": ["breakable", "wearable", "vanishable"],
+    "repairWith": ["phantom_membrane"],
     "maxDurability": 432
   },
   "oak_boat": {
@@ -4570,9 +4555,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "scute"
-    ],
+    "repairWith": ["scute"],
     "maxDurability": 275
   },
   "scute": {
@@ -4586,10 +4569,7 @@
     "name": "flint_and_steel",
     "displayName": "Flint and Steel",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "vanishable"],
     "maxDurability": 64
   },
   "apple": {
@@ -4603,11 +4583,7 @@
     "name": "bow",
     "displayName": "Bow",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "bow",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "bow", "vanishable"],
     "maxDurability": 384
   },
   "arrow": {
@@ -4711,11 +4687,7 @@
     "name": "wooden_sword",
     "displayName": "Wooden Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -4736,11 +4708,7 @@
     "name": "wooden_shovel",
     "displayName": "Wooden Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -4761,11 +4729,7 @@
     "name": "wooden_pickaxe",
     "displayName": "Wooden Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -4786,11 +4750,7 @@
     "name": "wooden_axe",
     "displayName": "Wooden Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -4811,11 +4771,7 @@
     "name": "wooden_hoe",
     "displayName": "Wooden Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -4836,16 +4792,8 @@
     "name": "stone_sword",
     "displayName": "Stone Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "cobbled_deepslate",
-      "cobblestone",
-      "blackstone"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
+    "repairWith": ["cobbled_deepslate", "cobblestone", "blackstone"],
     "maxDurability": 131
   },
   "stone_shovel": {
@@ -4853,16 +4801,8 @@
     "name": "stone_shovel",
     "displayName": "Stone Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "cobbled_deepslate",
-      "cobblestone",
-      "blackstone"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["cobbled_deepslate", "cobblestone", "blackstone"],
     "maxDurability": 131
   },
   "stone_pickaxe": {
@@ -4870,16 +4810,8 @@
     "name": "stone_pickaxe",
     "displayName": "Stone Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "cobbled_deepslate",
-      "cobblestone",
-      "blackstone"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["cobbled_deepslate", "cobblestone", "blackstone"],
     "maxDurability": 131
   },
   "stone_axe": {
@@ -4887,16 +4819,8 @@
     "name": "stone_axe",
     "displayName": "Stone Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "cobbled_deepslate",
-      "cobblestone",
-      "blackstone"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["cobbled_deepslate", "cobblestone", "blackstone"],
     "maxDurability": 131
   },
   "stone_hoe": {
@@ -4904,16 +4828,8 @@
     "name": "stone_hoe",
     "displayName": "Stone Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "cobbled_deepslate",
-      "cobblestone",
-      "blackstone"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["cobbled_deepslate", "cobblestone", "blackstone"],
     "maxDurability": 131
   },
   "golden_sword": {
@@ -4921,14 +4837,8 @@
     "name": "golden_sword",
     "displayName": "Golden Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 32
   },
   "golden_shovel": {
@@ -4936,14 +4846,8 @@
     "name": "golden_shovel",
     "displayName": "Golden Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 32
   },
   "golden_pickaxe": {
@@ -4951,14 +4855,8 @@
     "name": "golden_pickaxe",
     "displayName": "Golden Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 32
   },
   "golden_axe": {
@@ -4966,14 +4864,8 @@
     "name": "golden_axe",
     "displayName": "Golden Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 32
   },
   "golden_hoe": {
@@ -4981,14 +4873,8 @@
     "name": "golden_hoe",
     "displayName": "Golden Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 32
   },
   "iron_sword": {
@@ -4996,14 +4882,8 @@
     "name": "iron_sword",
     "displayName": "Iron Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 250
   },
   "iron_shovel": {
@@ -5011,14 +4891,8 @@
     "name": "iron_shovel",
     "displayName": "Iron Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 250
   },
   "iron_pickaxe": {
@@ -5026,14 +4900,8 @@
     "name": "iron_pickaxe",
     "displayName": "Iron Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 250
   },
   "iron_axe": {
@@ -5041,14 +4909,8 @@
     "name": "iron_axe",
     "displayName": "Iron Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 250
   },
   "iron_hoe": {
@@ -5056,14 +4918,8 @@
     "name": "iron_hoe",
     "displayName": "Iron Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 250
   },
   "diamond_sword": {
@@ -5071,14 +4927,8 @@
     "name": "diamond_sword",
     "displayName": "Diamond Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "diamond"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
+    "repairWith": ["diamond"],
     "maxDurability": 1561
   },
   "diamond_shovel": {
@@ -5086,14 +4936,8 @@
     "name": "diamond_shovel",
     "displayName": "Diamond Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "diamond"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["diamond"],
     "maxDurability": 1561
   },
   "diamond_pickaxe": {
@@ -5101,14 +4945,8 @@
     "name": "diamond_pickaxe",
     "displayName": "Diamond Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "diamond"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["diamond"],
     "maxDurability": 1561
   },
   "diamond_axe": {
@@ -5116,14 +4954,8 @@
     "name": "diamond_axe",
     "displayName": "Diamond Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "diamond"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["diamond"],
     "maxDurability": 1561
   },
   "diamond_hoe": {
@@ -5131,14 +4963,8 @@
     "name": "diamond_hoe",
     "displayName": "Diamond Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "diamond"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["diamond"],
     "maxDurability": 1561
   },
   "netherite_sword": {
@@ -5146,14 +4972,8 @@
     "name": "netherite_sword",
     "displayName": "Netherite Sword",
     "stackSize": 1,
-    "enchantCategories": [
-      "weapon",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "enchantCategories": ["weapon", "breakable", "vanishable"],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 2031
   },
   "netherite_shovel": {
@@ -5161,14 +4981,8 @@
     "name": "netherite_shovel",
     "displayName": "Netherite Shovel",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 2031
   },
   "netherite_pickaxe": {
@@ -5176,14 +4990,8 @@
     "name": "netherite_pickaxe",
     "displayName": "Netherite Pickaxe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 2031
   },
   "netherite_axe": {
@@ -5191,14 +4999,8 @@
     "name": "netherite_axe",
     "displayName": "Netherite Axe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 2031
   },
   "netherite_hoe": {
@@ -5206,14 +5008,8 @@
     "name": "netherite_hoe",
     "displayName": "Netherite Hoe",
     "stackSize": 1,
-    "enchantCategories": [
-      "digger",
-      "breakable",
-      "vanishable"
-    ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "enchantCategories": ["digger", "breakable", "vanishable"],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 2031
   },
   "stick": {
@@ -5282,9 +5078,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "leather"
-    ],
+    "repairWith": ["leather"],
     "maxDurability": 55
   },
   "leather_chestplate": {
@@ -5299,9 +5093,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "leather"
-    ],
+    "repairWith": ["leather"],
     "maxDurability": 80
   },
   "leather_leggings": {
@@ -5316,9 +5108,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "leather"
-    ],
+    "repairWith": ["leather"],
     "maxDurability": 75
   },
   "leather_boots": {
@@ -5333,9 +5123,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "leather"
-    ],
+    "repairWith": ["leather"],
     "maxDurability": 65
   },
   "chainmail_helmet": {
@@ -5350,9 +5138,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 165
   },
   "chainmail_chestplate": {
@@ -5367,9 +5153,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 240
   },
   "chainmail_leggings": {
@@ -5384,9 +5168,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 225
   },
   "chainmail_boots": {
@@ -5401,9 +5183,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 195
   },
   "iron_helmet": {
@@ -5418,9 +5198,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 165
   },
   "iron_chestplate": {
@@ -5435,9 +5213,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 240
   },
   "iron_leggings": {
@@ -5452,9 +5228,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 225
   },
   "iron_boots": {
@@ -5469,9 +5243,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "iron_ingot"
-    ],
+    "repairWith": ["iron_ingot"],
     "maxDurability": 195
   },
   "diamond_helmet": {
@@ -5486,9 +5258,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "diamond"
-    ],
+    "repairWith": ["diamond"],
     "maxDurability": 363
   },
   "diamond_chestplate": {
@@ -5503,9 +5273,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "diamond"
-    ],
+    "repairWith": ["diamond"],
     "maxDurability": 528
   },
   "diamond_leggings": {
@@ -5520,9 +5288,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "diamond"
-    ],
+    "repairWith": ["diamond"],
     "maxDurability": 495
   },
   "diamond_boots": {
@@ -5537,9 +5303,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "diamond"
-    ],
+    "repairWith": ["diamond"],
     "maxDurability": 429
   },
   "golden_helmet": {
@@ -5554,9 +5318,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 77
   },
   "golden_chestplate": {
@@ -5571,9 +5333,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 112
   },
   "golden_leggings": {
@@ -5588,9 +5348,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 105
   },
   "golden_boots": {
@@ -5605,9 +5363,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "gold_ingot"
-    ],
+    "repairWith": ["gold_ingot"],
     "maxDurability": 91
   },
   "netherite_helmet": {
@@ -5622,9 +5378,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 407
   },
   "netherite_chestplate": {
@@ -5639,9 +5393,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 592
   },
   "netherite_leggings": {
@@ -5656,9 +5408,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 555
   },
   "netherite_boots": {
@@ -5673,9 +5423,7 @@
       "wearable",
       "vanishable"
     ],
-    "repairWith": [
-      "netherite_ingot"
-    ],
+    "repairWith": ["netherite_ingot"],
     "maxDurability": 481
   },
   "flint": {
@@ -5971,9 +5719,7 @@
     "name": "compass",
     "displayName": "Compass",
     "stackSize": 64,
-    "enchantCategories": [
-      "vanishable"
-    ]
+    "enchantCategories": ["vanishable"]
   },
   "recovery_compass": {
     "id": 889,
@@ -5992,11 +5738,7 @@
     "name": "fishing_rod",
     "displayName": "Fishing Rod",
     "stackSize": 1,
-    "enchantCategories": [
-      "fishing_rod",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["fishing_rod", "breakable", "vanishable"],
     "maxDurability": 64
   },
   "clock": {
@@ -6304,10 +6046,7 @@
     "name": "shears",
     "displayName": "Shears",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "vanishable"],
     "maxDurability": 238
   },
   "melon_slice": {
@@ -6999,70 +6738,49 @@
     "name": "skeleton_skull",
     "displayName": "Skeleton Skull",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "wither_skeleton_skull": {
     "id": 1058,
     "name": "wither_skeleton_skull",
     "displayName": "Wither Skeleton Skull",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "player_head": {
     "id": 1059,
     "name": "player_head",
     "displayName": "Player Head",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "zombie_head": {
     "id": 1060,
     "name": "zombie_head",
     "displayName": "Zombie Head",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "creeper_head": {
     "id": 1061,
     "name": "creeper_head",
     "displayName": "Creeper Head",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "dragon_head": {
     "id": 1062,
     "name": "dragon_head",
     "displayName": "Dragon Head",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "piglin_head": {
     "id": 1063,
     "name": "piglin_head",
     "displayName": "Piglin Head",
     "stackSize": 64,
-    "enchantCategories": [
-      "wearable",
-      "vanishable"
-    ]
+    "enchantCategories": ["wearable", "vanishable"]
   },
   "nether_star": {
     "id": 1064,
@@ -7381,11 +7099,7 @@
     "name": "shield",
     "displayName": "Shield",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "wearable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "wearable", "vanishable"],
     "repairWith": [
       "oak_planks",
       "spruce_planks",
@@ -7538,11 +7252,7 @@
     "name": "trident",
     "displayName": "Trident",
     "stackSize": 1,
-    "enchantCategories": [
-      "trident",
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["trident", "breakable", "vanishable"],
     "maxDurability": 250
   },
   "phantom_membrane": {
@@ -7568,11 +7278,7 @@
     "name": "crossbow",
     "displayName": "Crossbow",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "crossbow",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "crossbow", "vanishable"],
     "maxDurability": 465
   },
   "suspicious_stew": {
@@ -8018,10 +7724,7 @@
     "name": "brush",
     "displayName": "Brush",
     "stackSize": 1,
-    "enchantCategories": [
-      "breakable",
-      "vanishable"
-    ],
+    "enchantCategories": ["breakable", "vanishable"],
     "maxDurability": 64
   },
   "netherite_upgrade_smithing_template": {

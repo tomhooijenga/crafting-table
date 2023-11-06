@@ -80,12 +80,12 @@ const { search, index, page, pages } = useSearch(
   (recipe) => getItem(recipe.result.item).displayName
 );
 
-const { grid, inventory, hotbar, transfer, transferAll } =
-  useWritableTileStore();
+const writableTileStore = useWritableTileStore();
+const { grid, inventory, hotbar, transfer, transferAll } = writableTileStore;
 const craftingGridStore = useCraftingGridStore();
 
 function craftable(recipe: CraftingRecipe): boolean {
-  return hasEnoughItems(recipe, grid.concat(inventory, hotbar).map(unref));
+  return hasEnoughItems(recipe, writableTileStore.availableItems);
 }
 
 function previewRecipe(recipe: CraftingRecipe, all: boolean) {
@@ -106,7 +106,7 @@ function previewRecipe(recipe: CraftingRecipe, all: boolean) {
   }
 
   const amount = all
-    ? craftableAmount(recipe, grid.concat(inventory, hotbar).map(unref))
+    ? craftableAmount(recipe, writableTileStore.availableItems)
     : 1;
 
   if (craftable(recipe)) {

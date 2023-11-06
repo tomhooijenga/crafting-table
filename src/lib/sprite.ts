@@ -1,5 +1,5 @@
-import craftingTable from '@/assets/gui/crafting_table.png';
-import recipeBook from '@/assets/gui/recipe_book.png';
+import craftingTable from "@/assets/gui/crafting_table.png";
+import recipeBook from "@/assets/gui/recipe_book.png";
 
 export const sprites = {
   crafting_book: {
