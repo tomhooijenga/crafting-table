@@ -4,12 +4,7 @@ import { getTagItems } from "@/lib/tags";
 
 export const items = _items as Record<string, Item>;
 
-export const AIR: Readonly<Item> = {
-  id: -1,
-  displayName: "Air",
-  name: "air",
-  stackSize: 0,
-};
+export const AIR: Readonly<Item> = items.air;
 
 export function getItem(name: string | number): Item {
   if (name == AIR.name) {
