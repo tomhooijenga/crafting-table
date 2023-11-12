@@ -17,7 +17,7 @@ function getModelChain(model, models) {
 }
 
 function getTextureMap(modelChain) {
-    const map = Object.assign({}, ...modelChain.map(({ textures }) => textures));
+    const map = Object.assign({}, ...modelChain.map(({ textures }) => textures).reverse());
 
     // Resolve texture refs
     // assuming there are no nested refs
@@ -38,8 +38,6 @@ async function renderItem(modelChain, textures){
     if (textureMap.layer0) {
         return renderItemLayers(textureMap, textures)
     }
-
-    // todo: support overrides
 }
 
 async function renderItemLayers(textureMap, textures) {
@@ -79,11 +77,33 @@ async function renderBlock(modelChain, textures) {
     const x = 1;
 }
 
-function render(id, models, textures) {
+function overrides(model, itemData, models, textures) {
+    for (let i = model.overrides.length - 1; i >= 0; i--) {
+        const override = model.overrides[i];
+
+        const match = Object
+            .entries(override.predicate)
+            .every(([key, value]) => {
+                return key in itemData && itemData[key] >= value;
+            });
+
+        if (match) {
+            return render(override.model, null, models, textures);
+        }
+    }
+
+    return render(model.id, null, models, textures);
+}
+
+function render(id, itemData, models, textures) {
     const model = models.get(ensureNamespace(id))
 
     if (!model) {
         throw new Error(`No model found for [${id}]`);
+    }
+
+    if (model.overrides && itemData !== null) {
+        return overrides(model, itemData, models, textures);
     }
 
     const modelChain = getModelChain(model, models);
