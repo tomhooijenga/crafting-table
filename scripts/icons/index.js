@@ -7,8 +7,9 @@ const fs = require('node:fs');
     const models = await loadModels(dir);
     const textures = await loadTextures(dir);
 
-    // const item = await render('minecraft:item/stripped_oak_log', models, textures);
+    const item = await render('minecraft:item/cow_spawn_egg', models, textures);
+    // const item = await render('minecraft:item/acacia_boat', models, textures);
 
-    // fs.writeFileSync('./output.png', item);
+    fs.writeFileSync('./output.png', item);
     // fs.writeFileSync('./output2.png', item2);
 })()

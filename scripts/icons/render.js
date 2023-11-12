@@ -1,4 +1,6 @@
 const {ensureNamespace} = require("./util");
+const { default: png } = require('@pdf-lib/upng');
+const { compose } = require('./png');
 
 function getModelChain(model, models) {
     const chain = [];
@@ -30,11 +32,35 @@ function getTextureMap(modelChain) {
     return map;
 }
 
-async function renderGenerated(modelChain, textures){
+async function renderItem(modelChain, textures){
     const textureMap = getTextureMap(modelChain);
-    const content = textures.get(ensureNamespace(textureMap.layer0) + '.png');
 
-    return await content();
+    if (textureMap.layer0) {
+        return renderItemLayers(textureMap, textures)
+    }
+
+    // todo: support overrides
+}
+
+async function renderItemLayers(textureMap, textures) {
+    const baseBuffer = new ArrayBuffer(1024);
+
+    for (let i = 0; i < 10; i++) {
+        if (!textureMap[`layer${i}`]) {
+            break;
+        }
+
+        const textureId = ensureNamespace(`${textureMap[`layer${i}`]}.png`);
+        const texture = await textures.get(textureId)();
+        const layer = png.decode(texture);
+        /** @type ArrayBuffer */
+        const layerBuffer = png.toRGBA8(layer)[0];
+        compose(baseBuffer, layerBuffer);
+    }
+
+    return Buffer.from(
+        png.encode([baseBuffer], 16, 16, 0)
+    );
 }
 
 async function renderBlock(modelChain, textures) {
@@ -54,7 +80,7 @@ function render(id, models, textures) {
     const renderType = modelChain.findLast(({ parent }) => parent).parent;
 
     if (renderType === 'builtin/generated') {
-        return renderGenerated(modelChain, textures);
+        return renderItem(modelChain, textures);
     }
     if (renderType === 'block/block') {
         return renderBlock(modelChain, textures);
