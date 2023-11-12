@@ -7,9 +7,21 @@ const fs = require('node:fs');
     const models = await loadModels(dir);
     const textures = await loadTextures(dir);
 
-    const item = await render('minecraft:item/cow_spawn_egg', models, textures);
-    // const item = await render('minecraft:item/acacia_boat', models, textures);
 
-    fs.writeFileSync('./output.png', item);
-    // fs.writeFileSync('./output2.png', item2);
+    await Promise.all(
+        [...data.itemsArray].map(async ({ name }) => {
+            try {
+                const buf = await render(`item/${name}`, models, textures);
+
+                if (buf === undefined) {
+                    console.log('skipping', name);
+                    return;
+                }
+
+                await fs.writeFile(`./output/${name}.png`, buf);
+            } catch (e) {
+                console.log(name, e);
+            }
+        })
+    );
 })()

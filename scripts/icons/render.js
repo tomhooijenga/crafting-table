@@ -51,6 +51,11 @@ async function renderItemLayers(textureMap, textures) {
         }
 
         const textureId = ensureNamespace(`${textureMap[`layer${i}`]}.png`);
+
+        if (!textures.has(textureId)) {
+            throw new Error(`Unknown texture [${textureId}]`)
+        }
+
         const texture = await textures.get(textureId)();
         const layer = png.decode(texture);
         /** @type ArrayBuffer */
@@ -61,6 +66,11 @@ async function renderItemLayers(textureMap, textures) {
     return Buffer.from(
         png.encode([baseBuffer], 16, 16, 0)
     );
+}
+
+async function renderEntity(modelChain, textures) {
+    // todo: load entity textures
+    // todo: render entity
 }
 
 async function renderBlock(modelChain, textures) {
@@ -77,16 +87,22 @@ function render(id, models, textures) {
     }
 
     const modelChain = getModelChain(model, models);
-    const renderType = modelChain.findLast(({ parent }) => parent).parent;
+    const renderType = modelChain.findLast(({ parent }) => parent)?.parent;
 
+    if (renderType === undefined) {
+        return renderItemLayers({}, textures);
+    }
     if (renderType === 'builtin/generated') {
         return renderItem(modelChain, textures);
+    }
+    if (renderType === 'builtin/entity') {
+        return renderEntity(modelChain, textures);
     }
     if (renderType === 'block/block') {
         return renderBlock(modelChain, textures);
     }
 
-    throw new Error(`Unsupported block type [${renderType}]`);
+    throw new Error(`Unsupported item type [${renderType}]`);
 }
 
 module.exports = {
