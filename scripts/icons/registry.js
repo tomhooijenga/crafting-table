@@ -27,7 +27,8 @@ async function loadModelsDir(jarDir, dir, type) {
 async function loadTextures(jarDir){
     return new Map([
         ...await loadTextureDir(jarDir, 'assets/minecraft/textures/block', 'block'),
-        ...await loadTextureDir(jarDir, 'assets/minecraft/textures/item', 'item')
+        ...await loadTextureDir(jarDir, 'assets/minecraft/textures/item', 'item'),
+        // todo: load sub dirs (trims, entity etc) without hard-coding
     ]);
 }
 
