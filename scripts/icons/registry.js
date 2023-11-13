@@ -37,10 +37,7 @@ async function loadTextureDir(jarDir, dir, type) {
     const files = await fs.readdir(path.join(jarDir, dir));
 
     const promises = files.map(async (file) => {
-        const content = () => {
-            return fs.readFile(path.join(jarDir, dir, file))
-        }
-
+        const content = await fs.readFile(path.join(jarDir, dir, file));
         entries.set(`minecraft:${type}/${path.basename(file)}`, content);
     });
 

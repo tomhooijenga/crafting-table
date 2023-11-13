@@ -1,6 +1,8 @@
 const {ensureNamespace} = require("./util");
 const { default: png } = require('@pdf-lib/upng');
 const { compose } = require('./png');
+const {TextureMap} = require("./texture-map");
+const Jimp = require('jimp');
 
 function getModelChain(model, models) {
     const chain = [];
@@ -16,45 +18,15 @@ function getModelChain(model, models) {
     return chain;
 }
 
-function getTextureMap(modelChain) {
-    const map = Object.assign({}, ...modelChain.map(({ textures }) => textures).reverse());
-
-    // Resolve texture refs
-    // assuming there are no nested refs
-    Object.entries(map).forEach(([name, texture]) => {
-        if (!texture.startsWith('#')) {
-            return;
-        }
-
-        map[name] = map[texture.slice(1)];
-    });
-
-    return map;
-}
-
-async function renderItem(modelChain, textures){
-    const textureMap = getTextureMap(modelChain);
-
-    if (textureMap.layer0) {
-        return renderItemLayers(textureMap, textures)
-    }
-}
-
-async function renderItemLayers(textureMap, textures) {
+function renderItem(modelChain, textureMap){
     const baseBuffer = new ArrayBuffer(1024);
 
     for (let i = 0; i < 10; i++) {
-        if (!textureMap[`layer${i}`]) {
+        if (!textureMap.has(`layer${i}`)) {
             break;
         }
 
-        const textureId = ensureNamespace(`${textureMap[`layer${i}`]}.png`);
-
-        if (!textures.has(textureId)) {
-            throw new Error(`Unknown texture [${textureId}]`)
-        }
-
-        const texture = await textures.get(textureId)();
+        const texture = textureMap.get(`layer${i}`);
         const layer = png.decode(texture);
         /** @type ArrayBuffer */
         const layerBuffer = png.toRGBA8(layer)[0];
@@ -66,15 +38,35 @@ async function renderItemLayers(textureMap, textures) {
     );
 }
 
-async function renderEntity(modelChain, textures) {
+async function renderEntity(id, modelChain, textureMap) {
     // todo: load entity textures
     // todo: render entity
+    // entities render custom
+
+    // conduit: small block
+
+    throw new Error(`No renderer for entity [${id}]`)
 }
 
-async function renderBlock(modelChain, textures) {
-    const textureMap = getTextureMap(modelChain);
+async function renderBlock(modelChain, textureMap) {
+    const elements = modelChain.findLast(({ elements }) => elements).elements;
 
-    const x = 1;
+    return await renderBlockElement(elements[0], textureMap);
+}
+
+async function renderBlockElement(element, textureMap) {
+    if (element.faces.up) {
+        return renderBlockElementFace(element, 'up', textureMap);
+    }
+}
+
+async function renderBlockElementFace(element, face, textureMap) {
+    const faceTexture = element.faces[face].texture;
+    const texture = textureMap.get(faceTexture);
+
+
+
+    return texture;
 }
 
 function overrides(model, itemData, models, textures) {
@@ -96,10 +88,11 @@ function overrides(model, itemData, models, textures) {
 }
 
 function render(id, itemData, models, textures) {
-    const model = models.get(ensureNamespace(id))
+    const nsId = ensureNamespace(id);
+    const model = models.get(nsId)
 
     if (!model) {
-        throw new Error(`No model found for [${id}]`);
+        throw new Error(`No model found for [${nsId}]`);
     }
 
     if (model.overrides && itemData !== null) {
@@ -108,18 +101,19 @@ function render(id, itemData, models, textures) {
 
     const modelChain = getModelChain(model, models);
     const renderType = modelChain.findLast(({ parent }) => parent)?.parent;
+    const textureMap = new TextureMap(modelChain, textures);
 
     if (renderType === undefined) {
-        return renderItemLayers({}, textures);
+        return renderItem([], textureMap);
     }
     if (renderType === 'builtin/generated') {
-        return renderItem(modelChain, textures);
+        return renderItem(modelChain, textureMap);
     }
     if (renderType === 'builtin/entity') {
-        return renderEntity(modelChain, textures);
+        return renderEntity(nsId, modelChain, textureMap);
     }
     if (renderType === 'block/block') {
-        return renderBlock(modelChain, textures);
+        return renderBlock(modelChain, textureMap);
     }
 
     throw new Error(`Unsupported item type [${renderType}]`);
