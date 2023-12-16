@@ -1,8 +1,7 @@
 const {ensureNamespace} = require("./util");
-const { default: png } = require('@pdf-lib/upng');
-const { compose } = require('./png');
 const {TextureMap} = require("./texture-map");
-const Jimp = require('jimp');
+const {renderBlock} = require("./render-block");
+const {renderItem} = require("./render-item");
 
 function getModelChain(model, models) {
     const chain = [];
@@ -18,26 +17,6 @@ function getModelChain(model, models) {
     return chain;
 }
 
-function renderItem(modelChain, textureMap){
-    const baseBuffer = new ArrayBuffer(1024);
-
-    for (let i = 0; i < 10; i++) {
-        if (!textureMap.has(`layer${i}`)) {
-            break;
-        }
-
-        const texture = textureMap.get(`layer${i}`);
-        const layer = png.decode(texture);
-        /** @type ArrayBuffer */
-        const layerBuffer = png.toRGBA8(layer)[0];
-        compose(baseBuffer, layerBuffer);
-    }
-
-    return Buffer.from(
-        png.encode([baseBuffer], 16, 16, 0)
-    );
-}
-
 async function renderEntity(id, modelChain, textureMap) {
     // todo: load entity textures
     // todo: render entity
@@ -48,28 +27,7 @@ async function renderEntity(id, modelChain, textureMap) {
     throw new Error(`No renderer for entity [${id}]`)
 }
 
-async function renderBlock(modelChain, textureMap) {
-    const elements = modelChain.findLast(({ elements }) => elements).elements;
-
-    return await renderBlockElement(elements[0], textureMap);
-}
-
-async function renderBlockElement(element, textureMap) {
-    if (element.faces.up) {
-        return renderBlockElementFace(element, 'up', textureMap);
-    }
-}
-
-async function renderBlockElementFace(element, face, textureMap) {
-    const faceTexture = element.faces[face].texture;
-    const texture = textureMap.get(faceTexture);
-
-
-
-    return texture;
-}
-
-function overrides(model, itemData, models, textures) {
+function findOverride(model, itemData, models, textures) {
     for (let i = model.overrides.length - 1; i >= 0; i--) {
         const override = model.overrides[i];
 
@@ -80,11 +38,11 @@ function overrides(model, itemData, models, textures) {
             });
 
         if (match) {
-            return render(override.model, null, models, textures);
+            return override;
         }
     }
 
-    return render(model.id, null, models, textures);
+    return null;
 }
 
 function render(id, itemData, models, textures) {
@@ -96,7 +54,11 @@ function render(id, itemData, models, textures) {
     }
 
     if (model.overrides && itemData !== null) {
-        return overrides(model, itemData, models, textures);
+        const override = findOverride(model, itemData, models, textures);
+
+        if (override) {
+            return render(override.model, null, models, textures);
+        }
     }
 
     const modelChain = getModelChain(model, models);

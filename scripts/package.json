@@ -12,6 +12,7 @@
   "dependencies": {
     "@pdf-lib/upng": "^1.0.1",
     "adm-zip": "^0.5.9",
+    "canvas": "^2.11.2",
     "minecraft-data": "^3.47.0"
   }
 }
