@@ -13,15 +13,11 @@ async function renderBlockElement(element, textureMap) {
     const canvas = createCanvas(32, 32);
     const ctx = canvas.getContext('2d');
 
-    const [textureTop, textureLeft, textureRight] = await Promise.all([
+    const [top, left, right] = await Promise.all([
         await getElementFaceTexture(element, 'up', textureMap),
         await getElementFaceTexture(element, 'south', textureMap),
         await getElementFaceTexture(element, 'east', textureMap)
     ]);
-
-    const top = scaleCanvas(textureTop, SCALE);
-    const left = darkenCanvas(scaleCanvas(textureLeft, SCALE), 1);
-    const right = darkenCanvas(scaleCanvas(textureRight, SCALE), 1.2);
 
     const isoWidth = 0.5;
     const skew = isoWidth * 2;
@@ -49,23 +45,38 @@ async function renderBlockElement(element, textureMap) {
 }
 
 async function getElementFaceTexture(element, faceName, textureMap) {
-    const textureId = element.faces[faceName].texture;
-    const texture = textureMap.get(textureId);
+    const face = element.faces[faceName];
+    let texture = await loadImage(textureMap.get(face.texture));
 
-    return await loadImage(texture);
+    texture = scaleCanvas(texture, SCALE);
+
+    if (face.rotation) {
+        texture = rotateCanvas(texture, face.rotation);
+    }
+
+    const shades = {
+        south: 1.5, // left
+        east: 2, // right
+    }
+
+    if (faceName in shades) {
+        texture = darkenCanvas(texture, shades[faceName]);
+    }
+
+    return texture;
 }
 
-function scaleCanvas(img, scale) {
-    const canvas = createCanvas(32, 32);
-    const ctx = canvas.getContext('2d');
+function scaleCanvas(canvas, scale) {
+    const w = canvas.width * scale;
+    const h = canvas.height * scale;
 
-    canvas.width = scale * img.width;
-    canvas.height = scale * img.height;
+    const scaledCanvas = createCanvas(w, h);
+    const ctx = scaledCanvas.getContext('2d');
 
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(img, 0, 0, img.width * scale, img.height * scale);
+    ctx.drawImage(canvas, 0, 0, w, h);
 
-    return canvas;
+    return scaledCanvas;
 }
 
 function darkenCanvas(canvas, multiplier) {
@@ -85,6 +96,19 @@ function darkenCanvas(canvas, multiplier) {
     ctx.putImageData(imageData, 0, 0);
 
     return canvas;
+}
+
+function rotateCanvas(canvas, amount) {
+    const rotatedCanvas = createCanvas(canvas.width, canvas.height);
+    const ctx = rotatedCanvas.getContext('2d');
+
+    ctx.save();
+    ctx.translate(canvas.width / 2, canvas.height / 2);
+    ctx.rotate(amount * Math.PI / 180);
+    ctx.drawImage(canvas, -canvas.width / 2, -canvas.width / 2);
+    ctx.restore();
+
+    return rotatedCanvas;
 }
 
 module.exports = {
