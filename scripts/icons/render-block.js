@@ -22,7 +22,6 @@ async function renderBlockElement(element, textureMap) {
     const isoWidth = 0.5;
     const skew = isoWidth * 2;
     const z = SCALE * SIZE / 2;
-    const sideHeight = top.height * 1.2;
 
     canvas.width = top.width * 2;
     canvas.height = top.height + left.height * 1.2;
@@ -32,23 +31,28 @@ async function renderBlockElement(element, textureMap) {
     ctx.setTransform(1, -isoWidth, 1, isoWidth, 0, 0);
     ctx.drawImage(top, -z - 1, z, top.width, top.height + 1.5);
 
-    // draw RIGHT
+    // right
     const x = SIZE * SCALE;
     ctx.setTransform(1, -isoWidth, 0, skew, 0, isoWidth);
-    ctx.drawImage(right, x, x + z, right.width, sideHeight);
+    ctx.drawImage(right, x, x + z, right.width, right.height * 1.2);
 
-    // draw LEFT
+    // left
     ctx.setTransform(1, isoWidth, 0, skew, 0, 0);
-    ctx.drawImage(left, 0, z, left.width, sideHeight);
+    ctx.drawImage(left, 0, z, left.width, left.height * 1.2);
 
     return await canvas.toBuffer(undefined, 'image/png');
 }
 
 async function getElementFaceTexture(element, faceName, textureMap) {
     const face = element.faces[faceName];
-    let texture = await loadImage(textureMap.get(face.texture));
+    const img = await loadImage(textureMap.get(face.texture));
+    let texture = createCanvas(img.width, img.height);
 
-    texture = scaleCanvas(texture, SCALE);
+    texture.getContext('2d').drawImage(img, 0, 0, img.width, img.height);
+
+    if (face.uv) {
+        texture = cropCanvas(texture, face.uv);
+    }
 
     if (face.rotation) {
         texture = rotateCanvas(texture, face.rotation);
@@ -62,6 +66,8 @@ async function getElementFaceTexture(element, faceName, textureMap) {
     if (faceName in shades) {
         texture = darkenCanvas(texture, shades[faceName]);
     }
+
+    texture = scaleCanvas(texture, SCALE);
 
     return texture;
 }
@@ -109,6 +115,19 @@ function rotateCanvas(canvas, amount) {
     ctx.restore();
 
     return rotatedCanvas;
+}
+
+function cropCanvas(canvas, uv) {
+    const [x1, y1, x2, y2] = uv;
+    const w = x2 - x1;
+    const h = y2 - y1;
+    const croppedCanvas = createCanvas(w, h);
+    const ctx = croppedCanvas.getContext('2d');
+
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(canvas, x1, y1, w, h, 0, 0, w, h);
+
+    return croppedCanvas;
 }
 
 module.exports = {
