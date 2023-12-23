@@ -1,46 +1,86 @@
 const {createCanvas, loadImage} = require("canvas");
 
 const SCALE = 10;
-const SIZE = 16;
+const BLOCK_SIZE = 16;
 
 async function renderBlock(modelChain, textureMap) {
+    const size = BLOCK_SIZE * SCALE;
+    const canvas = createCanvas(size * 2, size + size * 1.2);
+    const ctx = canvas.getContext('2d');
     const elements = modelChain.findLast(({elements}) => elements).elements;
 
-    return await renderBlockElement(elements[0], textureMap);
+    for (const element of elements) {
+        const renderedElement = await renderBlockElement(element, textureMap);
+
+        ctx.drawImage(renderedElement, 0, 0, renderedElement.width, renderedElement.height);
+    }
+
+    return canvas.toBuffer(undefined, 'image/png');
 }
 
 async function renderBlockElement(element, textureMap) {
-    const canvas = createCanvas(32, 32);
+    const size = BLOCK_SIZE * SCALE;
+    const canvas = createCanvas(size * 2, size + size * 1.2);
     const ctx = canvas.getContext('2d');
 
-    const [top, left, right] = await Promise.all([
+    ctx.imageSmoothingEnabled = false;
+
+    const [top, south, east] = await Promise.all([
         await getElementFaceTexture(element, 'up', textureMap),
         await getElementFaceTexture(element, 'south', textureMap),
         await getElementFaceTexture(element, 'east', textureMap)
     ]);
 
+    renderElementTop(ctx, element, top);
+    renderElementEast(ctx, element, east);
+    renderElementSouth(ctx, element, south);
+
+    return await canvas;
+}
+
+function renderElementTop(ctx, element, texture) {
     const isoWidth = 0.5;
-    const skew = isoWidth * 2;
-    const z = SCALE * SIZE / 2;
+    const size = BLOCK_SIZE * SCALE;
 
-    canvas.width = top.width * 2;
-    canvas.height = top.height + left.height * 1.2;
-
-    ctx.imageSmoothingEnabled = false;
+    // x, y, z => east, up, south
+    const {from, to} = element;
+    const east = SCALE * (to[0] - from[0]);
+    const south = SCALE * (to[2] - from[2]);
+    const top = size * 0.5 * (BLOCK_SIZE / to[1]);
+    const left = SCALE * from[0];
 
     ctx.setTransform(1, -isoWidth, 1, isoWidth, 0, 0);
-    ctx.drawImage(top, -z - 1, z, top.width, top.height + 1.5);
+    ctx.drawImage(texture, -top - 1, left + top, south, east + 1.5);
+}
 
-    // right
-    const x = SIZE * SCALE;
+function renderElementEast(ctx, element, texture) {
+    const isoWidth = 0.5;
+    const size = BLOCK_SIZE * SCALE;
+    const skew = isoWidth * 2;
+
+    const {from, to} = element;
+    const up = SCALE * (to[1] - from[1]);
+    const south = SCALE * (to[2] - from[2]);
+    const left = size / (BLOCK_SIZE / to[0]);
+    const top = size * 1.5 + SCALE * (BLOCK_SIZE - to[1]) - (size - left);
+
     ctx.setTransform(1, -isoWidth, 0, skew, 0, isoWidth);
-    ctx.drawImage(right, x, x + z, right.width, right.height * 1.2);
+    ctx.drawImage(texture, left, top, south, up * 1.2);
+}
 
-    // left
+function renderElementSouth(ctx, element, texture) {
+    const isoWidth = 0.5;
+    const size = BLOCK_SIZE * SCALE;
+    const skew = isoWidth * 2;
+
+    const {from, to} = element;
+    const up = SCALE * (to[1] - from[1]);
+    const east = SCALE * (to[0] - from[0]);
+    const top = size * 0.5 + SCALE * (BLOCK_SIZE - to[1]);
+    const left = SCALE * from[0];
+
     ctx.setTransform(1, isoWidth, 0, skew, 0, 0);
-    ctx.drawImage(left, 0, z, left.width, left.height * 1.2);
-
-    return await canvas.toBuffer(undefined, 'image/png');
+    ctx.drawImage(texture, left, top, east, up * 1.2);
 }
 
 async function getElementFaceTexture(element, faceName, textureMap) {
@@ -119,8 +159,8 @@ function rotateCanvas(canvas, amount) {
 
 function cropCanvas(canvas, uv) {
     const [x1, y1, x2, y2] = uv;
-    const w = x2 - x1;
-    const h = y2 - y1;
+    const w = Math.abs(x2 - x1);
+    const h = Math.abs(y2 - y1);
     const croppedCanvas = createCanvas(w, h);
     const ctx = croppedCanvas.getContext('2d');
 
