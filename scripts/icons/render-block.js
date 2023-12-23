@@ -52,7 +52,7 @@ function renderElementTop(ctx, element, texture) {
     const {from, to} = element;
     const east = SCALE * (to[0] - from[0]);
     const south = SCALE * (to[2] - from[2]);
-    const top = size * 0.5 * (BLOCK_SIZE / to[1]);
+    const top = size * 0.5 + SCALE * (BLOCK_SIZE - to[1]);
     const left = SCALE * from[0];
 
     ctx.setTransform(1, -isoWidth, 1, isoWidth, 0, 0);
