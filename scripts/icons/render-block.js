@@ -7,7 +7,7 @@ async function renderBlock(modelChain, textureMap) {
     const size = BLOCK_SIZE * SCALE;
     const canvas = createCanvas(size * 2, size + size * 1.2);
     const ctx = canvas.getContext('2d');
-    const elements = modelChain.findLast(({elements}) => elements).elements;
+    const elements = modelChain.find(({elements}) => elements).elements;
 
     for (const element of elements) {
         const renderedElement = await renderBlockElement(element, textureMap);
