@@ -31,9 +31,15 @@ async function renderBlockElement(element, textureMap) {
         await getElementFaceTexture(element, 'east', textureMap)
     ]);
 
-    renderElementTop(ctx, element, top);
-    renderElementEast(ctx, element, east);
-    renderElementSouth(ctx, element, south);
+    if (top) {
+        renderElementTop(ctx, element, top);
+    }
+    if (east) {
+        renderElementEast(ctx, element, east);
+    }
+    if (south) {
+        renderElementSouth(ctx, element, south);
+    }
 
     return await canvas;
 }
@@ -85,6 +91,11 @@ function renderElementSouth(ctx, element, texture) {
 
 async function getElementFaceTexture(element, faceName, textureMap) {
     const face = element.faces[faceName];
+
+    if (!face) {
+        return null;
+    }
+
     const img = await loadImage(textureMap.get(face.texture));
     let texture = createCanvas(img.width, img.height);
 
