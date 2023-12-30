@@ -172,11 +172,11 @@ function cropCanvas(canvas, uv) {
     const [x1, y1, x2, y2] = uv;
     const w = Math.abs(x2 - x1);
     const h = Math.abs(y2 - y1);
-    const croppedCanvas = createCanvas(w, h);
+    const croppedCanvas = createCanvas(BLOCK_SIZE, BLOCK_SIZE);
     const ctx = croppedCanvas.getContext('2d');
 
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(canvas, x1, y1, w, h, 0, 0, w, h);
+    ctx.drawImage(canvas, x1, y1, w, h, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
 
     return croppedCanvas;
 }
