@@ -52,11 +52,13 @@ function renderElementTop(ctx, element, texture) {
     const {from, to} = element;
     const east = SCALE * (to[0] - from[0]);
     const south = SCALE * (to[2] - from[2]);
+
+    const topEast = SCALE * from[0];
+    const topSouth = SCALE * (BLOCK_SIZE - to[2]);
     const top = size * 0.5 + size * 1.2 - SCALE * to[1] * 1.2;
-    const left = SCALE * from[0];
 
     ctx.setTransform(1, -isoWidth, 1, isoWidth, 0, 0);
-    ctx.drawImage(texture, -top - 1, left + top, south, east + 1.5);
+    ctx.drawImage(texture, -top + topSouth, top + topEast, south, east + 1.5);
 }
 
 function renderElementEast(ctx, element, texture) {
@@ -67,9 +69,15 @@ function renderElementEast(ctx, element, texture) {
     // x, y, z => east, up, south
     const {from, to} = element;
     const up = SCALE * (to[1] - from[1]);
-    const south = SCALE * (to[2] - from[2]);
-    const left = size / (BLOCK_SIZE / to[0]);
-    const top = size * 1.5 + size * 1.2 - SCALE * to[1] * 1.2;
+    const south = SCALE * (to[2] - from[2])
+
+    const leftEast = SCALE * to[0];
+    const leftSouth = SCALE * (BLOCK_SIZE - to[2]);
+    const left = leftEast + leftSouth;
+
+    const topUp = SCALE * to[1] * 1.2;
+    const topEast = SCALE * (BLOCK_SIZE - to[0]);
+    const top = size * 1.5 + size * 1.2 - topUp - topEast;
 
     ctx.setTransform(1, -isoWidth, 0, skew, 0, isoWidth);
     ctx.drawImage(texture, left, top, south, up * 1.2);
@@ -84,8 +92,14 @@ function renderElementSouth(ctx, element, texture) {
     const {from, to} = element;
     const up = SCALE * (to[1] - from[1]);
     const east = SCALE * (to[0] - from[0]);
-    const top = size * 0.5 + size * 1.2 - SCALE * to[1] * 1.2;
-    const left = SCALE * from[0];
+
+    const topUp = SCALE * to[1] * 1.2;
+    const topSouth = SCALE * (BLOCK_SIZE - to[2]);
+    const top = size * 0.5 + size * 1.2 - topUp - topSouth;
+
+    const leftEast = SCALE * from[0];
+    const leftSouth = SCALE * (BLOCK_SIZE - to[2]);
+    const left = leftEast + leftSouth;
 
     ctx.setTransform(1, isoWidth, 0, skew, 0, 0);
     ctx.drawImage(texture, left, top, east, up * 1.2);
