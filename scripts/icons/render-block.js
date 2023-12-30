@@ -52,7 +52,7 @@ function renderElementTop(ctx, element, texture) {
     const {from, to} = element;
     const east = SCALE * (to[0] - from[0]);
     const south = SCALE * (to[2] - from[2]);
-    const top = size * 0.5 + SCALE * (BLOCK_SIZE - to[1]);
+    const top = size * 0.5 + size * 1.2 - SCALE * to[1] * 1.2;
     const left = SCALE * from[0];
 
     ctx.setTransform(1, -isoWidth, 1, isoWidth, 0, 0);
@@ -64,11 +64,12 @@ function renderElementEast(ctx, element, texture) {
     const size = BLOCK_SIZE * SCALE;
     const skew = isoWidth * 2;
 
+    // x, y, z => east, up, south
     const {from, to} = element;
     const up = SCALE * (to[1] - from[1]);
     const south = SCALE * (to[2] - from[2]);
     const left = size / (BLOCK_SIZE / to[0]);
-    const top = size * 1.5 + SCALE * (BLOCK_SIZE - to[1]) - (size - left);
+    const top = size * 1.5 + size * 1.2 - SCALE * to[1] * 1.2;
 
     ctx.setTransform(1, -isoWidth, 0, skew, 0, isoWidth);
     ctx.drawImage(texture, left, top, south, up * 1.2);
@@ -79,10 +80,11 @@ function renderElementSouth(ctx, element, texture) {
     const size = BLOCK_SIZE * SCALE;
     const skew = isoWidth * 2;
 
+    // x, y, z => east, up, south
     const {from, to} = element;
     const up = SCALE * (to[1] - from[1]);
     const east = SCALE * (to[0] - from[0]);
-    const top = size * 0.5 + SCALE * (BLOCK_SIZE - to[1]);
+    const top = size * 0.5 + size * 1.2 - SCALE * to[1] * 1.2;
     const left = SCALE * from[0];
 
     ctx.setTransform(1, isoWidth, 0, skew, 0, 0);
