@@ -2,6 +2,7 @@ const {ensureNamespace, getName} = require("./util");
 const {TextureMap} = require("./texture-map");
 const {renderBlock} = require("./render-block");
 const {renderItem} = require("./render-item");
+const {renderEntity} = require("./render-entity");
 
 function getModelChain(model, models) {
     const chain = [];
@@ -15,16 +16,6 @@ function getModelChain(model, models) {
     }
 
     return chain;
-}
-
-async function renderEntity(id, modelChain, textureMap) {
-    // todo: load entity textures
-    // todo: render entity
-    // entities render custom
-
-    // conduit: small block
-
-    throw new Error(`No renderer for entity [${id}]`)
 }
 
 function findOverride(model, conditions) {
@@ -97,22 +88,22 @@ function render(id, conditions, models, textures, blockStates) {
         const override = findOverride(model, conditions, models, textures);
 
         if (override) {
-            return render(override.model, null, models, textures);
+            return render(override.model, null, models, textures, blockStates);
         }
 
         return renderItem(modelChain, textureMap);
     }
 
     if (renderType === 'builtin/entity') {
-        return renderEntity(nsId, modelChain, textureMap);
+        return renderEntity(nsId, textures);
     }
 
     if (renderType === 'block/block') {
-        const override = findBlockState(nsId, conditions, blockStates);
-
-        if (override) {
-            return render(override.model, null, models, textures);
-        }
+        // const override = findBlockState(nsId, conditions, blockStates);
+        //
+        // if (override) {
+        //     return render(override.model, null, models, textures, blockStates);
+        // }
 
         return renderBlock(modelChain, textureMap);
     }
