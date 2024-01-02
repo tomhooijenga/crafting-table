@@ -87,12 +87,9 @@ function renderChest(chestTexture, textures) {
 }
 
 const entities = {
-    'minecraft:item/chest'(textures) {
-        return renderChest('minecraft:item/chest/normal', textures);
-    },
-    'minecraft:item/ender_chest'(textures) {
-        return renderChest('minecraft:item/chest/ender', textures);
-    },
+    'minecraft:item/chest': (textures) => renderChest('minecraft:item/chest/normal', textures),
+    'minecraft:item/ender_chest': (textures) => renderChest('minecraft:item/chest/ender', textures),
+    'minecraft:item/trapped_chest': (textures) => renderChest('minecraft:item/chest/trapped', textures),
 }
 
 function renderEntity(nsId, textures) {
