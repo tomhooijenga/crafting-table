@@ -39,7 +39,7 @@ async function extractJarToDir(jarPath, dir) {
 }
 
 (async () => {
-    const version = process.argv[3] ?? 'latest';
+    const version = process.argv[2] ?? 'latest';
     const jarPath = path.join(os.tmpdir(), `minecraft-${version}.jar`);
     const extractedJarPath = path.join(os.tmpdir(), `minecraft-${version}`);
 
