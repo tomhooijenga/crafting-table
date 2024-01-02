@@ -132,7 +132,7 @@ async function getElementFaceTexture(element, faceName, textureMap) {
         east: 2, // right
     }
 
-    if (faceName in shades) {
+    if (element.shade !== false && faceName in shades) {
         texture = darkenCanvas(texture, shades[faceName]);
     }
 
