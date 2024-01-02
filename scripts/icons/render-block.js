@@ -194,7 +194,15 @@ function cropCanvas(canvas, uv) {
     const ctx = croppedCanvas.getContext('2d');
 
     ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(canvas, x1, y1, w, h, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.translate(
+        x1 > x2 ? croppedCanvas.width : 0,
+        y1 > y2 ? croppedCanvas.height : 0
+    )
+    ctx.scale(
+        x1 > x2 ? -1: 1,
+        y1 > y2 ? -1: 1
+    )
+    ctx.drawImage(canvas, Math.min(x1, x2), Math.min(y1, y2), w, h, 0, 0, BLOCK_SIZE, BLOCK_SIZE);
 
     return croppedCanvas;
 }
