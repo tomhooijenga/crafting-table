@@ -1,20 +1,21 @@
 const dir = 'C:\\Users\\Tom\\AppData\\Local\\Temp\\1.20.2';
-const { loadModels, loadTextures, loadBlockStates} = require('./registry');
+const { Registry } = require('./registry');
 const { render } = require('./render');
 const fs = require('node:fs/promises');
 const { data } = require('../');
 
 
 (async () => {
-    const models = await loadModels(dir);
-    const textures = await loadTextures(dir);
-    const blockstates = await loadBlockStates(dir);
+    const registry = new Registry();
 
-    const items = [
-        // { name: 'oak_button' },
-        { name: 'oak_stairs' },
-    ];
-    // const items = data.itemsArray;
+    await registry.load(dir);
+
+    // const items = [
+    //     // { name: 'oak_button' },
+    //     { name: 'oak_stairs' },
+    //     // { name: 'blue_ice' },
+    // ];
+    const items = data.itemsArray;
 
     const blockState = {
         facing: 'north',
@@ -25,7 +26,7 @@ const { data } = require('../');
     await Promise.all(
         items.map(async ({ name }) => {
             try {
-                const buf = await render(`item/${name}`, blockState, models, textures, blockstates);
+                const buf = await render(`item/${name}`, registry, blockState);
 
                 if (buf === undefined) {
                     console.log('skipping', name);

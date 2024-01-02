@@ -4,7 +4,7 @@ const SCALE = 10;
 const BLOCK_SIZE = 16;
 const ISO_WIDTH = 0.5;
 
-async function renderBlock(modelChain, textureMap) {
+async function renderBlock(modelChain, textureMap, blockState) {
     const size = BLOCK_SIZE * SCALE;
     const canvas = createCanvas(size * 2, size + size * 1.2);
     const ctx = canvas.getContext('2d');

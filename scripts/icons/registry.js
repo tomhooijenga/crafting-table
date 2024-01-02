@@ -1,60 +1,69 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-async function loadModels(jarDir) {
-    return new Map([
-        ...await loadDirOfJson(jarDir, 'assets/minecraft/models/block', 'block'),
-        ...await loadDirOfJson(jarDir, 'assets/minecraft/models/item', 'item')
-    ]);
-}
+class Registry {
 
-async function loadTextures(jarDir){
-    return new Map([
-        ...await loadTextureDir(jarDir, 'assets/minecraft/textures/block', 'block'),
-        ...await loadTextureDir(jarDir, 'assets/minecraft/textures/item', 'item'),
-        ...await loadTextureDir(jarDir, 'assets/minecraft/textures/entity/chest', 'item/chest'),
-        // todo: load sub dirs (trims, entity etc) without hard-coding
-    ]);
-}
+    models = new Map();
+    textures = new Map();
+    blockStates = new Map();
 
-async function loadBlockStates(jarDir) {
-    return await loadDirOfJson(jarDir, 'assets/minecraft/blockstates', 'block');
-}
+    async load(jarDir) {
+        this.models = await this.loadModels(jarDir);
+        this.textures = await this.loadTextures(jarDir);
+        this.blockStates = await this.loadBlockStates(jarDir);
+    }
 
-async function loadTextureDir(jarDir, dir, type) {
-    const entries = new Map();
-    const files = await fs.readdir(path.join(jarDir, dir));
+    async loadModels(jarDir) {
+        return new Map([
+            ...await this.loadDirOfJson(jarDir, 'assets/minecraft/models/block', 'block'),
+            ...await this.loadDirOfJson(jarDir, 'assets/minecraft/models/item', 'item')
+        ]);
+    }
 
-    const promises = files.map(async (file) => {
-        const content = await fs.readFile(path.join(jarDir, dir, file));
-        entries.set(`minecraft:${type}/${path.basename(file)}`, content);
-    });
+    async loadTextures(jarDir){
+        return new Map([
+            ...await this.loadTextureDir(jarDir, 'assets/minecraft/textures/block', 'block'),
+            ...await this.loadTextureDir(jarDir, 'assets/minecraft/textures/item', 'item'),
+            ...await this.loadTextureDir(jarDir, 'assets/minecraft/textures/entity/chest', 'item/chest'),
+            // todo: load sub dirs (trims, entity etc) without hard-coding
+        ]);
+    }
 
-    await Promise.all(promises);
+    async loadBlockStates(jarDir) {
+        return await this.loadDirOfJson(jarDir, 'assets/minecraft/blockstates', 'block');
+    }
 
-    return entries;
-}
+    async loadTextureDir(jarDir, dir, type) {
+        const entries = new Map();
+        const files = await fs.readdir(path.join(jarDir, dir));
 
+        const promises = files.map(async (file) => {
+            const content = await fs.readFile(path.join(jarDir, dir, file));
+            entries.set(`minecraft:${type}/${path.basename(file)}`, content);
+        });
 
+        await Promise.all(promises);
 
-async function loadDirOfJson(jarDir, dir, type) {
-    const entries = new Map();
-    const files = await fs.readdir(path.join(jarDir, dir));
+        return entries;
+    }
 
-    const promises = files.map(async (file) => {
-        const content = await fs.readFile(path.join(jarDir, dir, file), 'utf-8');
-        const json = JSON.parse(content);
+    async loadDirOfJson(jarDir, dir, type) {
+        const entries = new Map();
+        const files = await fs.readdir(path.join(jarDir, dir));
 
-        entries.set(`minecraft:${type}/${path.basename(file, '.json')}`, json);
-    });
+        const promises = files.map(async (file) => {
+            const content = await fs.readFile(path.join(jarDir, dir, file), 'utf-8');
+            const json = JSON.parse(content);
 
-    await Promise.all(promises);
+            entries.set(`minecraft:${type}/${path.basename(file, '.json')}`, json);
+        });
 
-    return entries;
+        await Promise.all(promises);
+
+        return entries;
+    }
 }
 
 module.exports = {
-    loadModels,
-    loadTextures,
-    loadBlockStates: loadBlockStates,
+    Registry,
 }
