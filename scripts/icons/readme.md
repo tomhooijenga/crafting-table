@@ -23,7 +23,8 @@ const stone = await render(`item/stone`, null, models, textures, blockstates)
   - [ ] Animated items
 - [ ] Blocks (`block/block`)
   - [x] Simple blocks
-  - [ ] Block state
+  - [ ] Block state variants
+  - [ ] Block state multipart
 - [ ] Entities (`builtin/entity`)
   - [x] Chest
   - [x] Ender chest
@@ -44,7 +45,7 @@ const stone = await render(`item/stone`, null, models, textures, blockstates)
     - [x] to
     - [ ] rotation
     - [x] shade
-    - [ ] faces
+    - [x] faces
       - [x] uv
       - [x] texture
       - [x] cullface
